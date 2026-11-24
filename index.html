@@ -571,15 +571,23 @@
     let allPhotosList = [];
 
     // ========================================================
-    // 📊 CẤU HÌNH ĐỒNG BỘ GOOGLE SHEETS TRỰC TIẾP (LIVE INVENTORY)
+    // 📊 KẾT NỐI TRỰC TIẾP GOOGLE SHEETS CỦA BẠN (LIVE SYNC)
     // ========================================================
-    // Mỗi khi bạn sửa file Google Sheet, trang web sẽ TỰ ĐỘNG CẬP NHẬT theo ngay lập tức!
-    // Cách kết nối:
-    // 1. Mở file Google Sheet quản lý gấu bông
-    // 2. Vào Tệp (File) -> Chia sẻ (Share) -> Xuất bản lên web (Publish to web)
-    // 3. Chọn định dạng: "Giá trị phân tách bằng dấu phẩy (.csv)"
-    // 4. Bấm "Xuất bản" và dán đường link CSV vào giữa 2 dấu ngoặc kép dưới đây:
-    const GOOGLE_SHEET_CSV_URL = "";
+    const GOOGLE_SHEET_ID = "10ylwZCFYsBWnx4dp5lZ8s8HWyba2RNnyhicAs-0AjFw";
+    const GOOGLE_SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/export?format=csv`;
+
+    // Chuyển đổi link ảnh Google Drive sang ảnh hiển thị được trên web
+    function formatImageUrl(url) {
+      if (!url) return '';
+      url = url.trim();
+      if (url.includes('drive.google.com')) {
+        const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+        if (match && match[1]) {
+          return `https://lh3.googleusercontent.com/d/${match[1]}`;
+        }
+      }
+      return url;
+    }
 
     // Định dạng tiền VNĐ
     function formatVND(val) {
@@ -600,8 +608,19 @@
           const response = await fetch(freshSheetUrl, { cache: 'no-store' });
           const csvText = await response.text();
 
+          // Bộ lọc tìm dòng tiêu đề thông minh (bỏ qua dòng giới thiệu ở đầu bảng)
+          const rawLines = csvText.split(/\r?\n/);
+          let headerIdx = -1;
+          for (let i = 0; i < rawLines.length; i++) {
+            if (rawLines[i].includes('Mã Sản Phẩm') || rawLines[i].includes('Tên Sản Phẩm')) {
+              headerIdx = i;
+              break;
+            }
+          }
+          const cleanCsvText = headerIdx !== -1 ? rawLines.slice(headerIdx).join('\n') : csvText;
+
           if (typeof Papa !== 'undefined') {
-            const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
+            const parsed = Papa.parse(cleanCsvText, { header: true, skipEmptyLines: true });
             if (parsed.data && parsed.data.length > 0) {
               allProducts = parsed.data.map((row, idx) => {
                 const id = row['Mã Sản Phẩm (ID)'] || row['Mã SP'] || row['ID'] || `SP-${idx+1}`;
@@ -617,10 +636,11 @@
                 const sizes = sizesRaw ? sizesRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
                 
                 const badge = row['Nhãn / Badge (HOT, NEW, SALE...)'] || row['Badge'] || 'MẪU MỚI';
-                const image = (row['Ảnh Đại Diện (Đường dẫn hoặc link)'] || row['Ảnh Đại Diện'] || '').trim();
+                const rawImage = (row['Ảnh Đại Diện (Đường dẫn hoặc link)'] || row['Ảnh Đại Diện'] || '').trim();
+                const image = formatImageUrl(rawImage);
                 
-                const galleryRaw = row['Album Ảnh Chi Tiết (Cách nhau dấu phẩy)'] || row['Album Ảnh'] || image;
-                const gallery = galleryRaw ? galleryRaw.split(',').map(img => img.trim()).filter(Boolean) : [image];
+                const galleryRaw = row['Album Ảnh Chi Tiết (Cách nhau dấu phẩy)'] || row['Album Ảnh'] || rawImage;
+                const gallery = galleryRaw ? galleryRaw.split(',').map(img => formatImageUrl(img.trim())).filter(Boolean) : [image];
 
                 const description = row['Mô Tả Sản Phẩm'] || row['Mô Tả'] || '';
 
