@@ -535,6 +535,18 @@
             <!-- Description -->
             <p id="modalDesc" class="text-xs text-m3-on-surface-variant font-medium leading-relaxed"></p>
 
+            <!-- Interactive Size Selection & Stock Status -->
+            <div id="modalSizeSection" class="space-y-2 pt-2 border-t border-m3-outline-variant/30 hidden">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-m3-on-surface uppercase tracking-wider flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-m3-primary">straighten</span> Chọn Kích Thước:
+                </span>
+                <span id="modalStockStatus" class="font-bold text-xs"></span>
+              </div>
+              <div id="modalSizeChips" class="flex flex-wrap gap-2">
+                <!-- Size chips rendered dynamically -->
+              </div>
+            </div>
 
           </div>
 
@@ -866,18 +878,53 @@
                 ${p.name}
               </h3>
               
-              <!-- Price / Status Badge (Hỗ trợ hiển thị giá nếu bật trong Google Sheet) -->
+              <!-- Sizes summary if available -->
+              ${p.sizesData && p.sizesData.length > 0 ? `
+                <div class="flex items-center gap-1 text-[11px] text-m3-on-surface-variant font-medium pt-0.5">
+                  <span class="material-symbols-outlined text-[13px] text-m3-primary">straighten</span>
+                  <span class="truncate">${p.sizesData.map(s => s.name.replace(/size\s*/i, '')).join(' · ')}</span>
+                </div>
+              ` : ''}
+
+              <!-- Price / Status Badge (Hỗ trợ hiển thị khoảng giá và giá theo Google Sheet) -->
               <div class="pt-0.5">
-                ${p.show_price && p.price ? `
-                  <div class="flex items-baseline gap-2">
-                    <span class="text-sm font-bold text-m3-primary">${formatVND(p.price)}</span>
-                    ${p.original_price ? `<span class="text-xs text-m3-outline line-through">${formatVND(p.original_price)}</span>` : ''}
-                  </div>
-                ` : `
-                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-m3-surface-container-high text-m3-on-surface-variant">
-                    <span class="material-symbols-outlined text-xs text-m3-primary">favorite</span> ${p.status === 'Hết Hàng' ? 'Tạm Hết Hàng' : 'Thú bông cao cấp'}
-                  </span>
-                `}
+                ${(() => {
+                  if (!p.show_price) {
+                    return `
+                      <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-m3-surface-container-high text-m3-on-surface-variant">
+                        <span class="material-symbols-outlined text-xs text-m3-primary">favorite</span> ${p.status === 'Hết Hàng' ? 'Tạm Hết Hàng' : 'Thú bông cao cấp'}
+                      </span>
+                    `;
+                  }
+                  const validPrices = (p.sizesData || []).map(s => {
+                    if (!s.price) return null;
+                    const num = parseInt(String(s.price).replace(/[^0-9]/g, ''));
+                    return isNaN(num) ? null : num;
+                  }).filter(v => v !== null);
+
+                  let priceStr = '';
+                  if (validPrices.length > 0) {
+                    const minP = Math.min(...validPrices);
+                    const maxP = Math.max(...validPrices);
+                    priceStr = (minP < maxP) ? `${formatVND(minP)} - ${formatVND(maxP)}` : formatVND(minP);
+                  } else if (p.price) {
+                    priceStr = formatVND(p.price);
+                  }
+
+                  if (priceStr) {
+                    return `
+                      <div class="flex items-baseline gap-2">
+                        <span class="text-sm font-bold text-m3-primary">${priceStr}</span>
+                        ${p.original_price ? `<span class="text-xs text-m3-outline line-through">${formatVND(p.original_price)}</span>` : ''}
+                      </div>
+                    `;
+                  }
+                  return `
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-m3-surface-container-high text-m3-on-surface-variant">
+                      <span class="material-symbols-outlined text-xs text-m3-primary">favorite</span> Còn hàng
+                    </span>
+                  `;
+                })()}
               </div>
             </div>
           </div>
@@ -1082,13 +1129,99 @@
         `;
       }
 
-      updateZaloLink(p);
+      // Xử lý Size và Tồn kho trong Modal
+      const sizeSection = document.getElementById('modalSizeSection');
+      const sizeChips = document.getElementById('modalSizeChips');
+      const stockStatusEl = document.getElementById('modalStockStatus');
+
+      if (p.sizesData && p.sizesData.length > 0) {
+        if (sizeSection) sizeSection.classList.remove('hidden');
+        let selectedSizeIndex = 0;
+
+        function selectModalSize(idx) {
+          selectedSizeIndex = idx;
+          const s = p.sizesData[idx];
+
+          // 1. Cập nhật nút chọn size
+          if (sizeChips) {
+            sizeChips.innerHTML = '';
+            p.sizesData.forEach((item, i) => {
+              const isSelected = (i === selectedSizeIndex);
+              const isOOS = (item.ton !== null && item.ton <= 0);
+              const btn = document.createElement('button');
+              btn.type = 'button';
+              btn.className = `px-3 py-1.5 rounded-m3-lg text-xs font-semibold transition-all border flex items-center gap-1.5 cursor-pointer ${
+                isSelected 
+                  ? 'bg-m3-primary text-white border-m3-primary shadow-xs' 
+                  : isOOS 
+                    ? 'bg-gray-100 text-gray-400 border-gray-200 line-through opacity-70'
+                    : 'bg-m3-surface-container text-m3-on-surface border-m3-outline-variant/40 hover:bg-m3-surface-container-high'
+              }`;
+              btn.innerHTML = `<span>${item.name}</span>` + (item.price && p.show_price ? `<span class="opacity-80 text-[10px] font-normal">(${formatVND(item.price)})</span>` : '');
+              btn.onclick = () => selectModalSize(i);
+              sizeChips.appendChild(btn);
+            });
+          }
+
+          // 2. Cập nhật Giá hiển thị trong Modal theo Size vừa chọn
+          if (priceSection) {
+            if (p.show_price && s.price) {
+              priceSection.innerHTML = `
+                <div class="inline-flex items-baseline gap-2 px-3 py-1.5 rounded-m3-lg bg-m3-primary-container text-m3-on-primary-container my-1">
+                  <span class="text-base font-bold text-m3-primary">${formatVND(s.price)}</span>
+                  ${p.original_price ? `<span class="text-xs text-m3-outline line-through">${formatVND(p.original_price)}</span>` : ''}
+                </div>
+              `;
+            } else {
+              priceSection.innerHTML = `
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-m3-md bg-emerald-50 text-emerald-700 border border-emerald-200 my-1">
+                  <span class="material-symbols-outlined text-sm text-emerald-600 fill">check_circle</span>
+                  <span class="text-xs font-bold">${s.ton !== null && s.ton <= 0 ? 'Size này tạm hết' : 'Mẫu có sẵn tại tiệm Q7'}</span>
+                </div>
+              `;
+            }
+          }
+
+          // 3. Cập nhật Số lượng tồn kho của Size
+          if (stockStatusEl) {
+            if (s.ton !== null) {
+              if (s.ton <= 0) {
+                stockStatusEl.textContent = '● Tạm hết size này';
+                stockStatusEl.className = 'font-bold text-xs text-rose-500';
+              } else if (s.ton <= 3) {
+                stockStatusEl.textContent = `● Chỉ còn ${s.ton} bé`;
+                stockStatusEl.className = 'font-bold text-xs text-amber-600';
+              } else {
+                stockStatusEl.textContent = `● Còn ${s.ton} bé`;
+                stockStatusEl.className = 'font-bold text-xs text-emerald-600';
+              }
+            } else {
+              stockStatusEl.textContent = '● Còn hàng';
+              stockStatusEl.className = 'font-bold text-xs text-emerald-600';
+            }
+          }
+
+          // 4. Cập nhật link Zalo tự động gắn Size và Giá
+          let msg = `Chào shop Gấu Bông Q7, mình muốn tư vấn đặt mẫu: ${p.name} - ${s.name}`;
+          if (p.show_price && s.price) {
+            msg += ` (Giá: ${formatVND(s.price)})`;
+          }
+          document.getElementById('modalZaloBtn').href = `https://zalo.me/0333870846?text=${encodeURIComponent(msg)}`;
+        }
+
+        // Ưu tiên chọn size đầu tiên còn hàng
+        const firstInStock = p.sizesData.findIndex(s => s.ton === null || s.ton > 0);
+        selectModalSize(firstInStock !== -1 ? firstInStock : 0);
+      } else {
+        if (sizeSection) sizeSection.classList.add('hidden');
+        updateZaloLink(p);
+      }
+
       document.getElementById('productModal').classList.remove('hidden');
     }
 
     function updateZaloLink(p) {
-      const msg = `Chào shop Gấu Bông Q7, mình muốn tư vấn và hỏi thông tin mẫu: ${p.name}`;;
-      document.getElementById('modalZaloBtn').href = `https://zalo.me/0333870846?text=${encodeURIComponent(msg)}`;
+      const msg = `Chào shop Gấu Bông Q7, mình muốn tư vấn và hỏi thông tin mẫu: ${p.name}`;
       document.getElementById('modalZaloBtn').href = `https://zalo.me/0333870846?text=${encodeURIComponent(msg)}`;
     }
 
