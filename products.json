@@ -1,27 +1,18 @@
 [
   {
-    "id": "BOB-VOI",
-    "name": "Voi Bông Tai To Bobova Lông Thỏ Siêu Mướt",
+    "id": "BOB-ALL",
+    "name": "Đại Gia Đình Thú Bông Bobova Cao Cấp",
     "category": "bobova",
     "category_name": "Bobova Cao Cấp",
-    "badge": "HOT BÁN CHẠY",
-    "image": "images/IMG_3407.JPG",
+    "badge": "FULL BỘ",
+    "image": "images/IMG_3408.JPG",
     "gallery": [
-      "images/IMG_3407.JPG",
-      "images/IMG_3409.JPG",
-      "images/IMG_3410.JPG",
-      "images/IMG_3411.JPG",
-      "images/IMG_3412.JPG",
-      "images/IMG_3413.JPG",
-      "images/IMG_3414.JPG",
-      "images/IMG_3415.JPG",
-      "images/IMG_3427.JPG"
+      "images/IMG_3408.JPG"
     ],
     "sizes": [
-      "Size 40cm",
-      "Size 60cm"
+      "Nhiều kích cỡ lựa chọn"
     ],
-    "description": "Bé voi tai to dáng ngồi tròn ủm, tai hồng pastel cưng xỉu. Chất lông nhung tuyết mịn như lông thỏ thật, bao không rụng lông, nhồi 100% gòn bi tinh khiết."
+    "description": "Đại tiệc thú bông Bobova trên giường với đầy đủ các thành viên: Voi tai to, heo hồng, rái cá, chim cánh cụt... Món quà hoàn hảo cho mùa lễ hội."
   },
   {
     "id": "BOB-HEO",
@@ -77,25 +68,35 @@
       "images/IMG_3428.JPG"
     ],
     "sizes": [
-      "Size 40cm",
+      "Size 35cm",
+      "Size 45cm",
       "Size 55cm"
     ],
     "description": "Thú mỏ vịt xám lông xù dáng đứng ngộ nghĩnh, chất liệu lông cao cấp mịn mát, form đứng vững chãi thích hợp trang trí bàn làm việc hoặc làm gối ôm."
   },
   {
-    "id": "BOB-ALL",
-    "name": "Đại Gia Đình Thú Bông Bobova Cao Cấp",
+    "id": "BOB-VOI",
+    "name": "Voi Bông Tai To Bobova Lông Thỏ Siêu Mướt",
     "category": "bobova",
     "category_name": "Bobova Cao Cấp",
-    "badge": "FULL BỘ",
-    "image": "images/IMG_3408.JPG",
+    "badge": "HOT BÁN CHẠY",
+    "image": "images/IMG_3407.JPG",
     "gallery": [
-      "images/IMG_3408.JPG"
+      "images/IMG_3407.JPG",
+      "images/IMG_3409.JPG",
+      "images/IMG_3410.JPG",
+      "images/IMG_3411.JPG",
+      "images/IMG_3412.JPG",
+      "images/IMG_3413.JPG",
+      "images/IMG_3414.JPG",
+      "images/IMG_3415.JPG",
+      "images/IMG_3427.JPG"
     ],
     "sizes": [
-      "Nhiều kích cỡ lựa chọn"
+      "Size 40cm",
+      "Size 60cm"
     ],
-    "description": "Đại tiệc thú bông Bobova trên giường với đầy đủ các thành viên: Voi tai to, heo hồng, rái cá, chim cánh cụt... Món quà hoàn hảo cho mùa lễ hội."
+    "description": "Bé voi tai to dáng ngồi tròn ủm, tai hồng pastel cưng xỉu. Chất lông nhung tuyết mịn như lông thỏ thật, bao không rụng lông, nhồi 100% gòn bi tinh khiết."
   },
   {
     "id": "JEL-SUTU",
@@ -135,38 +136,22 @@
     "description": "Bé thỏ nâu tai dài dáng rũ kinh điển được mọi cô gái yêu thích. Chất lông mềm mịn chuẩn quốc tế, quà tặng sinh nhật số 1 đốn tim nàng."
   },
   {
-    "id": "SAN-KUROMI",
-    "name": "Kuromi Váy Tím Công Chúa Sanrio Chính Hãng",
-    "category": "sanrio",
-    "category_name": "Sanrio Dễ Thương",
-    "badge": "TRENDING",
-    "image": "images/IMG_3395.JPG",
+    "id": "OM-CANHCUT",
+    "name": "Chim Cánh Cụt Sarah Bụng Tròn N-Cool",
+    "category": "om-ngu",
+    "category_name": "Gấu Ôm Ngủ",
+    "badge": "MÙA ĐÔNG",
+    "image": "images/IMG_3394.JPG",
     "gallery": [
-      "images/IMG_3395.JPG",
-      "images/IMG_3397.JPG"
+      "images/IMG_3394.JPG",
+      "images/IMG_3405.JPG",
+      "images/IMG_3431.JPG"
     ],
     "sizes": [
-      "Size 40cm",
-      "Size 55cm"
+      "Size 35cm",
+      "Size 50cm"
     ],
-    "description": "Kuromi diện váy tím bồng bềnh nơ đen kiêu kỳ. Từng chi tiết ren và thêu mắt sắc sảo, chất vải cao cấp không bám bụi, quà tặng hoàn hảo cho bạn gái."
-  },
-  {
-    "id": "SAN-MELODY",
-    "name": "My Melody Váy Hồng Kẹo Ngọt Sanrio",
-    "category": "sanrio",
-    "category_name": "Sanrio Dễ Thương",
-    "badge": "BÁN CHẠY",
-    "image": "images/IMG_3396.JPG",
-    "gallery": [
-      "images/IMG_3396.JPG",
-      "images/IMG_3406.JPG"
-    ],
-    "sizes": [
-      "Size 40cm",
-      "Size 55cm"
-    ],
-    "description": "My Melody váy hồng pastel dịu dàng đốn tim mọi ánh nhìn. Đôi tai cụp thắt nơ xinh xắn, vải lông mịn màng êm ái, món quà kỷ niệm siêu ngọt ngào."
+    "description": "Chim cánh cụt Sarah với dáng tròn núng nính, mỏ vàng chân cam. Chất vải co giãn 4 chiều mềm mịn mát tay, chiếc gối ôm lý tưởng cho mùa lạnh."
   },
   {
     "id": "OM-CAVOI",
@@ -201,56 +186,38 @@
     "description": "Gấu nâu dáng nằm dài chất vải lông cừu ấm áp, siêu phẩm gối ôm mùa đông chuẩn bị cho mùa Giáng sinh ấm áp tại Quận 7."
   },
   {
-    "id": "OM-CANHCUT",
-    "name": "Chim Cánh Cụt Sarah Bụng Tròn N-Cool",
-    "category": "om-ngu",
-    "category_name": "Gấu Ôm Ngủ",
-    "badge": "MÙA ĐÔNG",
-    "image": "images/IMG_3394.JPG",
+    "id": "SAN-KUROMI",
+    "name": "Kuromi Váy Tím Công Chúa Sanrio Chính Hãng",
+    "category": "sanrio",
+    "category_name": "Sanrio Dễ Thương",
+    "badge": "TRENDING",
+    "image": "images/IMG_3395.JPG",
     "gallery": [
-      "images/IMG_3394.JPG",
-      "images/IMG_3405.JPG",
-      "images/IMG_3431.JPG"
+      "images/IMG_3395.JPG",
+      "images/IMG_3397.JPG"
     ],
     "sizes": [
-      "Size 35cm",
-      "Size 50cm"
+      "Size 40cm",
+      "Size 55cm"
     ],
-    "description": "Chim cánh cụt Sarah với dáng tròn núng nính, mỏ vàng chân cam. Chất vải co giãn 4 chiều mềm mịn mát tay, chiếc gối ôm lý tưởng cho mùa lạnh."
+    "description": "Kuromi diện váy tím bồng bềnh nơ đen kiêu kỳ. Từng chi tiết ren và thêu mắt sắc sảo, chất vải cao cấp không bám bụi, quà tặng hoàn hảo cho bạn gái."
   },
   {
-    "id": "THU-PANDA",
-    "name": "Gấu Trúc Panda JOOKI Bụng Bự Quốc Bảo",
-    "category": "thu-cung",
-    "category_name": "Thú Ngộ Nghĩnh",
-    "badge": "QUỐC BẢO",
-    "image": "images/IMG_3398.JPG",
+    "id": "SAN-MELODY",
+    "name": "My Melody Váy Hồng Kẹo Ngọt Sanrio",
+    "category": "sanrio",
+    "category_name": "Sanrio Dễ Thương",
+    "badge": "BÁN CHẠY",
+    "image": "images/IMG_3396.JPG",
     "gallery": [
-      "images/IMG_3398.JPG",
-      "images/IMG_3399.JPG"
+      "images/IMG_3396.JPG",
+      "images/IMG_3406.JPG"
     ],
     "sizes": [
-      "Size 45cm",
-      "Size 65cm"
+      "Size 40cm",
+      "Size 55cm"
     ],
-    "description": "Panda JOOKI dáng ngồi tròn ủm với 2 quầng mắt đen đặc trưng. Chất lông mượt mà không rụng, ruột bông tinh khiết 100%, bảo đảm ôm ngủ mê li."
-  },
-  {
-    "id": "THU-KOALA",
-    "name": "Gấu Koala Mẹ Bồng Con Lông Thỏ Êm Ái",
-    "category": "thu-cung",
-    "category_name": "Thú Ngộ Nghĩnh",
-    "badge": "ẤM ÁP",
-    "image": "images/IMG_3403.JPG",
-    "gallery": [
-      "images/IMG_3403.JPG",
-      "images/IMG_3404.JPG"
-    ],
-    "sizes": [
-      "Size 45cm",
-      "Size 65cm"
-    ],
-    "description": "Cặp đôi Koala mẹ ôm con nhỏ thắt nơ xanh quý phái, biểu tượng yêu thương ấm áp cho gia đình và người thương. Lông thỏ mềm mịn bao giặt máy."
+    "description": "My Melody váy hồng pastel dịu dàng đốn tim mọi ánh nhìn. Đôi tai cụp thắt nơ xinh xắn, vải lông mịn màng êm ái, món quà kỷ niệm siêu ngọt ngào."
   },
   {
     "id": "THU-FOX",
@@ -286,6 +253,55 @@
     "description": "Gấu màu xanh pastel ngọt ngào, chất lông thỏ siêu mềm mướt mát lạnh, mặt hiền lành dễ thương giúp giải tỏa căng thẳng tức thì."
   },
   {
+    "id": "THU-KOALA",
+    "name": "Gấu Koala Mẹ Bồng Con Lông Thỏ Êm Ái",
+    "category": "thu-cung",
+    "category_name": "Thú Ngộ Nghĩnh",
+    "badge": "ẤM ÁP",
+    "image": "images/IMG_3403.JPG",
+    "gallery": [
+      "images/IMG_3403.JPG",
+      "images/IMG_3404.JPG"
+    ],
+    "sizes": [
+      "Size 45cm",
+      "Size 65cm"
+    ],
+    "description": "Cặp đôi Koala mẹ ôm con nhỏ thắt nơ xanh quý phái, biểu tượng yêu thương ấm áp cho gia đình và người thương. Lông thỏ mềm mịn bao giặt máy."
+  },
+  {
+    "id": "THU-PANDA",
+    "name": "Gấu Trúc Panda JOOKI Bụng Bự Quốc Bảo",
+    "category": "thu-cung",
+    "category_name": "Thú Ngộ Nghĩnh",
+    "badge": "QUỐC BẢO",
+    "image": "images/IMG_3398.JPG",
+    "gallery": [
+      "images/IMG_3398.JPG",
+      "images/IMG_3399.JPG"
+    ],
+    "sizes": [
+      "Size 45cm",
+      "Size 65cm"
+    ],
+    "description": "Panda JOOKI dáng ngồi tròn ủm với 2 quầng mắt đen đặc trưng. Chất lông mượt mà không rụng, ruột bông tinh khiết 100%, bảo đảm ôm ngủ mê li."
+  },
+  {
+    "id": "THU-RONG",
+    "name": "Bạch Long Rồng Trắng Thần Thoại May Mắn",
+    "category": "thu-cung",
+    "category_name": "Thú Ngộ Nghĩnh",
+    "badge": "MAY MẮN",
+    "image": "images/IMG_3402.JPG",
+    "gallery": [
+      "images/IMG_3402.JPG"
+    ],
+    "sizes": [
+      "Size 45cm"
+    ],
+    "description": "Mẫu Bạch Long rồng trắng cánh hồng siêu hiếm, mang ý nghĩa may mắn tài lộc dịp cuối năm, vải nhung trắng muốt tinh khôi."
+  },
+  {
     "id": "THU-SHIBA",
     "name": "Chó Shiba Inu Mập Mạp Mặt Ngố",
     "category": "thu-cung",
@@ -316,20 +332,5 @@
       "Size 50cm"
     ],
     "description": "Chú vịt cổ xanh Green Duck chân cam siêu hài hước, tạo hình tròn vo chắc tay, vải nhung mịn không bám bẩn."
-  },
-  {
-    "id": "THU-RONG",
-    "name": "Bạch Long Rồng Trắng Thần Thoại May Mắn",
-    "category": "thu-cung",
-    "category_name": "Thú Ngộ Nghĩnh",
-    "badge": "MAY MẮN",
-    "image": "images/IMG_3402.JPG",
-    "gallery": [
-      "images/IMG_3402.JPG"
-    ],
-    "sizes": [
-      "Size 45cm"
-    ],
-    "description": "Mẫu Bạch Long rồng trắng cánh hồng siêu hiếm, mang ý nghĩa may mắn tài lộc dịp cuối năm, vải nhung trắng muốt tinh khôi."
   }
 ]
