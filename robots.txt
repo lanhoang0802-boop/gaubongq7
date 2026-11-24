@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lanhoang0802-boop.github.io/gaubongq7/sitemap.xml
