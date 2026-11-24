@@ -721,7 +721,7 @@
                 const rawImage = (row['Ảnh Đại Diện (Đường dẫn hoặc link)'] || row['Ảnh Đại Diện'] || '').trim();
                 const image = formatImageUrl(rawImage);
                 
-                const galleryRaw = row['Album Ảnh Chi Tiết (Cách nhau dấu phẩy)'] || row['Album Ảnh'] || rawImage;
+                const galleryRaw = row['Album Ảnh Chi Tiết'] || row['Album Ảnh Chi Tiết (Cách nhau dấu phẩy)'] || row['Album Ảnh'] || rawImage;
                 const gallery = galleryRaw ? galleryRaw.split(',').map(img => formatImageUrl(img.trim())).filter(Boolean) : [image];
 
                 const description = row['Mô Tả Sản Phẩm'] || row['Mô Tả'] || '';
