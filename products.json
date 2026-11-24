@@ -17,13 +17,11 @@
       "images/IMG_3415.JPG",
       "images/IMG_3427.JPG"
     ],
-    "price": 220000,
-    "original_price": 280000,
     "sizes": [
-      "40cm - 220.000đ",
-      "60cm - 320.000đ"
+      "Size 40cm",
+      "Size 60cm"
     ],
-    "description": "Bé voi tai to dáng ngồi tròn ủm, tai hồng pastel siêu cưng. Chất lông nhung tuyết mịn như lông thỏ thật, bao không rụng lông, nhồi 100% gòn bi tinh khiết."
+    "description": "Bé voi tai to dáng ngồi tròn ủm, tai hồng pastel cưng xỉu. Chất lông nhung tuyết mịn như lông thỏ thật, bao không rụng lông, nhồi 100% gòn bi tinh khiết."
   },
   {
     "id": "BOB-HEO",
@@ -43,74 +41,11 @@
       "images/IMG_3426.JPG",
       "images/IMG_3430.JPG"
     ],
-    "price": 240000,
-    "original_price": 300000,
     "sizes": [
-      "45cm - 240.000đ",
-      "70cm - 350.000đ"
+      "Size 45cm",
+      "Size 70cm"
     ],
     "description": "Bé heo ú nu màu hồng pastel ngọt ngào, bụng phệ cưng xỉu. Chất bông đàn hồi cực tốt bóp xả stress bao đã tay, ôm ngủ cả đêm không buông."
-  },
-  {
-    "id": "JEL-SUTU",
-    "name": "Sư Tử Bờm Xù Lông Mềm Phong Cách Jellycat",
-    "category": "jellycat",
-    "category_name": "Jellycat Style",
-    "badge": "CAOCẤP",
-    "image": "images/IMG_3379.JPG",
-    "gallery": [
-      "images/IMG_3379.JPG",
-      "images/IMG_3381.JPG",
-      "images/IMG_3382.JPG",
-      "images/IMG_3383.JPG",
-      "images/IMG_3384.JPG"
-    ],
-    "price": 290000,
-    "original_price": 360000,
-    "sizes": [
-      "35cm - 290.000đ",
-      "55cm - 390.000đ",
-      "75cm - 490.000đ"
-    ],
-    "description": "Siêu phẩm sư tử bờm xù phong cách Jellycat hot hit. Phần bờm bồng bềnh êm ái, form dáng nằm ôm vừa vặn vòng tay, lông mềm mượt chuẩn hàng xuất khẩu."
-  },
-  {
-    "id": "SAN-KUROMI",
-    "name": "Kuromi Váy Tím Công Chúa Sanrio Chính Hãng",
-    "category": "sanrio",
-    "category_name": "Sanrio Dễ Thương",
-    "badge": "TRENDING",
-    "image": "images/IMG_3395.JPG",
-    "gallery": [
-      "images/IMG_3395.JPG",
-      "images/IMG_3397.JPG"
-    ],
-    "price": 199000,
-    "original_price": 260000,
-    "sizes": [
-      "40cm - 199.000đ",
-      "55cm - 280.000đ"
-    ],
-    "description": "Kuromi diện váy tím bồng bềnh nơ đen kiêu kỳ. Từng chi tiết ren và thêu mắt sắc sảo, chất vải cao cấp không bám bụi, quà tặng hoàn hảo cho bạn gái."
-  },
-  {
-    "id": "SAN-MELODY",
-    "name": "My Melody Váy Hồng Kẹo Ngọt Sanrio",
-    "category": "sanrio",
-    "category_name": "Sanrio Dễ Thương",
-    "badge": "BÁN CHẠY",
-    "image": "images/IMG_3396.JPG",
-    "gallery": [
-      "images/IMG_3396.JPG",
-      "images/IMG_3406.JPG"
-    ],
-    "price": 199000,
-    "original_price": 260000,
-    "sizes": [
-      "40cm - 199.000đ",
-      "55cm - 280.000đ"
-    ],
-    "description": "My Melody váy hồng pastel dịu dàng đốn tim mọi ánh nhìn. Đôi tai cụp thắt nơ xinh xắn, vải lông mịn màng êm ái, món quà kỷ niệm siêu ngọt ngào."
   },
   {
     "id": "BOB-RAICA",
@@ -124,11 +59,9 @@
       "images/IMG_3417.JPG",
       "images/IMG_3429.JPG"
     ],
-    "price": 210000,
-    "original_price": 260000,
     "sizes": [
-      "40cm - 210.000đ",
-      "60cm - 290.000đ"
+      "Size 40cm",
+      "Size 60cm"
     ],
     "description": "Team mặt ngố vô tri với 2 tay ôm bụng tròn xoe, lông nâu mướt rượt phối bụng trắng. Cầm trên tay vừa vặn, tạo hình cực kỳ độc đáo và đáng yêu."
   },
@@ -143,54 +76,132 @@
       "images/IMG_3418.JPG",
       "images/IMG_3428.JPG"
     ],
-    "price": 210000,
-    "original_price": 260000,
     "sizes": [
-      "40cm - 210.000đ",
-      "55cm - 290.000đ"
+      "Size 40cm",
+      "Size 55cm"
     ],
     "description": "Thú mỏ vịt xám lông xù dáng đứng ngộ nghĩnh, chất liệu lông cao cấp mịn mát, form đứng vững chãi thích hợp trang trí bàn làm việc hoặc làm gối ôm."
   },
   {
-    "id": "PAN-JOOKI",
-    "name": "Gấu Trúc Panda JOOKI Bụng Bự Quốc Bảo",
-    "category": "thu-cung",
-    "category_name": "Thú Ngộ Nghĩnh",
-    "badge": "QUỐC BẢO",
-    "image": "images/IMG_3398.JPG",
+    "id": "BOB-ALL",
+    "name": "Đại Gia Đình Thú Bông Bobova Cao Cấp",
+    "category": "bobova",
+    "category_name": "Bobova Cao Cấp",
+    "badge": "FULL BỘ",
+    "image": "images/IMG_3408.JPG",
     "gallery": [
-      "images/IMG_3398.JPG",
-      "images/IMG_3399.JPG"
+      "images/IMG_3408.JPG"
     ],
-    "price": 230000,
-    "original_price": 290000,
     "sizes": [
-      "45cm - 230.000đ",
-      "65cm - 330.000đ"
+      "Nhiều kích cỡ lựa chọn"
     ],
-    "description": "Panda JOOKI dáng ngồi tròn ủm với 2 quầng mắt đen đặc trưng. Chất lông mượt mà không rụng, ruột bông tinh khiết 100%, bảo đảm ôm ngủ mê li."
+    "description": "Đại tiệc thú bông Bobova trên giường với đầy đủ các thành viên: Voi tai to, heo hồng, rái cá, chim cánh cụt... Món quà hoàn hảo cho mùa lễ hội."
   },
   {
-    "id": "KOA-MECON",
-    "name": "Gấu Koala Mẹ Bồng Con Lông Thỏ Êm Ái",
-    "category": "thu-cung",
-    "category_name": "Thú Ngộ Nghĩnh",
-    "badge": "ẤM ÁP",
-    "image": "images/IMG_3403.JPG",
+    "id": "JEL-SUTU",
+    "name": "Sư Tử Bờm Xù Lông Mềm Phong Cách Jellycat",
+    "category": "jellycat",
+    "category_name": "Jellycat Style",
+    "badge": "CAO CẤP",
+    "image": "images/IMG_3379.JPG",
     "gallery": [
-      "images/IMG_3403.JPG",
-      "images/IMG_3404.JPG"
+      "images/IMG_3379.JPG",
+      "images/IMG_3381.JPG",
+      "images/IMG_3382.JPG",
+      "images/IMG_3383.JPG",
+      "images/IMG_3384.JPG"
     ],
-    "price": 250000,
-    "original_price": 320000,
     "sizes": [
-      "45cm - 250.000đ",
-      "65cm - 360.000đ"
+      "Size 35cm",
+      "Size 55cm",
+      "Size 75cm"
     ],
-    "description": "Cặp đôi Koala mẹ ôm con nhỏ thắt nơ xanh quý phái, biểu tượng yêu thương ấm áp cho gia đình và người thương. Lông thỏ mềm mịn bao giặt máy."
+    "description": "Siêu phẩm sư tử bờm xù phong cách Jellycat hot hit. Phần bờm bồng bềnh êm ái, form dáng nằm ôm vừa vặn vòng tay, lông mềm mượt chuẩn hàng xuất khẩu."
   },
   {
-    "id": "PEN-SARAH",
+    "id": "JEL-THO",
+    "name": "Thỏ Nâu Tai Dài Dáng Rũ Phong Cách Jellycat",
+    "category": "jellycat",
+    "category_name": "Jellycat Style",
+    "badge": "BEST SELLER",
+    "image": "images/IMG_3388.JPG",
+    "gallery": [
+      "images/IMG_3388.JPG"
+    ],
+    "sizes": [
+      "Size 40cm",
+      "Size 60cm"
+    ],
+    "description": "Bé thỏ nâu tai dài dáng rũ kinh điển được mọi cô gái yêu thích. Chất lông mềm mịn chuẩn quốc tế, quà tặng sinh nhật số 1 đốn tim nàng."
+  },
+  {
+    "id": "SAN-KUROMI",
+    "name": "Kuromi Váy Tím Công Chúa Sanrio Chính Hãng",
+    "category": "sanrio",
+    "category_name": "Sanrio Dễ Thương",
+    "badge": "TRENDING",
+    "image": "images/IMG_3395.JPG",
+    "gallery": [
+      "images/IMG_3395.JPG",
+      "images/IMG_3397.JPG"
+    ],
+    "sizes": [
+      "Size 40cm",
+      "Size 55cm"
+    ],
+    "description": "Kuromi diện váy tím bồng bềnh nơ đen kiêu kỳ. Từng chi tiết ren và thêu mắt sắc sảo, chất vải cao cấp không bám bụi, quà tặng hoàn hảo cho bạn gái."
+  },
+  {
+    "id": "SAN-MELODY",
+    "name": "My Melody Váy Hồng Kẹo Ngọt Sanrio",
+    "category": "sanrio",
+    "category_name": "Sanrio Dễ Thương",
+    "badge": "BÁN CHẠY",
+    "image": "images/IMG_3396.JPG",
+    "gallery": [
+      "images/IMG_3396.JPG",
+      "images/IMG_3406.JPG"
+    ],
+    "sizes": [
+      "Size 40cm",
+      "Size 55cm"
+    ],
+    "description": "My Melody váy hồng pastel dịu dàng đốn tim mọi ánh nhìn. Đôi tai cụp thắt nơ xinh xắn, vải lông mịn màng êm ái, món quà kỷ niệm siêu ngọt ngào."
+  },
+  {
+    "id": "OM-CAVOI",
+    "name": "Cá Voi Xanh Làm Mát N-Cool Ôm Ngủ Dáng Dài",
+    "category": "om-ngu",
+    "category_name": "Gấu Ôm Ngủ",
+    "badge": "MÁT LẠNH",
+    "image": "images/IMG_3392.JPG",
+    "gallery": [
+      "images/IMG_3392.JPG"
+    ],
+    "sizes": [
+      "Size 80cm",
+      "Size 1m1"
+    ],
+    "description": "Cá voi xanh công nghệ vải mát N-Cool điều hòa giấc ngủ, dáng dài ôm hoặc gác chân cực đã, không xẹp lún sau thời gian dài sử dụng."
+  },
+  {
+    "id": "OM-GAUNAU",
+    "name": "Gấu Nâu Lông Cừu Dáng Nằm Ôm Ngủ Mùa Noel",
+    "category": "om-ngu",
+    "category_name": "Gấu Ôm Ngủ",
+    "badge": "MÙA NOEL",
+    "image": "images/IMG_3393.JPG",
+    "gallery": [
+      "images/IMG_3393.JPG"
+    ],
+    "sizes": [
+      "Size 70cm",
+      "Size 1m"
+    ],
+    "description": "Gấu nâu dáng nằm dài chất vải lông cừu ấm áp, siêu phẩm gối ôm mùa đông chuẩn bị cho mùa Giáng sinh ấm áp tại Quận 7."
+  },
+  {
+    "id": "OM-CANHCUT",
     "name": "Chim Cánh Cụt Sarah Bụng Tròn N-Cool",
     "category": "om-ngu",
     "category_name": "Gấu Ôm Ngủ",
@@ -201,16 +212,48 @@
       "images/IMG_3405.JPG",
       "images/IMG_3431.JPG"
     ],
-    "price": 190000,
-    "original_price": 250000,
     "sizes": [
-      "35cm - 190.000đ",
-      "50cm - 270.000đ"
+      "Size 35cm",
+      "Size 50cm"
     ],
     "description": "Chim cánh cụt Sarah với dáng tròn núng nính, mỏ vàng chân cam. Chất vải co giãn 4 chiều mềm mịn mát tay, chiếc gối ôm lý tưởng cho mùa lạnh."
   },
   {
-    "id": "FOX-JOOKI",
+    "id": "THU-PANDA",
+    "name": "Gấu Trúc Panda JOOKI Bụng Bự Quốc Bảo",
+    "category": "thu-cung",
+    "category_name": "Thú Ngộ Nghĩnh",
+    "badge": "QUỐC BẢO",
+    "image": "images/IMG_3398.JPG",
+    "gallery": [
+      "images/IMG_3398.JPG",
+      "images/IMG_3399.JPG"
+    ],
+    "sizes": [
+      "Size 45cm",
+      "Size 65cm"
+    ],
+    "description": "Panda JOOKI dáng ngồi tròn ủm với 2 quầng mắt đen đặc trưng. Chất lông mượt mà không rụng, ruột bông tinh khiết 100%, bảo đảm ôm ngủ mê li."
+  },
+  {
+    "id": "THU-KOALA",
+    "name": "Gấu Koala Mẹ Bồng Con Lông Thỏ Êm Ái",
+    "category": "thu-cung",
+    "category_name": "Thú Ngộ Nghĩnh",
+    "badge": "ẤM ÁP",
+    "image": "images/IMG_3403.JPG",
+    "gallery": [
+      "images/IMG_3403.JPG",
+      "images/IMG_3404.JPG"
+    ],
+    "sizes": [
+      "Size 45cm",
+      "Size 65cm"
+    ],
+    "description": "Cặp đôi Koala mẹ ôm con nhỏ thắt nơ xanh quý phái, biểu tượng yêu thương ấm áp cho gia đình và người thương. Lông thỏ mềm mịn bao giặt máy."
+  },
+  {
+    "id": "THU-FOX",
     "name": "Cáo Xám Tuyết JOOKI Đuôi Xù Sang Trọng",
     "category": "thu-cung",
     "category_name": "Thú Ngộ Nghĩnh",
@@ -220,33 +263,13 @@
       "images/IMG_3389.JPG",
       "images/IMG_3400.JPG"
     ],
-    "price": 260000,
-    "original_price": 330000,
     "sizes": [
-      "45cm - 260.000đ"
+      "Size 45cm"
     ],
     "description": "Mẫu cáo xám JOOKI thanh thoát với chiếc đuôi xù siêu dài bồng bềnh. Tông màu xám tro phối trắng tinh khôi, món quà decor phòng ngủ cực sang."
   },
   {
-    "id": "WHA-NCOOL",
-    "name": "Cá Voi Xanh Làm Mát N-Cool Ôm Ngủ Dáng Dài",
-    "category": "om-ngu",
-    "category_name": "Gấu Ôm Ngủ",
-    "badge": "MÁT LẠNH",
-    "image": "images/IMG_3392.JPG",
-    "gallery": [
-      "images/IMG_3392.JPG"
-    ],
-    "price": 240000,
-    "original_price": 310000,
-    "sizes": [
-      "80cm - 240.000đ",
-      "1m1 - 340.000đ"
-    ],
-    "description": "Cá voi xanh công nghệ vải mát N-Cool điều hòa giấc ngủ, dáng dài ôm hoặc gác chân cực đã, không xẹp lún sau thời gian dài sử dụng."
-  },
-  {
-    "id": "BEA-PASTEL",
+    "id": "THU-GAUXANH",
     "name": "Gấu Xanh Pastel Lông Thỏ Siêu Mịn",
     "category": "thu-cung",
     "category_name": "Thú Ngộ Nghĩnh",
@@ -256,34 +279,14 @@
       "images/IMG_3374.JPG",
       "images/IMG_3375.JPG"
     ],
-    "price": 210000,
-    "original_price": 270000,
     "sizes": [
-      "40cm - 210.000đ",
-      "60cm - 290.000đ"
+      "Size 40cm",
+      "Size 60cm"
     ],
-    "description": "Gấu màu xanh pastel pastel ngọt ngào, chất lông thỏ siêu mềm mướt mát lạnh, mặt hiền lành dễ thương giúp giải tỏa căng thẳng tức thì."
+    "description": "Gấu màu xanh pastel ngọt ngào, chất lông thỏ siêu mềm mướt mát lạnh, mặt hiền lành dễ thương giúp giải tỏa căng thẳng tức thì."
   },
   {
-    "id": "RAB-JELLY",
-    "name": "Thỏ Nâu Tai Dài Dáng Rũ Phong Cách Jellycat",
-    "category": "jellycat",
-    "category_name": "Jellycat Style",
-    "badge": "BEST SELLER",
-    "image": "images/IMG_3388.JPG",
-    "gallery": [
-      "images/IMG_3388.JPG"
-    ],
-    "price": 280000,
-    "original_price": 350000,
-    "sizes": [
-      "40cm - 280.000đ",
-      "60cm - 380.000đ"
-    ],
-    "description": "Bé thỏ nâu tai dài dáng rũ kinh điển được mọi cô gái yêu thích. Chất lông mềm mịn chuẩn quốc tế, quà tặng sinh nhật số 1 đốn tim nàng."
-  },
-  {
-    "id": "DOG-SHIBA",
+    "id": "THU-SHIBA",
     "name": "Chó Shiba Inu Mập Mạp Mặt Ngố",
     "category": "thu-cung",
     "category_name": "Thú Ngộ Nghĩnh",
@@ -292,16 +295,14 @@
     "gallery": [
       "images/IMG_3401.JPG"
     ],
-    "price": 190000,
-    "original_price": 250000,
     "sizes": [
-      "35cm - 190.000đ",
-      "50cm - 270.000đ"
+      "Size 35cm",
+      "Size 50cm"
     ],
     "description": "Shiba Inu vàng ươm mập mạp với 2 má phính và chiếc đuôi xoăn ngộ nghĩnh, người bạn đồng hành xua tan mệt mỏi trên bàn học và bàn làm việc."
   },
   {
-    "id": "DUC-GREEN",
+    "id": "THU-VIT",
     "name": "Vịt Cổ Xanh Green Duck Chân Cam",
     "category": "thu-cung",
     "category_name": "Thú Ngộ Nghĩnh",
@@ -310,34 +311,14 @@
     "gallery": [
       "images/IMG_3391.JPG"
     ],
-    "price": 180000,
-    "original_price": 240000,
     "sizes": [
-      "35cm - 180.000đ",
-      "50cm - 260.000đ"
+      "Size 35cm",
+      "Size 50cm"
     ],
     "description": "Chú vịt cổ xanh Green Duck chân cam siêu hài hước, tạo hình tròn vo chắc tay, vải nhung mịn không bám bẩn."
   },
   {
-    "id": "BEA-SHEEP",
-    "name": "Gấu Nâu Lông Cừu Dáng Nằm Ôm Ngủ Mùa Noel",
-    "category": "om-ngu",
-    "category_name": "Gấu Ôm Ngủ",
-    "badge": "MÙA NOEL",
-    "image": "images/IMG_3393.JPG",
-    "gallery": [
-      "images/IMG_3393.JPG"
-    ],
-    "price": 270000,
-    "original_price": 340000,
-    "sizes": [
-      "70cm - 270.000đ",
-      "1m - 380.000đ"
-    ],
-    "description": "Gấu nâu dáng nằm dài chất vải lông cừu ấm áp, siêu phẩm gối ôm mùa đông chuẩn bị cho mùa Giáng sinh ấm áp tại Quận 7."
-  },
-  {
-    "id": "DRA-WHITE",
+    "id": "THU-RONG",
     "name": "Bạch Long Rồng Trắng Thần Thoại May Mắn",
     "category": "thu-cung",
     "category_name": "Thú Ngộ Nghĩnh",
@@ -346,10 +327,8 @@
     "gallery": [
       "images/IMG_3402.JPG"
     ],
-    "price": 220000,
-    "original_price": 280000,
     "sizes": [
-      "45cm - 220.000đ"
+      "Size 45cm"
     ],
     "description": "Mẫu Bạch Long rồng trắng cánh hồng siêu hiếm, mang ý nghĩa may mắn tài lộc dịp cuối năm, vải nhung trắng muốt tinh khôi."
   }
