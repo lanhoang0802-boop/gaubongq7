@@ -332,6 +332,31 @@
       <!-- Rendered dynamically via JavaScript -->
     </div>
 
+        <!-- Out of Stock Section: Tự động gom các mẫu có Tồn Kho = 0 xuống đây -->
+    <div id="outOfStockSection" class="hidden mt-16 pt-10 border-t border-m3-outline-variant/30">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-xl">inventory_2</span>
+          </div>
+          <div>
+            <h2 class="font-cute text-xl font-bold text-m3-on-surface flex items-center gap-2">
+              Mẫu Tạm Hết Hàng <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Đang về thêm</span>
+            </h2>
+            <p class="text-xs text-m3-on-surface-variant font-medium">Các mẫu tạm thời hết sẵn tại tiệm. Quý khách có thể nhắn Zalo để đặt trước đợt hàng về kế tiếp!</p>
+          </div>
+        </div>
+        <span id="outOfStockCount" class="text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full self-start sm:self-auto">
+          0 mẫu
+        </span>
+      </div>
+      
+      <!-- Out of Stock Grid -->
+      <div id="outOfStockGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+        <!-- Rendered dynamically via JavaScript -->
+      </div>
+    </div>
+
     <!-- Empty State -->
     <div id="emptyState" class="hidden text-center py-16 space-y-3">
       <div class="w-14 h-14 rounded-full bg-m3-surface-container-high mx-auto flex items-center justify-center text-m3-outline">
@@ -627,15 +652,59 @@
                 const name = row['Tên Sản Phẩm'] || row['Tên SP'] || row['Name'] || '';
                 const category = (row['Mã Danh Mục (bobova / om-ngu / sanrio / jellycat / thu-cung)'] || row['Mã Danh Mục'] || row['Danh Mục'] || 'thu-cung').trim().toLowerCase();
                 const category_name = row['Tên Danh Mục Hiển Thị'] || row['Tên Danh Mục'] || 'Thú Bông';
-                const status = (row['Tình Trạng Kho (Còn Hàng / Hết Hàng)'] || row['Tình Trạng'] || 'Còn Hàng').trim();
+                const status = (row['Tình Trạng Kho (Còn Hàng / Hết Hàng)'] || row['Tình Trạng Kho'] || row['Tình Trạng'] || 'Còn Hàng').trim();
                 const show_price = (row['Hiện Giá Trên Web? (Có / Không)'] || row['Hiện Giá'] || 'Không').trim().toLowerCase();
-                const price = row['Giá Bán (VNĐ)'] || row['Giá Bán'] || '';
+                const price = row['Giá Bán (VNĐ)'] || row['Giá Bán'] || row['Size 1 - Giá Bán (VNĐ)'] || '';
                 const original_price = row['Giá Gốc / Khuyến Mãi (VNĐ)'] || row['Giá Gốc'] || '';
                 
+                // Đọc tổng tồn kho (xử lý sạch đơn vị tiền nếu bị dính)
+                const rawTon = row['Tổng Tồn Kho (Nhập 0 = Tự nhảy xuống mục Hết Hàng)'] || row['Tổng Tồn Kho'] || row['Số Lượng Tồn Kho (Nội bộ)'] || row['Số Lượng Tồn Kho'] || row['Tồn Kho'];
+                let tong_ton = null;
+                if (rawTon !== undefined && rawTon !== null && String(rawTon).trim() !== '') {
+                  const cleanedTonStr = String(rawTon).replace(/[^0-9]/g, '');
+                  if (cleanedTonStr !== '') {
+                    tong_ton = parseInt(cleanedTonStr);
+                  }
+                }
+
+                // Đọc chi tiết từng size (Hỗ trợ cấu trúc nhiều size)
+                const sizesData = [];
+                for (let sIdx = 1; sIdx <= 4; sIdx++) {
+                  const sName = row[`Size ${sIdx} - Tên`] || row[`Size ${sIdx}`];
+                  if (sName && String(sName).trim()) {
+                    const sPrice = row[`Size ${sIdx} - Giá Bán (VNĐ)`] || row[`Size ${sIdx} - Giá`];
+                    const sTonRaw = row[`Size ${sIdx} - Tồn Kho (Số lượng)`] || row[`Size ${sIdx} - Tồn Kho`] || row[`Size ${sIdx} - Tồn`];
+                    let sTon = null;
+                    if (sTonRaw !== undefined && sTonRaw !== null && String(sTonRaw).trim() !== '') {
+                      const cleanSTon = String(sTonRaw).replace(/[^0-9]/g, '');
+                      if (cleanSTon !== '') sTon = parseInt(cleanSTon);
+                    }
+                    sizesData.push({
+                      name: String(sName).trim(),
+                      price: sPrice ? String(sPrice).trim() : null,
+                      ton: sTon
+                    });
+                  }
+                }
+
+                // Fallback nếu dùng cột kích thước cũ dạng chuỗi '40cm, 60cm'
                 const sizesRaw = row['Kích Thước Có Sẵn (Cách nhau dấu phẩy)'] || row['Kích Thước'] || '';
-                const sizes = sizesRaw ? sizesRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+                let sizes = sizesData.length > 0 ? sizesData.map(s => s.name) : (sizesRaw ? sizesRaw.split(',').map(s => s.trim()).filter(Boolean) : []);
                 
-                const badge = row['Nhãn / Badge (HOT, NEW, SALE...)'] || row['Badge'] || 'MẪU MỚI';
+                // XÁC ĐỊNH SẢN PHẨM CÓ HẾT HÀNG HAY KHÔNG:
+                // 1. Nếu Tổng Tồn Kho được nhập bằng 0 -> Hết Hàng
+                // 2. Nếu Tình Trạng ghi là 'Hết Hàng' -> Hết Hàng
+                // 3. Nếu toàn bộ các size đều có tồn kho = 0 -> Hết Hàng
+                let isOutOfStock = false;
+                if (tong_ton !== null && tong_ton <= 0) {
+                  isOutOfStock = true;
+                } else if (status.toLowerCase().includes('hết') || status.toLowerCase().includes('het')) {
+                  isOutOfStock = true;
+                } else if (sizesData.length > 0 && sizesData.every(s => s.ton !== null && s.ton <= 0)) {
+                  isOutOfStock = true;
+                }
+
+                const badge = row['Nhãn / Badge (HOT, NEW, SALE...)'] || row['Nhãn / Badge'] || row['Badge'] || (isOutOfStock ? 'TẠM HẾT HÀNG' : 'MẪU MỚI');
                 const rawImage = (row['Ảnh Đại Diện (Đường dẫn hoặc link)'] || row['Ảnh Đại Diện'] || '').trim();
                 const image = formatImageUrl(rawImage);
                 
@@ -650,6 +719,9 @@
                   category,
                   category_name,
                   status,
+                  tong_ton,
+                  sizesData,
+                  isOutOfStock,
                   show_price: (show_price === 'có' || show_price === 'co' || show_price === 'yes' || show_price === 'true'),
                   price,
                   original_price,
@@ -730,6 +802,7 @@
         tabAllPhotos.className = "tab-active px-4 py-2 rounded-m3-full text-xs font-bold transition-all";
         tabModels.className = "px-4 py-2 rounded-m3-full text-xs font-bold text-m3-on-surface hover:text-m3-primary transition-all";
         productGrid.classList.add('hidden');
+      const oos = document.getElementById('outOfStockSection'); if(oos) oos.classList.add('hidden');
         photosGrid.classList.remove('hidden');
         categoryChipsBar.classList.add('hidden');
         renderPhotosGrid();
@@ -738,8 +811,13 @@
 
     function renderProducts() {
       const grid = document.getElementById('productGrid');
+      const outOfStockSection = document.getElementById('outOfStockSection');
+      const outOfStockGrid = document.getElementById('outOfStockGrid');
+      const outOfStockCount = document.getElementById('outOfStockCount');
       const emptyState = document.getElementById('emptyState');
+      
       grid.innerHTML = '';
+      if (outOfStockGrid) outOfStockGrid.innerHTML = '';
 
       const filtered = allProducts.filter(p => {
         const matchCategory = (currentCategory === 'all') || (p.category === currentCategory);
@@ -750,11 +828,18 @@
 
       if (filtered.length === 0) {
         emptyState.classList.remove('hidden');
+        if (outOfStockSection) outOfStockSection.classList.add('hidden');
+        return;
       } else {
         emptyState.classList.add('hidden');
       }
 
-      filtered.forEach(p => {
+      // Tách sản phẩm Còn Hàng và Hết Hàng
+      const inStockList = filtered.filter(p => !p.isOutOfStock);
+      const outOfStockList = filtered.filter(p => p.isOutOfStock);
+
+      // 1. Render các sản phẩm CÒN HÀNG lên lưới chính
+      inStockList.forEach(p => {
         const card = document.createElement('div');
         card.className = "group relative rounded-m3-xl bg-m3-surface-container-lowest border border-m3-outline-variant/40 overflow-hidden shadow-xs hover:shadow-m3-2 transition-all duration-200 flex flex-col justify-between";
         
@@ -809,6 +894,64 @@
 
         grid.appendChild(card);
       });
+
+      // 2. Render các sản phẩm TẠM HẾT HÀNG xuống Section riêng ở dưới
+      if (outOfStockSection && outOfStockGrid) {
+        if (outOfStockList.length > 0 && currentView === 'models') {
+          outOfStockSection.classList.remove('hidden');
+          if (outOfStockCount) outOfStockCount.innerText = `${outOfStockList.length} mẫu`;
+
+          outOfStockList.forEach(p => {
+            const card = document.createElement('div');
+            card.className = "group relative rounded-m3-xl bg-m3-surface-container-lowest border border-amber-200/60 overflow-hidden shadow-xs hover:shadow-m3-2 transition-all duration-200 flex flex-col justify-between opacity-80 hover:opacity-100";
+            
+            const zaloOrderLink = `https://zalo.me/0333870846?text=${encodeURIComponent('Chào shop Gấu Bông Q7, mình muốn đặt trước mẫu đang hết hàng: ' + p.name + ' (khi nào có hàng báo mình nhé)')}`;
+
+            card.innerHTML = `
+              <div>
+                <!-- Image Area with Out of Stock overlay -->
+                <div class="relative w-full aspect-square overflow-hidden bg-m3-surface-container cursor-pointer" onclick="openModal('${p.id}')">
+                  <img src="${p.image}" alt="${p.name}" loading="lazy" class="w-full h-full object-cover grayscale-30 group-hover:scale-105 transition-transform duration-300">
+                  <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-m3-full text-[10px] font-bold bg-amber-600 text-white shadow-xs flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[12px]">schedule</span> TẠM HẾT HÀNG
+                  </span>
+                  <span class="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded-m3-full text-[10px] font-medium bg-black/60 text-white backdrop-blur-xs flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs">photo_camera</span> ${p.gallery.length} ảnh
+                  </span>
+                </div>
+
+                <!-- Content Area -->
+                <div class="p-3.5 space-y-2">
+                  <span class="text-[11px] font-semibold text-m3-outline uppercase tracking-wider">${p.category_name}</span>
+                  <h3 class="font-cute font-bold text-sm text-m3-on-surface line-clamp-2 hover:text-m3-primary transition-colors cursor-pointer" onclick="openModal('${p.id}')">
+                    ${p.name}
+                  </h3>
+                  
+                  <div class="pt-0.5">
+                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200">
+                      <span class="material-symbols-outlined text-xs text-amber-600">hourglass_top</span> Đang về thêm hàng
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="p-3.5 pt-1 flex items-center gap-2">
+                <button onclick="openModal('${p.id}')" class="flex-1 py-2 rounded-m3-full text-xs font-semibold bg-m3-surface-container text-m3-on-surface hover:bg-m3-surface-container-high transition-colors">
+                  Xem ảnh
+                </button>
+                <a href="${zaloOrderLink}" target="_blank" class="flex-1 py-2 rounded-m3-full text-xs font-bold bg-amber-700 text-white hover:bg-amber-800 transition-colors text-center shadow-xs flex items-center justify-center gap-1">
+                  <span class="material-symbols-outlined text-xs">chat</span> Đặt trước Zalo
+                </a>
+              </div>
+            `;
+
+            outOfStockGrid.appendChild(card);
+          });
+        } else {
+          outOfStockSection.classList.add('hidden');
+        }
+      }
     }
 
     function renderPhotosGrid() {
