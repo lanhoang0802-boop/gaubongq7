@@ -164,6 +164,24 @@
       border-color: rgba(38, 53, 79, 0.9) !important;
     }
 
+    
+    /* Về Tiệm Gấu Bông Q7 & FAQ in Penguin Matte Black Theme */
+    body.theme-penguin section {
+      background-color: var(--m3-surface-container-lowest) !important;
+      border-color: rgba(38, 53, 79, 0.7) !important;
+      color: var(--m3-on-surface) !important;
+    }
+    body.theme-penguin details {
+      background-color: var(--m3-surface-container-low) !important;
+      border-color: rgba(38, 53, 79, 0.7) !important;
+      color: var(--m3-on-surface) !important;
+    }
+    body.theme-penguin details summary {
+      color: var(--m3-on-surface) !important;
+    }
+    body.theme-penguin details p {
+      color: var(--m3-on-surface-variant) !important;
+    }
     body.theme-penguin #scrollProgress {
       background: linear-gradient(to right, #38bdf8, #818cf8, #c084fc) !important;
     }
@@ -552,13 +570,13 @@
         
         <!-- Value Propositions Chips -->
         <div class="flex flex-wrap items-center gap-2 pt-1">
-          <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-m3-lg bg-white/90 text-xs font-semibold text-m3-on-surface shadow-xs">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-m3-lg bg-m3-surface-container-lowest/90 backdrop-blur-xs text-xs font-semibold text-m3-on-surface shadow-xs">
             <span class="material-symbols-outlined text-base text-rose-500 fill">verified</span> 100% Gòn sạch tinh khiết
           </div>
-          <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-m3-lg bg-white/90 text-xs font-semibold text-m3-on-surface shadow-xs">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-m3-lg bg-m3-surface-container-lowest/90 backdrop-blur-xs text-xs font-semibold text-m3-on-surface shadow-xs">
             <span class="material-symbols-outlined text-base text-amber-500 fill">featured_seasonal_and_gifts</span> Tặng túi quà & thiệp free
           </div>
-          <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-m3-lg bg-white/90 text-xs font-semibold text-m3-on-surface shadow-xs">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-m3-lg bg-m3-surface-container-lowest/90 backdrop-blur-xs text-xs font-semibold text-m3-on-surface shadow-xs">
             <span class="material-symbols-outlined text-base text-emerald-500 fill">bolt</span> Ship hỏa tốc Q7 trong 1-2h
           </div>
         </div>
@@ -591,7 +609,7 @@
           <span class="material-symbols-outlined text-lg">search</span>
         </span>
         <input type="text" id="searchInput" placeholder="Tìm kiếm mẫu gấu bông..." 
-               class="w-full pl-10 pr-9 py-2.5 rounded-m3-full bg-m3-surface-container border border-m3-outline-variant/40 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-m3-primary focus:bg-white transition-all placeholder:text-m3-outline"
+               class="w-full pl-10 pr-9 py-2.5 rounded-m3-full bg-m3-surface-container border border-m3-outline-variant/40 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-m3-primary focus:bg-m3-surface-container-lowest transition-all placeholder:text-m3-outline"
                oninput="handleSearch()">
         <button id="clearSearch" onclick="clearSearchInput()" class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-m3-outline hover:text-m3-on-surface">
           <span class="material-symbols-outlined text-base">cancel</span>
@@ -675,7 +693,7 @@
     </div>
   
     <!-- SEO Content Section: Giới thiệu & Câu hỏi thường gặp -->
-    <section class="mt-20 bg-white rounded-m3-xl p-6 sm:p-10 border border-m3-outline-variant/30 shadow-m3-1">
+    <section class="mt-20 bg-m3-surface-container-lowest rounded-m3-xl p-6 sm:p-10 border border-m3-outline-variant/30 shadow-m3-1">
       <div class="max-w-4xl mx-auto">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-m3-primary-container text-m3-on-primary-container text-xs font-bold mb-4">
           <span class="material-symbols-outlined text-sm">verified</span>
@@ -813,7 +831,7 @@
       <div class="grid grid-cols-1 sm:grid-cols-2">
         <!-- Image Area with Gallery -->
         <div class="bg-m3-surface-container p-4 flex flex-col items-center justify-center space-y-3">
-          <div class="w-full aspect-square rounded-m3-lg overflow-hidden bg-white shadow-xs">
+          <div class="w-full aspect-square rounded-m3-lg overflow-hidden bg-m3-surface-container-low shadow-xs">
             <img id="modalMainImg" src="" alt="" class="w-full h-full object-cover">
           </div>
           <div id="modalGallery" class="flex gap-2 overflow-x-auto w-full no-scrollbar pb-1">
@@ -1324,7 +1342,7 @@
 
       filteredPhotos.forEach((item, idx) => {
         const photoCard = document.createElement('div');
-        photoCard.className = "group relative rounded-m3-lg overflow-hidden bg-white border border-m3-outline-variant/40 shadow-xs hover:shadow-m3-2 transition-all cursor-pointer aspect-square";
+        photoCard.className = "group relative rounded-m3-lg overflow-hidden bg-m3-surface-container-lowest border border-m3-outline-variant/40 shadow-xs hover:shadow-m3-2 transition-all cursor-pointer aspect-square";
         photoCard.onclick = () => openPhotoPreview(item.file, item.name);
 
         photoCard.innerHTML = `
