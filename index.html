@@ -356,6 +356,46 @@
   </script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <!-- Instant Theme Initializer in HEAD -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('gbq7_theme') || 'penguin';
+      if (savedTheme === 'penguin') {
+        document.documentElement.classList.add('theme-penguin');
+        window.__INITIAL_THEME__ = 'penguin';
+      } else {
+        window.__INITIAL_THEME__ = 'pastel';
+      }
+    })();
+
+    function toggleTheme() {
+      const isPenguin = document.body.classList.contains('theme-penguin');
+      const nextTheme = isPenguin ? 'pastel' : 'penguin';
+      applyTheme(nextTheme);
+    }
+
+    function applyTheme(theme) {
+      localStorage.setItem('gbq7_theme', theme);
+      const icon = document.getElementById('themeIcon');
+      const label = document.getElementById('themeLabel');
+      const canvas = document.getElementById('arcticCanvas');
+
+      if (theme === 'penguin') {
+        document.body.classList.add('theme-penguin');
+        document.documentElement.classList.add('theme-penguin');
+        if (icon) icon.innerText = '🌸';
+        if (label) label.innerText = 'Pastel Theme';
+        if (canvas) canvas.classList.remove('hidden');
+      } else {
+        document.body.classList.remove('theme-penguin');
+        document.documentElement.classList.remove('theme-penguin');
+        if (icon) icon.innerText = '🎩';
+        if (label) label.innerText = 'Tuxedo Penguin';
+        if (canvas) canvas.classList.add('hidden');
+      }
+    }
+  </script>
+
 </head>
 <body class="theme-penguin min-h-screen flex flex-col selection:bg-m3-primary-container selection:text-m3-on-primary-container">
 
@@ -1434,9 +1474,7 @@
     }
 
     document.addEventListener('click', (e) => {
-      if (e.target.closest('button, a, .card-tactile, .cursor-pointer, .filter-chip')) {
-        triggerCuteBurst(e);
-      }
+      triggerCuteBurst(e);
     });
 
     // 📜 SMOOTH SCROLL PROGRESS BAR
@@ -1479,7 +1517,12 @@
     }
 
     // Apply default theme immediately
-    applyTheme(currentTheme);
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const current = localStorage.getItem('gbq7_theme') || 'penguin';
+      applyTheme(current);
+    });
+
 
     // ❄️ Arctic Diamond Dust Particle Engine (Tuxedo Penguin Mode)
     (function initArcticSnow() {
@@ -1539,9 +1582,7 @@
     // 🐧 GENTLEMAN PENGUIN IN TOP HAT & TUXEDO MOUSE COMPANION
     // ========================================================
     (function() {
-      if (window.matchMedia && !window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-        return;
-      }
+      // Activated on first mousemove on all pointer devices
 
       const penguinEl = document.getElementById('cursorPenguin');
       const innerEl = document.getElementById('penguinInner');
