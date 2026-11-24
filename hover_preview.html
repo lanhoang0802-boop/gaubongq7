@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bộ Sưu Tập Hiệu Ứng Hover - Gấu Bông Q7</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #faf6f8;
+      color: #1e293b;
+    }
+
+    /* ========================================================
+       EFFECT 1: SOFT CLOUD CUSHION (Nâng đệm êm ái - Khuyên dùng)
+       Velvety smooth lift, warm rose petal shadow, gentle scale
+       ======================================================== */
+    .fx-cloud-cushion {
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.35s ease;
+      will-change: transform, box-shadow;
+    }
+    .fx-cloud-cushion:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 35px -8px rgba(244, 63, 94, 0.22), 0 10px 15px -6px rgba(244, 63, 94, 0.12);
+      border-color: rgba(244, 63, 94, 0.4);
+    }
+    .fx-cloud-cushion img {
+      transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .fx-cloud-cushion:hover img {
+      transform: scale(1.05);
+    }
+
+    /* ========================================================
+       EFFECT 2: PLAYFUL SPRING BOUNCE (Nhún nhảy đáng yêu)
+       Cute spring bounce on hover, slight ear wiggle, lively
+       ======================================================== */
+    .fx-spring-bounce {
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+      will-change: transform;
+    }
+    .fx-spring-bounce:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 18px 28px -6px rgba(251, 113, 133, 0.28);
+    }
+    .fx-spring-bounce img {
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .fx-spring-bounce:hover img {
+      transform: scale(1.06) rotate(1.5deg);
+    }
+    .fx-spring-bounce .badge-wiggle {
+      transition: transform 0.35s ease;
+    }
+    .fx-spring-bounce:hover .badge-wiggle {
+      transform: rotate(-6deg) scale(1.1);
+    }
+
+    /* ========================================================
+       EFFECT 3: MINIMALIST PURE ELEVATION (Nâng tầng phẳng thanh lịch)
+       Zero rotation, zero scale distortion, pristine layered shadow
+       ======================================================== */
+    .fx-minimal-elevation {
+      transition: box-shadow 0.28s ease, transform 0.28s ease, border-color 0.28s ease;
+    }
+    .fx-minimal-elevation:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 25px 30px -10px rgba(15, 23, 42, 0.12), 0 12px 16px -6px rgba(15, 23, 42, 0.06);
+      border-color: #cbd5e1;
+    }
+    .fx-minimal-elevation img {
+      transition: opacity 0.25s ease, filter 0.25s ease;
+    }
+    .fx-minimal-elevation:hover img {
+      filter: contrast(1.04) brightness(1.02);
+    }
+
+    /* ========================================================
+       EFFECT 4: ROSE GOLD SHIMMER BORDER (Viền ánh kim phát sáng)
+       Border glow gradient that illuminates on hover with ambient glow
+       ======================================================== */
+    .fx-shimmer-border {
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .fx-shimmer-border::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      background: linear-gradient(135deg, #fb7185, #f43f5e, #fda4af, #f472b6);
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .fx-shimmer-border:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px -5px rgba(244, 63, 94, 0.25);
+    }
+    .fx-shimmer-border:hover::before {
+      opacity: 1;
+    }
+    .fx-shimmer-border img {
+      transition: transform 0.4s ease;
+    }
+    .fx-shimmer-border:hover img {
+      transform: scale(1.04);
+    }
+
+    /* ========================================================
+       EFFECT 5: QUICK ACTION DRAWER (Trượt ngăn thao tác Zalo)
+       Card stays calm, frosted drawer slides up with action buttons
+       ======================================================== */
+    .fx-action-drawer {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .fx-action-drawer:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 28px -6px rgba(0, 0, 0, 0.12);
+    }
+    .fx-action-drawer .drawer-panel {
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .fx-action-drawer:hover .drawer-panel {
+      transform: translateY(0);
+    }
+    .fx-action-drawer img {
+      transition: transform 0.4s ease;
+    }
+    .fx-action-drawer:hover img {
+      transform: scale(1.05);
+    }
+
+    /* ========================================================
+       EFFECT 6: SOFT FOCUS BLUSH (Lấy nét ấm áp & Trái tim bay)
+       Dreamy warm halo, soft heart pop-up, cozy plushie feel
+       ======================================================== */
+    .fx-focus-blush {
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+    .fx-focus-blush:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 35px -8px rgba(253, 164, 175, 0.45);
+    }
+    .fx-focus-blush .heart-pop {
+      transform: scale(0);
+      opacity: 0;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease;
+    }
+    .fx-focus-blush:hover .heart-pop {
+      transform: scale(1);
+      opacity: 1;
+    }
+    .fx-focus-blush img {
+      transition: transform 0.4s ease, filter 0.4s ease;
+    }
+    .fx-focus-blush:hover img {
+      transform: scale(1.06);
+      filter: saturate(1.08) brightness(1.02);
+    }
+
+    /* ========================================================
+       EFFECT 7: FLAT STICKER TILT (Nghiêng 2D phẳng - Không 3D)
+       Subtle 2D sticker rotation without confusing perspective
+       ======================================================== */
+    .fx-flat-sticker {
+      transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+      will-change: transform;
+    }
+    .fx-flat-sticker:hover {
+      transform: translateY(-6px) rotate(-1.5deg);
+      box-shadow: 0 18px 30px -8px rgba(15, 23, 42, 0.15);
+    }
+    .fx-flat-sticker img {
+      transition: transform 0.35s ease;
+    }
+    .fx-flat-sticker:hover img {
+      transform: scale(1.03);
+    }
+  </style>
+</head>
+<body class="min-h-screen py-10 px-4 sm:px-6 lg:px-8">
+
+  <!-- Header Section -->
+  <header class="max-w-7xl mx-auto text-center mb-12">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-100 text-rose-700 text-xs font-semibold mb-3">
+      <span class="material-symbols-outlined text-sm">palette</span>
+      Phòng Thử Nghiệm Giao Diện Gấu Bông Q7
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+      Lựa Chọn Hiệu Ứng Hover Mới Cho Thẻ Sản Phẩm
+    </h1>
+    <p class="mt-3 text-slate-600 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+      Rê chuột (hover) vào từng thẻ dưới đây để cảm nhận chuyển động thực tế. Bấm nút <strong>"Chọn hiệu ứng này"</strong> ở phong cách bạn ưng ý nhất để chúng tôi tiến hành cập nhật lên trang web chính.
+    </p>
+
+    <!-- Selected Status Alert -->
+    <div id="selectionBanner" class="mt-6 inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-white border border-rose-200 shadow-sm text-sm font-medium text-slate-700 transition-all">
+      <span class="w-3 h-3 rounded-full bg-rose-500 animate-ping"></span>
+      <span id="selectionText">Chưa chọn hiệu ứng nào. Hãy rê chuột thử và bấm chọn bên dưới!</span>
+      <button id="copyChoiceBtn" onclick="copySelection()" class="hidden px-3 py-1 text-xs font-bold rounded-lg bg-rose-600 text-white hover:bg-rose-700 transition">
+        Sao chép lựa chọn
+      </button>
+    </div>
+  </header>
+
+  <!-- Effects Grid -->
+  <main class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+    <!-- Card 1: Soft Cloud Cushion -->
+    <div class="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-rose-600 bg-rose-50 px-2.5 py-1 rounded-lg">Lựa chọn #1</span>
+          <span class="text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full flex items-center gap-1">
+            <span class="material-symbols-outlined text-xs">star</span> Khuyên dùng
+          </span>
+        </div>
+        <h3 class="text-lg font-bold text-slate-900">1. Đệm Mây Êm Ái (Soft Cloud Cushion)</h3>
+        <p class="text-xs text-slate-500 mt-1 mb-4">
+          Nâng nhẹ 8px siêu mượt, bóng mờ ánh hồng pastel lan tỏa như đệm mây, hình ảnh phóng to nhẹ 1.05x. Không nghiêng, không méo hình, rất sang trọng và dịu mắt.
+        </p>
+
+        <!-- Product Card Demo -->
+        <div class="fx-cloud-cushion relative rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-xs cursor-pointer mb-4">
+          <div class="relative aspect-square overflow-hidden bg-rose-50/50">
+            <img src="images/IMG_3374.JPG" alt="Gấu Bông Q7" class="w-full h-full object-cover">
+            <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/90 text-rose-600 shadow-xs">
+              Sẵn hàng
+            </span>
+          </div>
+          <div class="p-3.5 bg-white">
+            <div class="text-[11px] text-slate-400 font-medium">Mã #GB-3374</div>
+            <div class="font-bold text-sm text-slate-800 line-clamp-1">Gấu Teddy Dâu Cỡ Lớn</div>
+            <div class="mt-2 flex items-center justify-between text-xs">
+              <span class="text-rose-600 font-bold text-sm">290.000₫</span>
+              <span class="text-slate-400">80cm • Lông mịn</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button onclick="selectEffect(1, 'Lựa chọn 1: Đệm Mây Êm Ái (Soft Cloud Cushion)')" class="btn-select w-full py-2.5 px-4 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-rose-600 hover:text-white transition flex items-center justify-center gap-1.5">
+        <span class="material-symbols-outlined text-sm">check_circle</span> Chọn hiệu ứng #1
+      </button>
+    </div>
+
+    <!-- Card 2: Playful Spring Bounce -->
+    <div class="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-rose-600 bg-rose-50 px-2.5 py-1 rounded-lg">Lựa chọn #2</span>
+          <span class="text-xs font-medium text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full">Dễ thương & Vui tươi</span>
+        </div>
+        <h3 class="text-lg font-bold text-slate-900">2. Nhún Nhảy Tinh Nghịch (Spring Bounce)</h3>
+        <p class="text-xs text-slate-500 mt-1 mb-4">
+          Hiệu ứng nhún đàn hồi dạng jelly lò xo khi rê chuột vào, hình gấu lắc nhẹ 1.5° như đang vẫy chào, nhãn "Sẵn hàng" rung rinh sinh động.
+        </p>
+
+        <!-- Product Card Demo -->
+        <div class="fx-spring-bounce relative rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-xs cursor-pointer mb-4">
+          <div class="relative aspect-square overflow-hidden bg-rose-50/50">
+            <img src="images/IMG_3375.JPG" alt="Gấu Bông Q7" class="w-full h-full object-cover">
+            <span class="badge-wiggle absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/90 text-rose-600 shadow-xs">
+              Bán chạy
+            </span>
+          </div>
+          <div class="p-3.5 bg-white">
+            <div class="text-[11px] text-slate-400 font-medium">Mã #GB-3375</div>
+            <div class="font-bold text-sm text-slate-800 line-clamp-1">Thỏ Trắng Tai Dài Ngọt Ngào</div>
+            <div class="mt-2 flex items-center justify-between text-xs">
+              <span class="text-rose-600 font-bold text-sm">220.000₫</span>
+              <span class="text-slate-400">60cm • Bông gòn 7D</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button onclick="selectEffect(2, 'Lựa chọn 2: Nhún Nhảy Tinh Nghịch (Playful Spring Bounce)')" class="btn-select w-full py-2.5 px-4 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-rose-600 hover:text-white transition flex items-center justify-center gap-1.5">
+        <span class="material-symbols-outlined text-sm">check_circle</span> Chọn hiệu ứng #2
+      </button>
+    </div>
+
+    <!-- Card 3: Minimalist Pure Elevation -->
+    <div class="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-rose-600 bg-rose-50 px-2.5 py-1 rounded-lg">Lựa chọn #3</span>
+          <span class="text-xs font-medium text-slate-700 bg-slate-100 px-2 py-0.5 rounded-full">Chuẩn Apple / Muji</span>
+        </div>
+        <h3 class="text-lg font-bold text-slate-900">3. Nâng Tầng Phẳng Tối Giản (Pure Elevation)</h3>
+        <p class="text-xs text-slate-500 mt-1 mb-4">
+          Hoàn toàn không xoay, không nghiêng, không phóng to hình làm vỡ bố cục. Chỉ chuyển từ bóng mờ nhẹ sang bóng đa tầng sắc nét, tăng tương phản ảnh nhẹ nhàng.
+        </p>
+
+        <!-- Product Card Demo -->
+        <div class="fx-minimal-elevation relative rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-xs cursor-pointer mb-4">
+          <div class="relative aspect-square overflow-hidden bg-rose-50/50">
+            <img src="images/IMG_3379.JPG" alt="Gấu Bông Q7" class="w-full h-full object-cover">
+            <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/90 text-slate-800 shadow-xs">
+              Mới về
+            </span>
+          </div>
+          <div class="p-3.5 bg-white">
+            <div class="text-[11px] text-slate-400 font-medium">Mã #GB-3379</div>
+            <div class="font-bold text-sm text-slate-800 line-clamp-1">Mèo Hoàng Thượng Bụng Bự</div>
+            <div class="mt-2 flex items-center justify-between text-xs">
+              <span class="text-rose-600 font-bold text-sm">310.000₫</span>
+              <span class="text-slate-400">70cm • Siêu êm</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button onclick="selectEffect(3, 'Lựa chọn 3: Nâng Tầng Phẳng Tối Giản (Minimalist Pure Elevation)')" class="btn-select w-full py-2.5 px-4 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-rose-600 hover:text-white transition flex items-center justify-center gap-1.5">
+        <span class="material-symbols-outlined text-sm">check_circle</span> Chọn hiệu ứng #3
+      </button>
+    </div>
+
+    <!-- Card 4: Rose Gold Shimmer Border -->
+    <div class="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-rose-600 bg-rose-50 px-2.5 py-1 rounded-lg">Lựa chọn #4</span>
+          <span class="text-xs font-medium text-pink-700 bg-pink-50 px-2 py-0.5 rounded-full">Boutique Quà Tặng</span>
+        </div>
+        <h3 class="text-lg font-bold text-slate-900">4. Viền Ánh Kim Pastel (Shimmer Border)</h3>
+        <p class="text-xs text-slate-500 mt-1 mb-4">
+          Khi rê chuột vào, viền thẻ phát sáng dải gradient hồng rose-gold lấp lánh như hộp quà nơ cao cấp, thẻ nâng nhẹ 5px tạo chiều sâu.
+        </p>
+
+        <!-- Product Card Demo -->
+        <div class="fx-shimmer-border relative rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-xs cursor-pointer mb-4">
+          <div class="relative aspect-square overflow-hidden bg-rose-50/50">
+            <img src="images/IMG_3381.JPG" alt="Gấu Bông Q7" class="w-full h-full object-cover">
+            <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/90 text-rose-600 shadow-xs">
+              Quà tặng Hot
+            </span>
+          </div>
+          <div class="p-3.5 bg-white">
+            <div class="text-[11px] text-slate-400 font-medium">Mã #GB-3381</div>
+            <div class="font-bold text-sm text-slate-800 line-clamp-1">Gấu Dâu Losto Dâu Tây Thơm</div>
+            <div class="mt-2 flex items-center justify-between text-xs">
+              <span class="text-rose-600 font-bold text-sm">350.000₫</span>
+              <span class="text-slate-400">90cm • Có mùi dâu</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button onclick="selectEffect(4, 'Lựa chọn 4: Viền Ánh Kim Pastel (Rose Gold Shimmer Border)')" class="btn-select w-full py-2.5 px-4 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-rose-600 hover:text-white transition flex items-center justify-center gap-1.5">
+        <span class="material-symbols-outlined text-sm">check_circle</span> Chọn hiệu ứng #4
+      </button>
+    </div>
+
+    <!-- Card 5: Action Drawer Slide-Up -->
+    <div class="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-rose-600 bg-rose-50 px-2.5 py-1 rounded-lg">Lựa chọn #5</span>
+          <span class="text-xs font-medium text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full">Tiện ích Bán Hàng</span>
+        </div>
+        <h3 class="text-lg font-bold text-slate-900">5. Ngăn Trượt Thao Tác (Action Drawer)</h3>
+        <p class="text-xs text-slate-500 mt-1 mb-4">
+          Thẻ đứng vững chắc; một ngăn kính mờ (frosted glass) trượt nhẹ từ dưới lên chứa nút gọi Zalo và xem chi tiết, kích thích khách hàng bấm mua ngay.
+        </p>
+
+        <!-- Product Card Demo -->
+        <div class="fx-action-drawer relative rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-xs cursor-pointer mb-4">
+          <div class="relative aspect-square overflow-hidden bg-rose-50/50">
+            <img src="images/IMG_3382.JPG" alt="Gấu Bông Q7" class="w-full h-full object-cover">
+            <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/90 text-rose-600 shadow-xs">
+              Sẵn hàng
+            </span>
+            <!-- Drawer Panel -->
+            <div class="drawer-panel absolute inset-x-0 bottom-0 p-2.5 bg-white/90 backdrop-blur-md border-t border-rose-100 flex items-center gap-2">
+              <span class="flex-1 py-1 px-2 rounded-lg bg-rose-600 text-white text-[11px] font-bold text-center flex items-center justify-center gap-1">
+                <span class="material-symbols-outlined text-xs">chat</span> Chat Zalo
+              </span>
+              <span class="py-1 px-2.5 rounded-lg bg-slate-100 text-slate-700 text-[11px] font-semibold text-center">
+                Xem ảnh
+              </span>
+            </div>
+          </div>
+          <div class="p-3.5 bg-white">
+            <div class="text-[11px] text-slate-400 font-medium">Mã #GB-3382</div>
+            <div class="font-bold text-sm text-slate-800 line-clamp-1">Capybara Nước Mũi Kéo Dài</div>
+            <div class="mt-2 flex items-center justify-between text-xs">
+              <span class="text-rose-600 font-bold text-sm">180.000₫</span>
+              <span class="text-slate-400">45cm • Cực hot</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button onclick="selectEffect(5, 'Lựa chọn 5: Ngăn Trượt Thao Tác (Quick Action Drawer)')" class="btn-select w-full py-2.5 px-4 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-rose-600 hover:text-white transition flex items-center justify-center gap-1.5">
+        <span class="material-symbols-outlined text-sm">check_circle</span> Chọn hiệu ứng #5
+      </button>
+    </div>
+
+    <!-- Card 6: Soft Focus Blush -->
+    <div class="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-rose-600 bg-rose-50 px-2.5 py-1 rounded-lg">Lựa chọn #6</span>
+          <span class="text-xs font-medium text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full">Ấm Áp & Cảm Xúc</span>
+        </div>
+        <h3 class="text-lg font-bold text-slate-900">6. Lấy Nét Ấm Áp & Tim Bay (Soft Focus Blush)</h3>
+        <p class="text-xs text-slate-500 mt-1 mb-4">
+          Hình ảnh gấu bông trở nên tươi tắn và lấy nét cận cảnh hơn, một icon trái tim nhỏ nảy bật ở góc trên, hào quang hồng ấm áp tạo cảm giác muốn ôm ngay.
+        </p>
+
+        <!-- Product Card Demo -->
+        <div class="fx-focus-blush relative rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-xs cursor-pointer mb-4">
+          <div class="relative aspect-square overflow-hidden bg-rose-50/50">
+            <img src="images/IMG_3383.JPG" alt="Gấu Bông Q7" class="w-full h-full object-cover">
+            <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/90 text-rose-600 shadow-xs">
+              Mẫu cưng
+            </span>
+            <span class="heart-pop absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-rose-500 text-white flex items-center justify-center shadow-md">
+              <span class="material-symbols-outlined text-sm">favorite</span>
+            </span>
+          </div>
+          <div class="p-3.5 bg-white">
+            <div class="text-[11px] text-slate-400 font-medium">Mã #GB-3383</div>
+            <div class="font-bold text-sm text-slate-800 line-clamp-1">Chó Corgi Mông Tròn Đáng Yêu</div>
+            <div class="mt-2 flex items-center justify-between text-xs">
+              <span class="text-rose-600 font-bold text-sm">260.000₫</span>
+              <span class="text-slate-400">55cm • Vải nhung thun</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button onclick="selectEffect(6, 'Lựa chọn 6: Lấy Nét Ấm Áp & Tim Bay (Soft Focus Blush)')" class="btn-select w-full py-2.5 px-4 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-rose-600 hover:text-white transition flex items-center justify-center gap-1.5">
+        <span class="material-symbols-outlined text-sm">check_circle</span> Chọn hiệu ứng #6
+      </button>
+    </div>
+
+    <!-- Card 7: Flat Sticker Tilt -->
+    <div class="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs flex flex-col justify-between md:col-span-2 lg:col-span-1">
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-rose-600 bg-rose-50 px-2.5 py-1 rounded-lg">Lựa chọn #7</span>
+          <span class="text-xs font-medium text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full">Nghiêng Nhẹ 2D Phẳng</span>
+        </div>
+        <h3 class="text-lg font-bold text-slate-900">7. Nghiêng Nhẹ 2D Phẳng (Flat Sticker Tilt)</h3>
+        <p class="text-xs text-slate-500 mt-1 mb-4">
+          Nếu vẫn thích một chút góc nghiêng nhưng ghét cảm giác méo mó của 3D Skew: hiệu ứng này chỉ xoay nhẹ 2D (-1.5°) giống như bóc một tấm sticker gấu bông.
+        </p>
+
+        <!-- Product Card Demo -->
+        <div class="fx-flat-sticker relative rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-xs cursor-pointer mb-4">
+          <div class="relative aspect-square overflow-hidden bg-rose-50/50">
+            <img src="images/IMG_3384.JPG" alt="Gấu Bông Q7" class="w-full h-full object-cover">
+            <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/90 text-indigo-600 shadow-xs">
+              Sticker Vui
+            </span>
+          </div>
+          <div class="p-3.5 bg-white">
+            <div class="text-[11px] text-slate-400 font-medium">Mã #GB-3384</div>
+            <div class="font-bold text-sm text-slate-800 line-clamp-1">Khủng Long Xanh Má Hồng</div>
+            <div class="mt-2 flex items-center justify-between text-xs">
+              <span class="text-rose-600 font-bold text-sm">240.000₫</span>
+              <span class="text-slate-400">50cm • Mềm mịn</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button onclick="selectEffect(7, 'Lựa chọn 7: Nghiêng Nhẹ 2D Phẳng (Flat Sticker Tilt)')" class="btn-select w-full py-2.5 px-4 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-rose-600 hover:text-white transition flex items-center justify-center gap-1.5">
+        <span class="material-symbols-outlined text-sm">check_circle</span> Chọn hiệu ứng #7
+      </button>
+    </div>
+
+  </main>
+
+  <!-- Comparison Summary Table -->
+  <section class="max-w-7xl mx-auto mt-16 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xs">
+    <h2 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+      <span class="material-symbols-outlined text-rose-600">tune</span> Bảng So Sánh Nhanh 7 Hiệu Ứng
+    </h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs sm:text-sm text-slate-600">
+        <thead class="bg-slate-50 text-slate-800 font-semibold border-b border-slate-200">
+          <tr>
+            <th class="py-3 px-4">Tên Hiệu Ứng</th>
+            <th class="py-3 px-4">Cảm Giác</th>
+            <th class="py-3 px-4">Độ Nổi Bật</th>
+            <th class="py-3 px-4">Có Nghiêng Không?</th>
+            <th class="py-3 px-4">Phù Hợp Cho</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr class="hover:bg-rose-50/40">
+            <td class="py-3 px-4 font-bold text-rose-700">#1. Đệm Mây Êm Ái</td>
+            <td class="py-3 px-4">Dịu dàng, mượt mà, bồng bềnh</td>
+            <td class="py-3 px-4">⭐⭐⭐⭐⭐</td>
+            <td class="py-3 px-4 font-medium text-emerald-600">Không nghiêng (Nâng thẳng)</td>
+            <td class="py-3 px-4">Shop gấu bông cao cấp, êm ái</td>
+          </tr>
+          <tr class="hover:bg-rose-50/40">
+            <td class="py-3 px-4 font-bold text-amber-700">#2. Nhún Nhảy Tinh Nghịch</td>
+            <td class="py-3 px-4">Vui tươi, sinh động, nhí nhảnh</td>
+            <td class="py-3 px-4">⭐⭐⭐⭐⭐</td>
+            <td class="py-3 px-4 font-medium text-amber-600">Lắc nhẹ hình 1.5°</td>
+            <td class="py-3 px-4">Quà tặng giới trẻ, trẻ em</td>
+          </tr>
+          <tr class="hover:bg-rose-50/40">
+            <td class="py-3 px-4 font-bold text-slate-800">#3. Nâng Tầng Tối Giản</td>
+            <td class="py-3 px-4">Điềm đạm, sạch sẽ, chuẩn Apple</td>
+            <td class="py-3 px-4">⭐⭐⭐</td>
+            <td class="py-3 px-4 font-medium text-emerald-600">Hoàn toàn không</td>
+            <td class="py-3 px-4">Người thích tối giản, không màu mè</td>
+          </tr>
+          <tr class="hover:bg-rose-50/40">
+            <td class="py-3 px-4 font-bold text-pink-700">#4. Viền Ánh Kim Pastel</td>
+            <td class="py-3 px-4">Lấp lánh, sang trọng như hộp quà</td>
+            <td class="py-3 px-4">⭐⭐⭐⭐</td>
+            <td class="py-3 px-4 font-medium text-emerald-600">Không nghiêng</td>
+            <td class="py-3 px-4">Boutique quà sinh nhật, lễ tình nhân</td>
+          </tr>
+          <tr class="hover:bg-rose-50/40">
+            <td class="py-3 px-4 font-bold text-blue-700">#5. Ngăn Trượt Thao Tác</td>
+            <td class="py-3 px-4">Chuyên nghiệp, kích thích chốt đơn</td>
+            <td class="py-3 px-4">⭐⭐⭐⭐</td>
+            <td class="py-3 px-4 font-medium text-emerald-600">Không nghiêng</td>
+            <td class="py-3 px-4">Khách mua nhanh, chốt Zalo ngay</td>
+          </tr>
+          <tr class="hover:bg-rose-50/40">
+            <td class="py-3 px-4 font-bold text-purple-700">#6. Lấy Nét Ấm Áp & Tim</td>
+            <td class="py-3 px-4">Tình cảm, ấm áp, ngắm gấu kỹ</td>
+            <td class="py-3 px-4">⭐⭐⭐⭐</td>
+            <td class="py-3 px-4 font-medium text-emerald-600">Không nghiêng</td>
+            <td class="py-3 px-4">Người yêu thú nhồi bông, tặng người yêu</td>
+          </tr>
+          <tr class="hover:bg-rose-50/40">
+            <td class="py-3 px-4 font-bold text-indigo-700">#7. Nghiêng Nhẹ 2D Phẳng</td>
+            <td class="py-3 px-4">Thoải mái, dạng sticker đáng yêu</td>
+            <td class="py-3 px-4">⭐⭐⭐</td>
+            <td class="py-3 px-4 font-medium text-indigo-600">Xoay phẳng 2D -1.5°</td>
+            <td class="py-3 px-4">Thích góc nghiêng nhưng ghét 3D méo</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Sticky Bottom Bar -->
+  <div class="fixed bottom-4 inset-x-4 max-w-lg mx-auto bg-slate-900/90 text-white backdrop-blur-md px-5 py-3.5 rounded-2xl shadow-xl flex items-center justify-between text-xs z-50">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-rose-400 text-base">check_circle</span>
+      <span id="bottomBarText" class="font-medium">Chưa chọn hiệu ứng nào</span>
+    </div>
+    <a href="index.html" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition font-semibold">
+      ← Về trang chủ
+    </a>
+  </div>
+
+  <script>
+    let currentSelection = '';
+
+    function selectEffect(id, name) {
+      currentSelection = name;
+      
+      // Update Banner
+      const banner = document.getElementById('selectionBanner');
+      const text = document.getElementById('selectionText');
+      const copyBtn = document.getElementById('copyChoiceBtn');
+      const bottomText = document.getElementById('bottomBarText');
+
+      banner.className = "mt-6 inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-rose-50 border border-rose-300 shadow-sm text-sm font-semibold text-rose-800 transition-all";
+      text.innerHTML = `Bạn đã chọn: <strong>${name}</strong>`;
+      copyBtn.classList.remove('hidden');
+      bottomText.innerHTML = `Đã chọn: <strong>#${id}</strong>`;
+
+      // Highlight active button
+      document.querySelectorAll('.btn-select').forEach((btn, idx) => {
+        if (idx === id - 1) {
+          btn.className = "btn-select w-full py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-rose-600 shadow-sm flex items-center justify-center gap-1.5";
+          btn.innerHTML = `<span class="material-symbols-outlined text-sm">check</span> Đang chọn #${id}`;
+        } else {
+          btn.className = "btn-select w-full py-2.5 px-4 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-rose-600 hover:text-white transition flex items-center justify-center gap-1.5";
+          btn.innerHTML = `<span class="material-symbols-outlined text-sm">check_circle</span> Chọn hiệu ứng #${idx + 1}`;
+        }
+      });
+    }
+
+    function copySelection() {
+      if (!currentSelection) return;
+      navigator.clipboard.writeText(`Tôi chọn hiệu ứng: ${currentSelection}`).then(() => {
+        alert(`Đã sao chép: "${currentSelection}"!\nBạn có thể dán vào khung chat để tôi cập nhật.`);
+      });
+    }
+  </script>
+</body>
+</html>
