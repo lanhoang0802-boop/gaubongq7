@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" class="scroll-smooth">>
+<html lang="vi" class="scroll-smooth">
 <head>
 
   <!-- Anti-cache headers for instant updates -->
@@ -77,11 +77,19 @@
   </script>
 
     <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
     body {
       background-color: #fff8f8;
       color: #21191b;
       font-family: 'Plus Jakarta Sans', sans-serif;
       overflow-x: hidden;
+      width: 100%;
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -313,7 +321,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
 </head>
-<body class="min-h-screen flex flex-col selection:bg-m3-primary selection:text-white">
+<body class="min-h-screen flex flex-col w-full overflow-x-hidden selection:bg-m3-primary selection:text-white">
   <!-- Reading Scroll Progress Bar -->
   <div id="scrollProgress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-pink-500 via-rose-400 to-pink-600 z-[100] w-0 transition-all duration-75 pointer-events-none"></div>
 
@@ -408,8 +416,8 @@
   </div>
 
   <!-- Top App Bar (Material 3 Elevated Header) -->
-  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-m3-outline-variant/30 transition-all shadow-xs">
-    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-18 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-4">
+  <header class="sticky top-0 z-40 w-full bg-white/90 backdrop-blur-md border-b border-m3-outline-variant/30 transition-all shadow-xs">
+    <div class="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-18 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-4">
       
       <!-- Brand Logo & Title -->
       <a href="#" class="flex items-center gap-2.5 sm:gap-3 group min-w-0">
@@ -444,9 +452,9 @@
   </header>
 
   <!-- Hero Banner (Material 3 Expressive Card) -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-2">
-    <div class="relative overflow-hidden rounded-m3-xl bg-gradient-to-br from-m3-primary-container via-m3-surface-container to-amber-50 p-6 sm:p-10 border border-m3-outline-variant/40 shadow-sm">
-      <div class="max-w-2xl relative z-10 space-y-3">
+  <section class="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-2 min-w-0">
+    <div class="relative w-full overflow-hidden rounded-m3-xl bg-gradient-to-br from-m3-primary-container via-m3-surface-container to-amber-50 p-4 sm:p-8 lg:p-10 border border-m3-outline-variant/40 shadow-sm">
+      <div class="w-full max-w-2xl relative z-10 space-y-2.5 sm:space-y-3">
         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-m3-full text-xs font-bold bg-white/80 text-m3-primary shadow-xs">
           <span class="material-symbols-outlined text-sm fill">photo_library</span> Trọn Bộ 50 Ảnh Chụp Thật Mới Nhất
         </span>
@@ -479,13 +487,13 @@
   </section>
 
   <!-- View Mode Tabs & Search Bar -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 space-y-4">
+  <section class="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4 space-y-3 sm:space-y-4 min-w-0">
     
     <!-- Top Controls: View Switcher & Search Input (Mobile 50/50 split tabs) -->
-    <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+    <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 min-w-0">
       
       <!-- View Switcher Tabs (Responsive full-width 2-column on mobile) -->
-      <div class="w-full md:w-auto grid grid-cols-2 md:inline-flex p-1 rounded-m3-full bg-m3-surface-container border border-m3-outline-variant/40 shadow-xs text-center">
+      <div class="w-full md:w-auto grid grid-cols-2 md:inline-flex p-1 rounded-m3-full bg-m3-surface-container border border-m3-outline-variant/40 shadow-xs text-center min-w-0">
         <button id="tabModels" onclick="switchView('models')" class="tab-active btn-tactile px-2.5 sm:px-4 py-2 rounded-m3-full text-xs font-bold transition-all flex items-center justify-center gap-1">
           <span>🧸</span> <span class="hidden sm:inline">Xem Theo Dòng</span><span class="sm:hidden">Theo Dòng</span> (<span id="modelCount">19</span>)
         </button>
@@ -495,7 +503,7 @@
       </div>
 
       <!-- Search Bar -->
-      <div class="relative flex-1 max-w-md">
+      <div class="relative flex-1 max-w-md w-full min-w-0">
         <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-m3-on-surface-variant">
           <span class="material-symbols-outlined text-lg">search</span>
         </span>
@@ -509,45 +517,47 @@
 
     </div>
 
-    <!-- Category Filter Chips (Active in Models View) -->
-    <div id="categoryChipsBar" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-      <button onclick="filterCategory('all', this)" class="chip-active filter-chip inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-m3-lg text-xs font-semibold bg-m3-surface-container border border-m3-outline-variant/50 hover:bg-m3-surface-container-high transition-colors whitespace-nowrap">
-        <span class="material-symbols-outlined text-sm">grid_view</span> Tất cả
-      </button>
-      <button onclick="filterCategory('bobova', this)" class="filter-chip inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-m3-lg text-xs font-semibold bg-m3-surface-container border border-m3-outline-variant/50 hover:bg-m3-surface-container-high transition-colors whitespace-nowrap">
-        🐘 Bobova Lông Thỏ
-      </button>
-      <button onclick="filterCategory('om-ngu', this)" class="filter-chip inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-m3-lg text-xs font-semibold bg-m3-surface-container border border-m3-outline-variant/50 hover:bg-m3-surface-container-high transition-colors whitespace-nowrap">
-        🛌 Gấu Ôm Ngủ
-      </button>
-      <button onclick="filterCategory('sanrio', this)" class="filter-chip inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-m3-lg text-xs font-semibold bg-m3-surface-container border border-m3-outline-variant/50 hover:bg-m3-surface-container-high transition-colors whitespace-nowrap">
-        🎀 Sanrio (Kuromi/Melody)
-      </button>
-      <button onclick="filterCategory('jellycat', this)" class="filter-chip inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-m3-lg text-xs font-semibold bg-m3-surface-container border border-m3-outline-variant/50 hover:bg-m3-surface-container-high transition-colors whitespace-nowrap">
-        🦁 Jellycat Style
-      </button>
-      <button onclick="filterCategory('thu-cung', this)" class="filter-chip inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-m3-lg text-xs font-semibold bg-m3-surface-container border border-m3-outline-variant/50 hover:bg-m3-surface-container-high transition-colors whitespace-nowrap">
-        🐼 Thú Ngộ Nghĩnh
-      </button>
+    <!-- Category Filter Chips (Active in Models View) - Protected with overflow-hidden & min-w-0 to prevent flex expansion -->
+    <div class="w-full min-w-0 overflow-hidden">
+      <div id="categoryChipsBar" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 w-full max-w-full">
+        <button onclick="filterCategory('all', this)" class="chip-active filter-chip shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-m3-lg text-xs font-semibold bg-m3-surface-container border border-m3-outline-variant/50 hover:bg-m3-surface-container-high transition-colors whitespace-nowrap">
+          <span class="material-symbols-outlined text-sm">grid_view</span> Tất cả
+        </button>
+        <button onclick="filterCategory('bobova', this)" class="filter-chip shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-m3-lg text-xs font-semibold bg-m3-surface-container border border-m3-outline-variant/50 hover:bg-m3-surface-container-high transition-colors whitespace-nowrap">
+          🐘 Bobova Lông Thỏ
+        </button>
+        <button onclick="filterCategory('om-ngu', this)" class="filter-chip shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-m3-lg text-xs font-semibold bg-m3-surface-container border border-m3-outline-variant/50 hover:bg-m3-surface-container-high transition-colors whitespace-nowrap">
+          🛌 Gấu Ôm Ngủ
+        </button>
+        <button onclick="filterCategory('sanrio', this)" class="filter-chip shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-m3-lg text-xs font-semibold bg-m3-surface-container border border-m3-outline-variant/50 hover:bg-m3-surface-container-high transition-colors whitespace-nowrap">
+          🎀 Sanrio (Kuromi/Melody)
+        </button>
+        <button onclick="filterCategory('jellycat', this)" class="filter-chip shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-m3-lg text-xs font-semibold bg-m3-surface-container border border-m3-outline-variant/50 hover:bg-m3-surface-container-high transition-colors whitespace-nowrap">
+          🦁 Jellycat Style
+        </button>
+        <button onclick="filterCategory('thu-cung', this)" class="filter-chip shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-m3-lg text-xs font-semibold bg-m3-surface-container border border-m3-outline-variant/50 hover:bg-m3-surface-container-high transition-colors whitespace-nowrap">
+          🐼 Thú Ngộ Nghĩnh
+        </button>
+      </div>
     </div>
 
   </section>
 
   <!-- Product Catalog Grid / Full Gallery Grid -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex-grow">
+  <main class="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 flex-grow min-w-0">
     
     <!-- Models View Grid -->
-    <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+    <div id="productGrid" class="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 min-w-0">
       <!-- Rendered dynamically via JavaScript -->
     </div>
 
     <!-- All 50 Photos View Grid -->
-    <div id="photosGrid" class="hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+    <div id="photosGrid" class="hidden w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 sm:gap-4 min-w-0">
       <!-- Rendered dynamically via JavaScript -->
     </div>
 
         <!-- Out of Stock Section: Tự động gom các mẫu có Tồn Kho = 0 xuống đây -->
-    <div id="outOfStockSection" class="hidden mt-16 pt-10 border-t border-m3-outline-variant/30">
+    <div id="outOfStockSection" class="hidden mt-12 sm:mt-16 pt-8 sm:pt-10 border-t border-m3-outline-variant/30 min-w-0">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
@@ -566,7 +576,7 @@
       </div>
       
       <!-- Out of Stock Grid -->
-      <div id="outOfStockGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+      <div id="outOfStockGrid" class="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 min-w-0">
         <!-- Rendered dynamically via JavaScript -->
       </div>
     </div>
@@ -584,8 +594,8 @@
     </div>
   
     <!-- SEO Content Section: Giới thiệu & Câu hỏi thường gặp -->
-    <section id="aboutShopSection" class="mt-20 rounded-m3-xl p-6 sm:p-10 border shadow-m3-1 transition-colors duration-300">
-      <div class="max-w-4xl mx-auto">
+    <section id="aboutShopSection" class="w-full mt-12 sm:mt-20 rounded-m3-xl p-4 sm:p-8 lg:p-10 border shadow-m3-1 transition-colors duration-300 min-w-0">
+      <div class="max-w-4xl mx-auto w-full min-w-0">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-m3-primary-container text-m3-on-primary-container text-xs font-bold mb-4">
           <span class="material-symbols-outlined text-sm">verified</span>
           Về Tiệm Gấu Bông Q7
@@ -658,8 +668,8 @@
   </main>
 
   <!-- Shop Location & Google Maps Section -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="rounded-m3-xl bg-m3-surface-container border border-m3-outline-variant/40 p-6 sm:p-8 space-y-6">
+  <section class="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8 min-w-0">
+    <div class="w-full rounded-m3-xl bg-m3-surface-container border border-m3-outline-variant/40 p-4 sm:p-8 space-y-4 sm:space-y-6 min-w-0">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div class="space-y-1">
           <span class="text-xs font-bold text-m3-primary uppercase tracking-wider">Cửa Hàng Thực Tế</span>
@@ -680,8 +690,8 @@
   </section>
 
   <!-- Footer -->
-  <footer class="bg-m3-surface-container-high border-t border-m3-outline-variant/40 py-10 mt-auto">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 text-center sm:text-left">
+  <footer class="w-full bg-m3-surface-container-high border-t border-m3-outline-variant/40 py-8 sm:py-10 mt-auto min-w-0">
+    <div class="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 space-y-6 text-center sm:text-left min-w-0">
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
         <div class="space-y-2">
           <div class="flex items-center justify-center sm:justify-start gap-2">
@@ -795,19 +805,19 @@
   </div>
 
   <!-- Floating Action Buttons (FAB) -->
-  <div class="fixed bottom-6 right-6 z-40 flex flex-col gap-3">
+  <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 flex flex-col gap-2.5 sm:gap-3">
     <!-- Call Phone FAB -->
-    <a href="tel:0333870846" title="Gọi hotline" class="w-13 h-13 rounded-m3-full bg-white text-emerald-600 flex items-center justify-center shadow-m3-2 hover:scale-110 transition-transform border border-emerald-100">
-      <span class="material-symbols-outlined text-2xl fill">call</span>
+    <a href="tel:0333870846" title="Gọi hotline" class="w-11 h-11 sm:w-13 sm:h-13 rounded-m3-full bg-white text-emerald-600 flex items-center justify-center shadow-m3-2 hover:scale-110 transition-transform border border-emerald-100">
+      <span class="material-symbols-outlined text-xl sm:text-2xl fill">call</span>
     </a>
     <!-- Zalo Chat FAB with pulse -->
-    <a href="https://zalo.me/0333870846" target="_blank" title="Nhắn Zalo tư vấn size & hỏi giá" class="relative group w-14 h-14 rounded-m3-full bg-m3-primary text-white flex items-center justify-center shadow-m3-3 hover:scale-110 transition-transform animate-wiggle">
-      <span class="absolute right-16 px-3 py-1 rounded-full text-xs font-bold bg-white text-m3-primary shadow-md border border-pink-100 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Tư vấn Zalo 24/7 ✨</span>
+    <a href="https://zalo.me/0333870846" target="_blank" title="Nhắn Zalo tư vấn size & hỏi giá" class="relative group w-12 h-12 sm:w-14 sm:h-14 rounded-m3-full bg-m3-primary text-white flex items-center justify-center shadow-m3-3 hover:scale-110 transition-transform animate-wiggle">
+      <span class="absolute right-14 sm:right-16 px-3 py-1 rounded-full text-xs font-bold bg-white text-m3-primary shadow-md border border-pink-100 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Tư vấn Zalo 24/7 ✨</span>
       <span class="absolute -top-1 -right-1 flex h-4 w-4">
         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
         <span class="relative inline-flex rounded-full h-4 w-4 bg-rose-500 text-[9px] text-white font-bold items-center justify-center">1</span>
       </span>
-      <span class="material-symbols-outlined text-2xl fill">chat</span>
+      <span class="material-symbols-outlined text-xl sm:text-2xl fill">chat</span>
     </a>
   </div>
 
@@ -1019,8 +1029,8 @@
       const categoryChipsBar = document.getElementById('categoryChipsBar');
 
       if (view === 'models') {
-        tabModels.className = "tab-active btn-tactile px-4 py-2 rounded-m3-full text-xs font-bold transition-all";
-        tabAllPhotos.className = "btn-tactile px-4 py-2 rounded-m3-full text-xs font-bold text-m3-on-surface hover:text-m3-primary transition-all";
+        tabModels.className = "tab-active btn-tactile px-2.5 sm:px-4 py-2 rounded-m3-full text-xs font-bold transition-all flex items-center justify-center gap-1";
+        tabAllPhotos.className = "btn-tactile px-2.5 sm:px-4 py-2 rounded-m3-full text-xs font-bold text-m3-on-surface hover:text-m3-primary transition-all flex items-center justify-center gap-1";
         productGrid.classList.remove('hidden');
         productGrid.classList.remove('animate-m3-fade');
         void productGrid.offsetWidth; // trigger reflow
@@ -1029,8 +1039,8 @@
         categoryChipsBar.classList.remove('hidden');
         renderProducts();
       } else {
-        tabAllPhotos.className = "tab-active btn-tactile px-4 py-2 rounded-m3-full text-xs font-bold transition-all";
-        tabModels.className = "btn-tactile px-4 py-2 rounded-m3-full text-xs font-bold text-m3-on-surface hover:text-m3-primary transition-all";
+        tabAllPhotos.className = "tab-active btn-tactile px-2.5 sm:px-4 py-2 rounded-m3-full text-xs font-bold transition-all flex items-center justify-center gap-1";
+        tabModels.className = "btn-tactile px-2.5 sm:px-4 py-2 rounded-m3-full text-xs font-bold text-m3-on-surface hover:text-m3-primary transition-all flex items-center justify-center gap-1";
         productGrid.classList.add('hidden');
         const oos = document.getElementById('outOfStockSection'); if(oos) oos.classList.add('hidden');
         photosGrid.classList.remove('hidden');
@@ -1207,12 +1217,14 @@
               </div>
 
               <!-- Action Buttons -->
-              <div class="p-3.5 pt-1 flex items-center gap-2">
-                <button onclick="openModal('${p.id}')" class="btn-tactile flex-1 py-2 rounded-m3-full text-xs font-semibold bg-m3-surface-container text-m3-on-surface hover:bg-m3-surface-container-high transition-colors">
+              <div class="p-2.5 sm:p-3.5 pt-1 flex items-center gap-1.5 sm:gap-2">
+                <button onclick="openModal('${p.id}')" class="btn-tactile flex-1 py-1.5 sm:py-2 rounded-m3-full text-[11px] sm:text-xs font-semibold bg-m3-surface-container text-m3-on-surface hover:bg-m3-surface-container-high transition-colors">
                   Xem ảnh
                 </button>
-                <a href="${zaloOrderLink}" target="_blank" class="flex-1 py-2 rounded-m3-full text-xs font-bold bg-amber-700 text-white hover:bg-amber-800 transition-colors text-center shadow-xs flex items-center justify-center gap-1">
-                  <span class="material-symbols-outlined text-xs">chat</span> Đặt trước Zalo
+                <a href="${zaloOrderLink}" target="_blank" class="flex-1 py-1.5 sm:py-2 rounded-m3-full text-[11px] sm:text-xs font-bold bg-amber-700 text-white hover:bg-amber-800 transition-colors text-center shadow-xs flex items-center justify-center gap-1 truncate">
+                  <span class="material-symbols-outlined text-[13px] sm:text-xs">chat</span>
+                  <span class="hidden sm:inline">Đặt trước Zalo</span>
+                  <span class="sm:hidden">Đặt trước</span>
                 </a>
               </div>
             `;
