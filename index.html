@@ -357,7 +357,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </head>
-<body class="min-h-screen flex flex-col selection:bg-m3-primary-container selection:text-m3-on-primary-container">
+<body class="theme-penguin min-h-screen flex flex-col selection:bg-m3-primary-container selection:text-m3-on-primary-container">
 
   <!-- Top App Bar (Material 3 Elevated Header) -->
   <header class="sticky top-0 z-40 bg-m3-surface/90 backdrop-blur-md border-b border-m3-outline-variant/30 transition-all">
@@ -1447,6 +1447,268 @@
       const bar = document.getElementById('scrollProgress');
       if (bar) bar.style.width = scrolled + '%';
     }, { passive: true });
+
+    // ========================================================
+    // 🎩 PENGUIN TUXEDO THEME CONTROLLER & ARCTIC PARTICLES
+    // ========================================================
+    let currentTheme = localStorage.getItem('gbq7_theme') || 'penguin'; // Default to Tuxedo Penguin
+
+    function applyTheme(theme) {
+      currentTheme = theme;
+      localStorage.setItem('gbq7_theme', theme);
+      const icon = document.getElementById('themeIcon');
+      const label = document.getElementById('themeLabel');
+      const canvas = document.getElementById('arcticCanvas');
+
+      if (theme === 'penguin') {
+        document.body.classList.add('theme-penguin');
+        if (icon) icon.innerText = '🌸';
+        if (label) label.innerText = 'Pastel Theme';
+        if (canvas) canvas.classList.remove('hidden');
+      } else {
+        document.body.classList.remove('theme-penguin');
+        if (icon) icon.innerText = '🎩';
+        if (label) label.innerText = 'Tuxedo Penguin';
+        if (canvas) canvas.classList.add('hidden');
+      }
+    }
+
+    function toggleTheme() {
+      const nextTheme = currentTheme === 'penguin' ? 'pastel' : 'penguin';
+      applyTheme(nextTheme);
+    }
+
+    // Apply default theme immediately
+    applyTheme(currentTheme);
+
+    // ❄️ Arctic Diamond Dust Particle Engine (Tuxedo Penguin Mode)
+    (function initArcticSnow() {
+      const canvas = document.getElementById('arcticCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width = canvas.width = window.innerWidth;
+      let height = canvas.height = window.innerHeight;
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      const flakes = [];
+      const flakeCount = 40;
+      for (let i = 0; i < flakeCount; i++) {
+        flakes.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: Math.random() * 2 + 1,
+          speed: Math.random() * 0.8 + 0.3,
+          wind: (Math.random() - 0.5) * 0.4,
+          opacity: Math.random() * 0.6 + 0.2
+        });
+      }
+
+      function draw() {
+        if (!document.body.classList.contains('theme-penguin')) {
+          requestAnimationFrame(draw);
+          return;
+        }
+        ctx.clearRect(0, 0, width, height);
+        ctx.fillStyle = '#ffffff';
+
+        flakes.forEach(f => {
+          ctx.globalAlpha = f.opacity;
+          ctx.beginPath();
+          ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
+          ctx.fill();
+
+          f.y += f.speed;
+          f.x += f.wind;
+          if (f.y > height) {
+            f.y = -5;
+            f.x = Math.random() * width;
+          }
+          if (f.x > width) f.x = 0;
+          if (f.x < 0) f.x = width;
+        });
+        requestAnimationFrame(draw);
+      }
+      requestAnimationFrame(draw);
+    })();
+
+    // ========================================================
+    // 🐧 GENTLEMAN PENGUIN IN TOP HAT & TUXEDO MOUSE COMPANION
+    // ========================================================
+    (function() {
+      if (window.matchMedia && !window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        return;
+      }
+
+      const penguinEl = document.getElementById('cursorPenguin');
+      const innerEl = document.getElementById('penguinInner');
+      const beakClosed = document.getElementById('pBeakClosed');
+      const beakOpen = document.getElementById('pBeakOpen');
+      const wingL = document.getElementById('pWingL');
+      const wingR = document.getElementById('pWingR');
+      const footL = document.getElementById('pFootL');
+      const footR = document.getElementById('pFootR');
+      const sweatContainer = document.getElementById('penguinSweat');
+      const breathContainer = document.getElementById('penguinBreath');
+
+      if (!penguinEl || !innerEl) return;
+
+      let mouseX = -100, mouseY = -100;
+      let posX = -100, posY = -100;
+      let stepTimer = 0;
+      let pantTimer = 0;
+      let lastSweatSpawn = 0;
+      let lastBreathSpawn = 0;
+      let facingRight = true;
+      let hasMovedOnce = false;
+
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        if (!hasMovedOnce) {
+          hasMovedOnce = true;
+          posX = mouseX - 25;
+          posY = mouseY + 15;
+          penguinEl.classList.remove('hidden');
+        }
+      }, { passive: true });
+
+      window.addEventListener('mouseleave', () => {
+        penguinEl.style.opacity = '0';
+      });
+      window.addEventListener('mouseenter', () => {
+        penguinEl.style.opacity = '1';
+      });
+
+      function spawnSweatDrop() {
+        const drop = document.createElement('span');
+        drop.textContent = '💦';
+        drop.style.position = 'absolute';
+        drop.style.fontSize = '12px';
+        drop.style.top = '-4px';
+        drop.style.left = facingRight ? '-12px' : '36px';
+        drop.style.pointerEvents = 'none';
+        drop.style.transition = 'all 0.55s ease-out';
+        drop.style.opacity = '1';
+        drop.style.transform = 'scale(0.8) translateY(0)';
+        sweatContainer.appendChild(drop);
+
+        requestAnimationFrame(() => {
+          drop.style.opacity = '0';
+          drop.style.transform = `scale(1.2) translate(${facingRight ? '-18px' : '18px'}, -14px)`;
+        });
+        setTimeout(() => drop.remove(), 550);
+      }
+
+      function spawnBreathPuff() {
+        const puff = document.createElement('span');
+        puff.textContent = '💨';
+        puff.style.position = 'absolute';
+        puff.style.fontSize = '13px';
+        puff.style.top = '14px';
+        puff.style.left = facingRight ? '36px' : '-16px';
+        puff.style.pointerEvents = 'none';
+        puff.style.transition = 'all 0.65s cubic-bezier(0.16, 1, 0.3, 1)';
+        puff.style.opacity = '0.9';
+        puff.style.transform = 'scale(0.6)';
+        breathContainer.appendChild(puff);
+
+        requestAnimationFrame(() => {
+          puff.style.opacity = '0';
+          puff.style.transform = `scale(1.2) translate(${facingRight ? '22px' : '-22px'}, -8px)`;
+        });
+        setTimeout(() => puff.remove(), 650);
+      }
+
+      function animate() {
+        if (hasMovedOnce) {
+          const targetX = mouseX + (facingRight ? -40 : 16);
+          const targetY = mouseY + 14;
+
+          const dx = targetX - posX;
+          const dy = targetY - posY;
+          const dist = Math.hypot(dx, dy);
+
+          const speed = dist > 140 ? 0.16 : 0.11;
+          posX += dx * speed;
+          posY += dy * speed;
+
+          if (mouseX > posX + 20) {
+            facingRight = true;
+          } else if (mouseX < posX - 20) {
+            facingRight = false;
+          }
+
+          penguinEl.style.transform = `translate3d(${posX}px, ${posY}px, 0)`;
+
+          const now = performance.now();
+
+          if (dist > 10) {
+            // RUNNING & SWEATING
+            stepTimer += 0.24;
+            const waddle = Math.sin(stepTimer) * 14;
+            const wingFlap = Math.cos(stepTimer) * 26;
+            const footLift = Math.sin(stepTimer) * 5;
+
+            innerEl.style.transform = `scaleX(${facingRight ? 1 : -1}) rotate(${waddle}deg) translateY(${Math.abs(Math.sin(stepTimer)) * -6}px)`;
+
+            if (wingL && wingR) {
+              wingL.setAttribute('transform', `rotate(${15 + wingFlap} 10 44)`);
+              wingR.setAttribute('transform', `rotate(${-15 - wingFlap} 54 44)`);
+            }
+            if (footL && footR) {
+              footL.setAttribute('cy', `${71 - footLift}`);
+              footR.setAttribute('cy', `${71 + footLift}`);
+            }
+
+            if (beakClosed) beakClosed.style.display = 'block';
+            if (beakOpen) beakOpen.style.display = 'none';
+
+            if (now - lastSweatSpawn > 240) {
+              spawnSweatDrop();
+              lastSweatSpawn = now;
+            }
+
+          } else {
+            // STOPPED & PANTING
+            pantTimer += 0.20;
+            const pantScaleY = 0.94 + Math.sin(pantTimer) * 0.10;
+            const pantScaleX = 1.05 - Math.sin(pantTimer) * 0.08;
+            const pantTilt = 8;
+
+            innerEl.style.transform = `scaleX(${facingRight ? 1 : -1}) rotate(${pantTilt}deg) scale(${pantScaleX}, ${pantScaleY})`;
+
+            if (wingL && wingR) {
+              wingL.setAttribute('transform', `rotate(${32 + Math.sin(pantTimer)*5} 10 44)`);
+              wingR.setAttribute('transform', `rotate(${-32 - Math.sin(pantTimer)*5} 54 44)`);
+            }
+            if (footL && footR) {
+              footL.setAttribute('cy', '71');
+              footR.setAttribute('cy', '71');
+            }
+
+            if (beakClosed) beakClosed.style.display = 'none';
+            if (beakOpen) beakOpen.style.display = 'block';
+
+            if (now - lastSweatSpawn > 480) {
+              spawnSweatDrop();
+              lastSweatSpawn = now;
+            }
+
+            if (Math.sin(pantTimer) > 0.85 && (now - lastBreathSpawn > 380)) {
+              spawnBreathPuff();
+              lastBreathSpawn = now;
+            }
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+
+      requestAnimationFrame(animate);
+    })();
   </script>
   <!-- 🐧 SWEATING RUNNING & PANTING PENGUIN MOUSE COMPANION -->
   <div id="cursorPenguin" class="pointer-events-none fixed z-[99999] transition-opacity duration-300 hidden select-none" style="top: 0; left: 0; will-change: transform;">
