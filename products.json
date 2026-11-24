@@ -332,25 +332,5 @@
       "Size 50cm"
     ],
     "description": "Chú vịt cổ xanh Green Duck chân cam siêu hài hước, tạo hình tròn vo chắc tay, vải nhung mịn không bám bẩn."
-  },
-  {
-    "id": "TEST-APP",
-    "name": "Mẫu Test App",
-    "category": "bobova",
-    "category_name": "Bobova Cao Cấp",
-    "badge": "MẪU MỚI",
-    "image": "images/test-app_1_5538.jpg",
-    "gallery": [
-      "images/test-app_1_5538.jpg",
-      "images/test-app_2_5538.jpg",
-      "images/test-app_3_5538.jpg",
-      "images/test-app_4_5538.jpg"
-    ],
-    "sizes": [
-      "Size Nhỏ 35cm",
-      "Size Vừa 55cm",
-      "Size Lớn 80cm"
-    ],
-    "description": "Mẫu gấu bông thử nghiệm tính năng đồng bộ tự động từ App qua Google Sheet và GitHub Website."
   }
 ]
