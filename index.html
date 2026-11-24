@@ -2022,11 +2022,15 @@
       requestAnimationFrame(animate);
     }
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initPenguinMascot);
-    } else {
+    function startAppEngines() {
       initAllPastelEffects();
       initPenguinMascot();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', startAppEngines);
+    } else {
+      startAppEngines();
     }
   
     // =========================================================
