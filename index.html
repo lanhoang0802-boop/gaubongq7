@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" class="scroll-smooth">
+<html lang="vi" class="scroll-smooth">>
 <head>
 
   <!-- Anti-cache headers for instant updates -->
@@ -34,25 +34,25 @@
         extend: {
           colors: {
             m3: {
-              primary: 'var(--m3-primary)',
-              'primary-hover': 'var(--m3-primary-hover)',
-              'on-primary': 'var(--m3-on-primary)',
-              'primary-container': 'var(--m3-primary-container)',
-              'on-primary-container': 'var(--m3-on-primary-container)',
-              surface: 'var(--m3-surface)',
-              'surface-dim': 'var(--m3-surface-dim)',
-              'surface-container-lowest': 'var(--m3-surface-container-lowest)',
-              'surface-container-low': 'var(--m3-surface-container-low)',
-              'surface-container': 'var(--m3-surface-container)',
-              'surface-container-high': 'var(--m3-surface-container-high)',
-              'surface-container-highest': 'var(--m3-surface-container-highest)',
-              'on-surface': 'var(--m3-on-surface)',
-              'on-surface-variant': 'var(--m3-on-surface-variant)',
-              outline: 'var(--m3-outline)',
-              'outline-variant': 'var(--m3-outline-variant)',
-              secondary: 'var(--m3-secondary)',
-              'secondary-container': 'var(--m3-secondary-container)',
-              tertiary: 'var(--m3-tertiary)'
+              primary: '#b91d57',
+              'primary-hover': '#9e1447',
+              'on-primary': '#ffffff',
+              'primary-container': '#ffd9e2',
+              'on-primary-container': '#3e001d',
+              surface: '#fff8f8',
+              'surface-dim': '#ded8d9',
+              'surface-container-lowest': '#ffffff',
+              'surface-container-low': '#fdf1f3',
+              'surface-container': '#fbebee',
+              'surface-container-high': '#f5e2e6',
+              'surface-container-highest': '#eedde1',
+              'on-surface': '#21191b',
+              'on-surface-variant': '#514347',
+              outline: '#837377',
+              'outline-variant': '#d5c2c6',
+              secondary: '#75565f',
+              'secondary-container': '#ffd9e2',
+              tertiary: '#904a43'
             }
           },
           fontFamily: {
@@ -76,227 +76,90 @@
     }
   </script>
 
-  <style>
-    :root {
-      --m3-primary: #b91d57;
-      --m3-primary-hover: #9e1447;
-      --m3-on-primary: #ffffff;
-      --m3-primary-container: #ffd9e2;
-      --m3-on-primary-container: #3e001d;
-      --m3-surface: #fff8f8;
-      --m3-surface-dim: #ded8d9;
-      --m3-surface-container-lowest: #ffffff;
-      --m3-surface-container-low: #fdf1f3;
-      --m3-surface-container: #fbebee;
-      --m3-surface-container-high: #f5e2e6;
-      --m3-surface-container-highest: #eedde1;
-      --m3-on-surface: #21191b;
-      --m3-on-surface-variant: #514347;
-      --m3-outline: #837377;
-      --m3-outline-variant: #d5c2c6;
-      --m3-secondary: #75565f;
-      --m3-secondary-container: #ffd9e2;
-      --m3-tertiary: #904a43;
-    }
-
+    <style>
     body {
-      background-color: var(--m3-surface);
-      color: var(--m3-on-surface);
+      background-color: #fff8f8;
+      color: #21191b;
       font-family: 'Plus Jakarta Sans', sans-serif;
       overflow-x: hidden;
-      transition: background-color 0.35s ease, color 0.35s ease;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    /* 🐧 SLEEK MATTE BLACK & WHITE PENGUIN TUXEDO THEME */
-    body.theme-penguin {
-      --m3-primary: #38bdf8;
-      --m3-primary-hover: #0ea5e9;
-      --m3-on-primary: #020617;
-      --m3-primary-container: #1e293b;
-      --m3-on-primary-container: #f1f5f9;
-      --m3-surface: #0b0f17;
-      --m3-surface-dim: #090d14;
-      --m3-surface-container-lowest: #101623;
-      --m3-surface-container-low: #131b2b;
-      --m3-surface-container: #172236;
-      --m3-surface-container-high: #1c2941;
-      --m3-surface-container-highest: #243452;
-      --m3-on-surface: #f8fafc;
-      --m3-on-surface-variant: #94a3b8;
-      --m3-outline: #64748b;
-      --m3-outline-variant: #26354f;
-      --m3-secondary: #38bdf8;
-      --m3-secondary-container: #1e293b;
-      --m3-tertiary: #f59e0b;
-      background-color: #0b0f17 !important;
-      color: #f8fafc !important;
-    }
-
-    body.theme-penguin header {
-      background-color: rgba(11, 15, 23, 0.88) !important;
-      border-bottom-color: rgba(38, 53, 79, 0.7) !important;
-    }
-
-    body.theme-penguin .tab-active {
-      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%) !important;
-      color: #ffffff !important;
-      box-shadow: 0px 4px 14px rgba(14, 165, 233, 0.4) !important;
-    }
-
-    body.theme-penguin .chip-active {
-      background-color: #1e293b !important;
-      color: #38bdf8 !important;
-      border-color: #38bdf8 !important;
-    }
-
-    body.theme-penguin .card-tactile {
-      background-color: #101623 !important;
-      border-color: rgba(38, 53, 79, 0.8) !important;
-    }
-    body.theme-penguin .card-tactile:hover {
-      border-color: rgba(56, 189, 248, 0.5) !important;
-      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.7), 0 0 20px rgba(56, 189, 248, 0.12) !important;
-    }
-
-    body.theme-penguin #productModal > div,
-    body.theme-penguin #photoPreviewModal > div {
-      background-color: #0f1420 !important;
-      border-color: rgba(38, 53, 79, 0.9) !important;
-    }
-
-    
-
-    /* ========================================================
-       🏢 VỀ TIỆM GẤU BÔNG Q7 & FAQ SECTION THEME STYLING
-       ======================================================== */
-    /* Light / Pastel Theme */
-    #aboutShopSection {
-      background-color: #ffffff !important;
-      color: #21191b !important;
-      border-color: rgba(214, 194, 197, 0.4) !important;
-    }
-    #aboutShopSection h2,
-    #aboutShopSection h3 {
-      color: #21191b !important;
-    }
-    #aboutShopSection p,
-    #aboutShopSection span.text-m3-on-surface-variant {
-      color: #514347 !important;
-    }
-    #aboutShopSection .feature-box,
-    #aboutShopSection details {
-      background-color: #fdf1f3 !important;
-      border-color: rgba(214, 194, 197, 0.4) !important;
-    }
-    #aboutShopSection details summary {
-      color: #21191b !important;
-    }
-
-    /* 🐧 Tuxedo Penguin Matte Black Theme */
-    body.theme-penguin #aboutShopSection {
-      background-color: #101623 !important;
-      color: #f8fafc !important;
-      border-color: rgba(38, 53, 79, 0.8) !important;
-      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.7) !important;
-    }
-    body.theme-penguin #aboutShopSection h2 {
-      color: #ffffff !important;
-    }
-    body.theme-penguin #aboutShopSection h3 {
-      color: #f8fafc !important;
-    }
-    body.theme-penguin #aboutShopSection p {
-      color: #94a3b8 !important;
-    }
-    body.theme-penguin #aboutShopSection strong {
-      color: #38bdf8 !important;
-    }
-    body.theme-penguin #aboutShopSection em {
-      color: #cbd5e1 !important;
-      font-style: normal;
-    }
-    body.theme-penguin #aboutShopSection .feature-box,
-    body.theme-penguin #aboutShopSection details {
-      background-color: #172236 !important;
-      border-color: rgba(38, 53, 79, 0.8) !important;
-    }
-    body.theme-penguin #aboutShopSection details summary {
-      color: #f8fafc !important;
-    }
-    body.theme-penguin #aboutShopSection details p {
-      color: #94a3b8 !important;
-    }
-
-    body.theme-penguin #scrollProgress {
-      background: linear-gradient(to right, #38bdf8, #818cf8, #c084fc) !important;
+    /* Hide cursor penguin on touch devices (phones & tablets) */
+    @media (hover: none) and (pointer: coarse) {
+      #cursorPenguin {
+        display: none !important;
+      }
     }
 
     /* Tactile Elastic Card & Button Feedback */
     .card-tactile {
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+      transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.28s ease, border-color 0.28s ease;
       will-change: transform, box-shadow;
     }
     .card-tactile:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 16px 32px -8px rgba(185, 29, 87, 0.16), 0 8px 16px -4px rgba(0, 0, 0, 0.04);
-      border-color: rgba(185, 29, 87, 0.4);
+      transform: translateY(-5px);
+      box-shadow: 0 14px 28px -6px rgba(185, 29, 87, 0.15), 0 8px 16px -4px rgba(0, 0, 0, 0.04);
+      border-color: rgba(185, 29, 87, 0.35);
     }
     .btn-tactile {
       transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease, box-shadow 0.2s ease;
       will-change: transform;
     }
     .btn-tactile:active {
-      transform: scale(0.94);
+      transform: scale(0.95);
     }
 
-    /* Shiny Gloss Sheen Effect on Card Hover */
-    .shine-overlay {
-      position: relative;
-      overflow: hidden;
-    }
-    .shine-overlay::after {
-      content: '';
-      position: absolute;
-      top: -60%;
-      left: -60%;
-      width: 220%;
-      height: 220%;
-      background: linear-gradient(60deg, transparent 40%, rgba(255, 255, 255, 0.38) 50%, transparent 60%);
-      transform: rotate(25deg) translateY(-120%);
-      transition: transform 0.8s ease-in-out;
-      pointer-events: none;
-    }
-    .group:hover .shine-overlay::after {
-      transform: rotate(25deg) translateY(120%);
+    /* Shiny Gloss Sheen Effect on Card Hover (desktop only) */
+    @media (hover: hover) {
+      .shine-overlay {
+        position: relative;
+        overflow: hidden;
+      }
+      .shine-overlay::after {
+        content: '';
+        position: absolute;
+        top: -60%;
+        left: -60%;
+        width: 220%;
+        height: 220%;
+        background: linear-gradient(60deg, transparent 40%, rgba(255, 255, 255, 0.38) 50%, transparent 60%);
+        transform: rotate(25deg) translateY(-120%);
+        transition: transform 0.8s ease-in-out;
+        pointer-events: none;
+      }
+      .group:hover .shine-overlay::after {
+        transform: rotate(25deg) translateY(120%);
+      }
     }
 
     /* Smooth Material 3 Fade & Slide Transitions */
     @keyframes m3FadeSlideUp {
-      from { opacity: 0; transform: translateY(16px); }
+      from { opacity: 0; transform: translateY(14px); }
       to { opacity: 1; transform: translateY(0); }
     }
     .animate-m3-fade {
-      animation: m3FadeSlideUp 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: m3FadeSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
     /* Modal Spring Pop In */
     @keyframes modalSpringPop {
-      0% { opacity: 0; transform: scale(0.92) translateY(16px); }
-      70% { transform: scale(1.02) translateY(-2px); }
+      0% { opacity: 0; transform: scale(0.94) translateY(12px); }
+      70% { transform: scale(1.01) translateY(-2px); }
       100% { opacity: 1; transform: scale(1) translateY(0); }
     }
     .modal-spring {
-      animation: modalSpringPop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      animation: modalSpringPop 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
 
     /* Cute Floating Sparkle & Heart Burst */
     @keyframes floatHeart {
       0% { opacity: 1; transform: translate(0, 0) scale(0.6); }
-      50% { opacity: 1; transform: translate(-12px, -32px) scale(1.3); }
-      100% { opacity: 0; transform: translate(12px, -65px) scale(0.85) rotate(18deg); }
+      50% { opacity: 1; transform: translate(-10px, -28px) scale(1.2); }
+      100% { opacity: 0; transform: translate(10px, -55px) scale(0.85) rotate(16deg); }
     }
     .animate-float-heart {
-      animation: floatHeart 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: floatHeart 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
     /* Gentle Floating FAB Wiggle */
@@ -309,6 +172,7 @@
     .animate-wiggle {
       animation: gentleWiggle 4.5s ease-in-out infinite;
     }
+
     .material-symbols-outlined {
       font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
       vertical-align: middle;
@@ -333,6 +197,34 @@
     .no-scrollbar {
       -ms-overflow-style: none;
       scrollbar-width: none;
+    }
+
+    /* Về Tiệm Gấu Bông Q7 & FAQ section */
+    #aboutShopSection {
+      background-color: #ffffff !important;
+      color: #21191b !important;
+      border-color: rgba(214, 194, 197, 0.4) !important;
+    }
+    #aboutShopSection h2 {
+      color: #21191b !important;
+    }
+    #aboutShopSection h3 {
+      color: #21191b !important;
+    }
+    #aboutShopSection p,
+    #aboutShopSection span.text-m3-on-surface-variant {
+      color: #514347 !important;
+    }
+    #aboutShopSection strong {
+      color: #b91d57 !important;
+    }
+    #aboutShopSection .feature-box,
+    #aboutShopSection details {
+      background-color: #fdf1f3 !important;
+      border-color: rgba(214, 194, 197, 0.4) !important;
+    }
+    #aboutShopSection details summary {
+      color: #21191b !important;
     }
   </style>
 
@@ -419,53 +311,11 @@
   </script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-  <!-- Instant Theme Initializer in HEAD -->
-  <script>
-    (function() {
-      const savedTheme = localStorage.getItem('gbq7_theme') || 'penguin';
-      if (savedTheme === 'penguin') {
-        document.documentElement.classList.add('theme-penguin');
-        window.__INITIAL_THEME__ = 'penguin';
-      } else {
-        window.__INITIAL_THEME__ = 'pastel';
-      }
-    })();
-
-    function toggleTheme() {
-      const isPenguin = document.body.classList.contains('theme-penguin');
-      const nextTheme = isPenguin ? 'pastel' : 'penguin';
-      applyTheme(nextTheme);
-    }
-
-    function applyTheme(theme) {
-      localStorage.setItem('gbq7_theme', theme);
-      const icon = document.getElementById('themeIcon');
-      const label = document.getElementById('themeLabel');
-      const canvas = document.getElementById('arcticCanvas');
-
-      if (theme === 'penguin') {
-        document.body.classList.add('theme-penguin');
-        document.documentElement.classList.add('theme-penguin');
-        if (icon) icon.innerText = '🌸';
-        if (label) label.innerText = 'Pastel Theme';
-        if (canvas) canvas.classList.remove('hidden');
-      } else {
-        document.body.classList.remove('theme-penguin');
-        document.documentElement.classList.remove('theme-penguin');
-        if (icon) icon.innerText = '🎩';
-        if (label) label.innerText = 'Tuxedo Penguin';
-        if (canvas) canvas.classList.add('hidden');
-      }
-    }
-  </script>
 
 </head>
-<body class="theme-penguin min-h-screen flex flex-col selection:bg-m3-primary-container selection:text-m3-on-primary-container">
+<body class="min-h-screen flex flex-col selection:bg-m3-primary selection:text-white">
   <!-- Reading Scroll Progress Bar -->
   <div id="scrollProgress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-pink-500 via-rose-400 to-pink-600 z-[100] w-0 transition-all duration-75 pointer-events-none"></div>
-
-  <!-- ❄️ Arctic Diamond Dust Canvas for Penguin Tuxedo Mode -->
-  <canvas id="arcticCanvas" class="fixed inset-0 pointer-events-none z-0 opacity-60"></canvas>
 
   <!-- 🐧 SWEATING RUNNING & PANTING GENTLEMAN PENGUIN MOUSE COMPANION -->
   <div id="cursorPenguin" class="pointer-events-none fixed z-[99999] transition-opacity duration-200 select-none" style="top: 0; left: 0; will-change: transform;">
@@ -558,39 +408,35 @@
   </div>
 
   <!-- Top App Bar (Material 3 Elevated Header) -->
-  <header class="sticky top-0 z-40 bg-m3-surface/90 backdrop-blur-md border-b border-m3-outline-variant/30 transition-all">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3 flex items-center justify-between gap-4">
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-m3-outline-variant/30 transition-all shadow-xs">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-18 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-4">
       
       <!-- Brand Logo & Title -->
-      <a href="#" class="flex items-center gap-3 group">
-        <div class="w-11 h-11 rounded-full bg-m3-primary-container flex items-center justify-center text-m3-primary shadow-sm group-hover:scale-105 transition-transform">
-          <span class="material-symbols-outlined text-2xl fill">pets</span>
+      <a href="#" class="flex items-center gap-2.5 sm:gap-3 group min-w-0">
+        <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-m3-primary-container flex-shrink-0 flex items-center justify-center text-m3-primary shadow-xs group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined text-xl sm:text-2xl fill">pets</span>
         </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="font-cute font-bold text-xl tracking-tight text-m3-primary">Gấu Bông Q7</span>
-            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800">
+        <div class="min-w-0">
+          <div class="flex items-center gap-1.5 sm:gap-2">
+            <span class="font-cute font-bold text-base sm:text-xl tracking-tight text-m3-primary truncate">Gấu Bông Q7</span>
+            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800 flex-shrink-0">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Mở 24/7
             </span>
           </div>
-          <p class="text-xs text-m3-on-surface-variant font-medium">90 Đường 77, P. Tân Quy, Quận 7</p>
+          <p class="text-[11px] sm:text-xs text-m3-on-surface-variant font-medium truncate">90 Đường 77, P. Tân Quy, Quận 7</p>
         </div>
       </a>
 
-      <!-- Quick Action Buttons & Theme Switcher -->
-      <div class="flex items-center gap-2">
-        <!-- 🐧 Theme Toggle Switcher -->
-        <button id="themeToggleBtn" onclick="toggleTheme()" class="btn-tactile inline-flex items-center gap-1.5 px-3 py-1.5 rounded-m3-full text-xs font-bold transition-all shadow-xs border border-m3-outline-variant/60 bg-m3-surface-container hover:bg-m3-surface-container-high text-m3-on-surface" title="Chuyển đổi giao diện: Tuxedo Penguin / Pastel Cute">
-          <span class="text-sm" id="themeIcon">🎩</span>
-          <span id="themeLabel" class="hidden sm:inline">Tuxedo Penguin</span>
-        </button>
-        <a href="https://maps.app.goo.gl/eLYNVKUNGd8gYN2K9" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-m3-full text-xs font-semibold bg-m3-surface-container text-m3-on-surface hover:bg-m3-surface-container-high transition-colors">
+      <!-- Quick Action Buttons -->
+      <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+        <a href="https://maps.app.goo.gl/eLYNVKUNGd8gYN2K9" target="_blank" class="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-m3-full text-xs font-semibold bg-m3-surface-container text-m3-on-surface hover:bg-m3-surface-container-high transition-colors">
           <span class="material-symbols-outlined text-sm text-m3-primary">location_on</span>
           Chỉ đường
         </a>
-        <a href="https://zalo.me/0333870846" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 rounded-m3-full text-xs sm:text-sm font-bold bg-m3-primary text-m3-on-primary hover:bg-m3-primary-hover shadow-m3-1 transition-all hover:shadow-m3-2">
+        <a href="https://zalo.me/0333870846" target="_blank" class="btn-tactile inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-m3-full text-xs sm:text-sm font-bold bg-m3-primary text-white hover:bg-m3-primary-hover shadow-xs transition-all">
           <span class="material-symbols-outlined text-base">chat</span>
-          <span>Hỏi Giá Zalo 0333.870.846</span>
+          <span class="hidden sm:inline">Hỏi Giá Zalo 0333.870.846</span>
+          <span class="sm:hidden font-bold">Chat Zalo</span>
         </a>
       </div>
 
@@ -635,16 +481,16 @@
   <!-- View Mode Tabs & Search Bar -->
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 space-y-4">
     
-    <!-- Top Controls: View Switcher & Search Input -->
-    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+    <!-- Top Controls: View Switcher & Search Input (Mobile 50/50 split tabs) -->
+    <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
       
-      <!-- View Switcher Tabs -->
-      <div class="inline-flex p-1 rounded-m3-full bg-m3-surface-container border border-m3-outline-variant/40 shadow-xs">
-        <button id="tabModels" onclick="switchView('models')" class="tab-active px-4 py-2 rounded-m3-full text-xs font-bold transition-all">
-          🧸 Xem Theo Dòng Sản Phẩm (<span id="modelCount">19</span>)
+      <!-- View Switcher Tabs (Responsive full-width 2-column on mobile) -->
+      <div class="w-full md:w-auto grid grid-cols-2 md:inline-flex p-1 rounded-m3-full bg-m3-surface-container border border-m3-outline-variant/40 shadow-xs text-center">
+        <button id="tabModels" onclick="switchView('models')" class="tab-active btn-tactile px-2.5 sm:px-4 py-2 rounded-m3-full text-xs font-bold transition-all flex items-center justify-center gap-1">
+          <span>🧸</span> <span class="hidden sm:inline">Xem Theo Dòng</span><span class="sm:hidden">Theo Dòng</span> (<span id="modelCount">19</span>)
         </button>
-        <button id="tabAllPhotos" onclick="switchView('photos')" class="px-4 py-2 rounded-m3-full text-xs font-bold text-m3-on-surface hover:text-m3-primary transition-all">
-          📷 Xem Toàn Bộ 50 Ảnh Chụp Thật
+        <button id="tabAllPhotos" onclick="switchView('photos')" class="btn-tactile px-2.5 sm:px-4 py-2 rounded-m3-full text-xs font-bold text-m3-on-surface hover:text-m3-primary transition-all flex items-center justify-center gap-1">
+          <span>📷</span> <span class="hidden sm:inline">Toàn Bộ 50 Ảnh Thật</span><span class="sm:hidden">50 Ảnh Thật</span>
         </button>
       </div>
 
@@ -1246,7 +1092,7 @@
             </div>
 
             <!-- Content Area -->
-            <div class="p-3.5 space-y-2">
+            <div class="p-2.5 sm:p-3.5 space-y-1.5 sm:space-y-2">
               <span class="text-[11px] font-semibold text-m3-outline uppercase tracking-wider">${p.category_name}</span>
               <h3 class="font-cute font-bold text-sm text-m3-on-surface line-clamp-2 hover:text-m3-primary transition-colors cursor-pointer" onclick="openModal('${p.id}')">
                 ${p.name}
@@ -1303,13 +1149,16 @@
             </div>
           </div>
 
-          <!-- Action Buttons -->
-          <div class="p-3.5 pt-1 flex items-center gap-2">
-            <button onclick="openModal('${p.id}')" class="btn-tactile flex-1 py-2 rounded-m3-full text-xs font-semibold bg-m3-surface-container text-m3-on-surface hover:bg-m3-surface-container-high transition-colors">
-              Xem ảnh chi tiết
+          <!-- Action Buttons (Responsive padding and labels for mobile 2-col cards) -->
+          <div class="p-2.5 sm:p-3.5 pt-1 flex items-center gap-1.5 sm:gap-2">
+            <button onclick="openModal('${p.id}')" class="btn-tactile flex-1 py-1.5 sm:py-2 rounded-m3-full text-[11px] sm:text-xs font-semibold bg-m3-surface-container text-m3-on-surface hover:bg-m3-surface-container-high transition-colors truncate">
+              <span class="hidden sm:inline">Xem ảnh chi tiết</span>
+              <span class="sm:hidden">Chi tiết</span>
             </button>
-            <a href="${zaloDirectLink}" target="_blank" class="btn-tactile flex-1 py-2 rounded-m3-full text-xs font-bold bg-m3-primary text-white hover:bg-m3-primary-hover transition-colors text-center shadow-xs flex items-center justify-center gap-1">
-              <span class="material-symbols-outlined text-xs">chat</span> Tư vấn Zalo
+            <a href="${zaloDirectLink}" target="_blank" class="btn-tactile flex-1 py-1.5 sm:py-2 rounded-m3-full text-[11px] sm:text-xs font-bold bg-m3-primary text-white hover:bg-m3-primary-hover transition-colors text-center shadow-xs flex items-center justify-center gap-1 truncate">
+              <span class="material-symbols-outlined text-[13px] sm:text-xs">chat</span>
+              <span class="hidden sm:inline">Tư vấn Zalo</span>
+              <span class="sm:hidden">Zalo</span>
             </a>
           </div>
         `;
@@ -1343,7 +1192,7 @@
                 </div>
 
                 <!-- Content Area -->
-                <div class="p-3.5 space-y-2">
+                <div class="p-2.5 sm:p-3.5 space-y-1.5 sm:space-y-2">
                   <span class="text-[11px] font-semibold text-m3-outline uppercase tracking-wider">${p.category_name}</span>
                   <h3 class="font-cute font-bold text-sm text-m3-on-surface line-clamp-2 hover:text-m3-primary transition-colors cursor-pointer" onclick="openModal('${p.id}')">
                     ${p.name}
@@ -1621,7 +1470,7 @@
     function triggerCuteBurst(e) {
       const heart = document.createElement('span');
       heart.className = 'pointer-events-none fixed z-[9999] text-base select-none animate-float-heart';
-      const sparkles = document.body.classList.contains('theme-penguin') ? ['🎩', '🐧', '❄️', '✨', '💎', '🖤', '⭐'] : ['💖', '✨', '🧸', '🌸', '💕', '⭐'];
+      const sparkles = ['💖', '✨', '🧸', '🌸', '💕', '⭐'];
       heart.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
       const x = e.clientX || (e.touches && e.touches[0].clientX) || window.innerWidth / 2;
       const y = e.clientY || (e.touches && e.touches[0].clientY) || window.innerHeight / 2;
@@ -1645,98 +1494,6 @@
     }, { passive: true });
 
     // ========================================================
-    // 🎩 PENGUIN TUXEDO THEME CONTROLLER & ARCTIC PARTICLES
-    // ========================================================
-    let currentTheme = localStorage.getItem('gbq7_theme') || 'penguin'; // Default to Tuxedo Penguin
-
-    function applyTheme(theme) {
-      currentTheme = theme;
-      localStorage.setItem('gbq7_theme', theme);
-      const icon = document.getElementById('themeIcon');
-      const label = document.getElementById('themeLabel');
-      const canvas = document.getElementById('arcticCanvas');
-
-      if (theme === 'penguin') {
-        document.body.classList.add('theme-penguin');
-        if (icon) icon.innerText = '🌸';
-        if (label) label.innerText = 'Pastel Theme';
-        if (canvas) canvas.classList.remove('hidden');
-      } else {
-        document.body.classList.remove('theme-penguin');
-        if (icon) icon.innerText = '🎩';
-        if (label) label.innerText = 'Tuxedo Penguin';
-        if (canvas) canvas.classList.add('hidden');
-      }
-    }
-
-    function toggleTheme() {
-      const nextTheme = currentTheme === 'penguin' ? 'pastel' : 'penguin';
-      applyTheme(nextTheme);
-    }
-
-    // Apply default theme immediately
-    
-    document.addEventListener('DOMContentLoaded', () => {
-      const current = localStorage.getItem('gbq7_theme') || 'penguin';
-      applyTheme(current);
-    });
-
-
-    // ❄️ Arctic Diamond Dust Particle Engine (Tuxedo Penguin Mode)
-    (function initArcticSnow() {
-      const canvas = document.getElementById('arcticCanvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      let width = canvas.width = window.innerWidth;
-      let height = canvas.height = window.innerHeight;
-
-      window.addEventListener('resize', () => {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-      });
-
-      const flakes = [];
-      const flakeCount = 40;
-      for (let i = 0; i < flakeCount; i++) {
-        flakes.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          radius: Math.random() * 2 + 1,
-          speed: Math.random() * 0.8 + 0.3,
-          wind: (Math.random() - 0.5) * 0.4,
-          opacity: Math.random() * 0.6 + 0.2
-        });
-      }
-
-      function draw() {
-        if (!document.body.classList.contains('theme-penguin')) {
-          requestAnimationFrame(draw);
-          return;
-        }
-        ctx.clearRect(0, 0, width, height);
-        ctx.fillStyle = '#ffffff';
-
-        flakes.forEach(f => {
-          ctx.globalAlpha = f.opacity;
-          ctx.beginPath();
-          ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
-          ctx.fill();
-
-          f.y += f.speed;
-          f.x += f.wind;
-          if (f.y > height) {
-            f.y = -5;
-            f.x = Math.random() * width;
-          }
-          if (f.x > width) f.x = 0;
-          if (f.x < 0) f.x = width;
-        });
-        requestAnimationFrame(draw);
-      }
-      requestAnimationFrame(draw);
-    })();
-
-        // ========================================================
     // 🐧 GENTLEMAN PENGUIN IN TOP HAT & TUXEDO MOUSE COMPANION
     // ========================================================
     function initPenguinMascot() {
