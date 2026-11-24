@@ -266,16 +266,21 @@
                   box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
                   border-color 0.35s ease;
       will-change: transform, box-shadow;
+      overflow: visible !important;
+    }
+    .card-popout-sakura .img-frame {
+      overflow: visible !important;
     }
     @media (hover: hover) {
       .card-popout-sakura:hover {
-        transform: translateY(-11px) !important;
-        box-shadow: 0 24px 45px -10px rgba(244, 63, 94, 0.25), 0 10px 20px -6px rgba(15, 23, 42, 0.08) !important;
+        transform: translateY(-12px) !important;
+        box-shadow: 0 28px 48px -10px rgba(244, 63, 94, 0.28), 0 12px 22px -6px rgba(15, 23, 42, 0.1) !important;
         border-color: #fda4af !important;
+        z-index: 30 !important;
       }
       .card-popout-sakura:hover img.plushie-img {
-        transform: scale(1.14) translateY(-5px) !important;
-        filter: drop-shadow(0 14px 18px rgba(244, 63, 94, 0.3)) !important;
+        transform: scale(1.15) translateY(-8px) !important;
+        filter: drop-shadow(0 16px 22px rgba(244, 63, 94, 0.35)) !important;
       }
       .card-popout-sakura:hover .sakura-vortex-ring {
         opacity: 1;
@@ -284,7 +289,7 @@
     .plushie-img {
       transform-origin: bottom center;
       transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.4s ease;
-      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.06));
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.08));
     }
 
     /* Vòng lốc xoáy cánh hoa đào xoay quanh thẻ */
@@ -1333,7 +1338,7 @@
       // 1. Render các sản phẩm CÒN HÀNG lên lưới chính (2.5D Popout Plushie & Sakura Petal Burst)
       inStockList.forEach(p => {
         const card = document.createElement('div');
-        card.className = "group relative rounded-m3-xl bg-m3-surface-container-lowest border border-m3-outline-variant/40 overflow-hidden shadow-xs card-tactile card-popout-sakura wind-tilt-item flex flex-col justify-between";
+        card.className = "group relative rounded-m3-xl bg-m3-surface-container-lowest border border-m3-outline-variant/40 shadow-xs card-tactile card-popout-sakura wind-tilt-item flex flex-col justify-between pt-2.5 sm:pt-3";
         
         const zaloDirectLink = `https://zalo.me/0333870846?text=${encodeURIComponent('Chào shop Gấu Bông Q7, mình muốn hỏi giá và kích thước mẫu: ' + p.name)}`;
 
@@ -1349,13 +1354,13 @@
               <span class="vortex-petal vp-6"></span>
             </div>
 
-            <!-- Image Area (2.5D Popout, không có ánh sáng shine) -->
-            <div class="relative w-full aspect-square overflow-hidden bg-m3-surface-container cursor-pointer" onclick="openModal('${p.id}')">
-              <img src="${p.image}" alt="${p.name}" loading="lazy" class="plushie-img w-full h-full object-cover">
-              <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-m3-full text-[10px] font-bold bg-white/90 text-m3-primary shadow-xs">
+            <!-- Image Area (2.5D Popout Uncropped) -->
+            <div class="img-frame relative aspect-square px-2.5 sm:px-3 overflow-visible cursor-pointer" onclick="openModal('${p.id}')">
+              <img src="${p.image}" alt="${p.name}" loading="lazy" class="plushie-img w-full h-full object-cover rounded-m3-lg">
+              <span class="absolute top-2 left-4 px-2 py-0.5 rounded-m3-full text-[10px] font-bold bg-white/90 text-m3-primary shadow-xs">
                 ${p.badge}
               </span>
-              <span class="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded-m3-full text-[10px] font-medium bg-black/60 text-white backdrop-blur-xs flex items-center gap-1">
+              <span class="absolute bottom-2 right-4 px-2 py-0.5 rounded-m3-full text-[10px] font-medium bg-black/60 text-white backdrop-blur-xs flex items-center gap-1">
                 <span class="material-symbols-outlined text-xs">photo_camera</span> ${p.gallery.length} ảnh
               </span>
             </div>
