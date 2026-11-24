@@ -34,25 +34,25 @@
         extend: {
           colors: {
             m3: {
-              primary: '#b91d57',
-              'primary-hover': '#9e1447',
-              'on-primary': '#ffffff',
-              'primary-container': '#ffd9e2',
-              'on-primary-container': '#3e001d',
-              surface: '#fff8f8',
-              'surface-dim': '#ded8d9',
-              'surface-container-lowest': '#ffffff',
-              'surface-container-low': '#fdf1f3',
-              'surface-container': '#fbebee',
-              'surface-container-high': '#f5e2e6',
-              'surface-container-highest': '#eedde1',
-              'on-surface': '#21191b',
-              'on-surface-variant': '#514347',
-              outline: '#837377',
-              'outline-variant': '#d5c2c6',
-              secondary: '#75565f',
-              'secondary-container': '#ffd9e2',
-              tertiary: '#904a43'
+              primary: 'var(--m3-primary)',
+              'primary-hover': 'var(--m3-primary-hover)',
+              'on-primary': 'var(--m3-on-primary)',
+              'primary-container': 'var(--m3-primary-container)',
+              'on-primary-container': 'var(--m3-on-primary-container)',
+              surface: 'var(--m3-surface)',
+              'surface-dim': 'var(--m3-surface-dim)',
+              'surface-container-lowest': 'var(--m3-surface-container-lowest)',
+              'surface-container-low': 'var(--m3-surface-container-low)',
+              'surface-container': 'var(--m3-surface-container)',
+              'surface-container-high': 'var(--m3-surface-container-high)',
+              'surface-container-highest': 'var(--m3-surface-container-highest)',
+              'on-surface': 'var(--m3-on-surface)',
+              'on-surface-variant': 'var(--m3-on-surface-variant)',
+              outline: 'var(--m3-outline)',
+              'outline-variant': 'var(--m3-outline-variant)',
+              secondary: 'var(--m3-secondary)',
+              'secondary-container': 'var(--m3-secondary-container)',
+              tertiary: 'var(--m3-tertiary)'
             }
           },
           fontFamily: {
@@ -77,11 +77,95 @@
   </script>
 
   <style>
+    :root {
+      --m3-primary: #b91d57;
+      --m3-primary-hover: #9e1447;
+      --m3-on-primary: #ffffff;
+      --m3-primary-container: #ffd9e2;
+      --m3-on-primary-container: #3e001d;
+      --m3-surface: #fff8f8;
+      --m3-surface-dim: #ded8d9;
+      --m3-surface-container-lowest: #ffffff;
+      --m3-surface-container-low: #fdf1f3;
+      --m3-surface-container: #fbebee;
+      --m3-surface-container-high: #f5e2e6;
+      --m3-surface-container-highest: #eedde1;
+      --m3-on-surface: #21191b;
+      --m3-on-surface-variant: #514347;
+      --m3-outline: #837377;
+      --m3-outline-variant: #d5c2c6;
+      --m3-secondary: #75565f;
+      --m3-secondary-container: #ffd9e2;
+      --m3-tertiary: #904a43;
+    }
+
     body {
-      background-color: #fff8f8;
-      color: #21191b;
+      background-color: var(--m3-surface);
+      color: var(--m3-on-surface);
       font-family: 'Plus Jakarta Sans', sans-serif;
       overflow-x: hidden;
+      transition: background-color 0.35s ease, color 0.35s ease;
+    }
+
+    /* 🐧 SLEEK MATTE BLACK & WHITE PENGUIN TUXEDO THEME */
+    body.theme-penguin {
+      --m3-primary: #38bdf8;
+      --m3-primary-hover: #0ea5e9;
+      --m3-on-primary: #020617;
+      --m3-primary-container: #1e293b;
+      --m3-on-primary-container: #f1f5f9;
+      --m3-surface: #0b0f17;
+      --m3-surface-dim: #090d14;
+      --m3-surface-container-lowest: #101623;
+      --m3-surface-container-low: #131b2b;
+      --m3-surface-container: #172236;
+      --m3-surface-container-high: #1c2941;
+      --m3-surface-container-highest: #243452;
+      --m3-on-surface: #f8fafc;
+      --m3-on-surface-variant: #94a3b8;
+      --m3-outline: #64748b;
+      --m3-outline-variant: #26354f;
+      --m3-secondary: #38bdf8;
+      --m3-secondary-container: #1e293b;
+      --m3-tertiary: #f59e0b;
+      background-color: #0b0f17 !important;
+      color: #f8fafc !important;
+    }
+
+    body.theme-penguin header {
+      background-color: rgba(11, 15, 23, 0.88) !important;
+      border-bottom-color: rgba(38, 53, 79, 0.7) !important;
+    }
+
+    body.theme-penguin .tab-active {
+      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%) !important;
+      color: #ffffff !important;
+      box-shadow: 0px 4px 14px rgba(14, 165, 233, 0.4) !important;
+    }
+
+    body.theme-penguin .chip-active {
+      background-color: #1e293b !important;
+      color: #38bdf8 !important;
+      border-color: #38bdf8 !important;
+    }
+
+    body.theme-penguin .card-tactile {
+      background-color: #101623 !important;
+      border-color: rgba(38, 53, 79, 0.8) !important;
+    }
+    body.theme-penguin .card-tactile:hover {
+      border-color: rgba(56, 189, 248, 0.5) !important;
+      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.7), 0 0 20px rgba(56, 189, 248, 0.12) !important;
+    }
+
+    body.theme-penguin #productModal > div,
+    body.theme-penguin #photoPreviewModal > div {
+      background-color: #0f1420 !important;
+      border-color: rgba(38, 53, 79, 0.9) !important;
+    }
+
+    body.theme-penguin #scrollProgress {
+      background: linear-gradient(to right, #38bdf8, #818cf8, #c084fc) !important;
     }
 
     /* Tactile Elastic Card & Button Feedback */
@@ -295,8 +379,13 @@
         </div>
       </a>
 
-      <!-- Quick Action Buttons -->
+      <!-- Quick Action Buttons & Theme Switcher -->
       <div class="flex items-center gap-2">
+        <!-- 🐧 Theme Toggle Switcher -->
+        <button id="themeToggleBtn" onclick="toggleTheme()" class="btn-tactile inline-flex items-center gap-1.5 px-3 py-1.5 rounded-m3-full text-xs font-bold transition-all shadow-xs border border-m3-outline-variant/60 bg-m3-surface-container hover:bg-m3-surface-container-high text-m3-on-surface" title="Chuyển đổi giao diện: Tuxedo Penguin / Pastel Cute">
+          <span class="text-sm" id="themeIcon">🎩</span>
+          <span id="themeLabel" class="hidden sm:inline">Tuxedo Penguin</span>
+        </button>
         <a href="https://maps.app.goo.gl/eLYNVKUNGd8gYN2K9" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-m3-full text-xs font-semibold bg-m3-surface-container text-m3-on-surface hover:bg-m3-surface-container-high transition-colors">
           <span class="material-symbols-outlined text-sm text-m3-primary">location_on</span>
           Chỉ đường
@@ -1334,7 +1423,7 @@
     function triggerCuteBurst(e) {
       const heart = document.createElement('span');
       heart.className = 'pointer-events-none fixed z-[9999] text-base select-none animate-float-heart';
-      const sparkles = ['💖', '✨', '🧸', '🌸', '💕', '⭐'];
+      const sparkles = document.body.classList.contains('theme-penguin') ? ['🎩', '🐧', '❄️', '✨', '💎', '🖤', '⭐'] : ['💖', '✨', '🧸', '🌸', '💕', '⭐'];
       heart.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
       const x = e.clientX || (e.touches && e.touches[0].clientX) || window.innerWidth / 2;
       const y = e.clientY || (e.touches && e.touches[0].clientY) || window.innerHeight / 2;
@@ -1367,55 +1456,85 @@
       <!-- Breath Puff Container -->
       <div id="penguinBreath" style="position: absolute; top: 12px; left: 0; width: 100%; pointer-events: none;"></div>
       
-      <!-- SVG Penguin -->
-      <svg id="penguinSvg" viewBox="0 0 64 72" width="44" height="50" style="display: block; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.18));">
+      <!-- SVG Penguin Gentleman in Top Hat & Tuxedo -->
+      <svg id="penguinSvg" viewBox="0 0 64 78" width="46" height="56" style="display: block; filter: drop-shadow(0 6px 8px rgba(0,0,0,0.22)); overflow: visible;">
         <!-- Ground Shadow -->
-        <ellipse cx="32" cy="67" rx="18" ry="4" fill="rgba(0,0,0,0.22)" />
+        <ellipse cx="32" cy="73" rx="19" ry="4" fill="rgba(0,0,0,0.25)" />
         
         <!-- Left Foot -->
-        <ellipse id="pFootL" cx="24" cy="65" rx="7" ry="3.5" fill="#f97316" />
+        <ellipse id="pFootL" cx="24" cy="71" rx="7" ry="3.5" fill="#f97316" />
         <!-- Right Foot -->
-        <ellipse id="pFootR" cx="40" cy="65" rx="7" ry="3.5" fill="#f97316" />
+        <ellipse id="pFootR" cx="40" cy="71" rx="7" ry="3.5" fill="#f97316" />
         
         <!-- Body -->
-        <ellipse cx="32" cy="38" rx="22" ry="26" fill="#1e293b" />
+        <ellipse cx="32" cy="44" rx="22" ry="26" fill="#0f172a" />
         
         <!-- Left Wing -->
-        <ellipse id="pWingL" cx="10" cy="38" rx="5" ry="12" fill="#0f172a" transform="rotate(15 10 38)" />
+        <ellipse id="pWingL" cx="10" cy="44" rx="5" ry="12" fill="#020617" transform="rotate(15 10 44)" />
         <!-- Right Wing -->
-        <ellipse id="pWingR" cx="54" cy="38" rx="5" ry="12" fill="#0f172a" transform="rotate(-15 54 38)" />
+        <ellipse id="pWingR" cx="54" cy="44" rx="5" ry="12" fill="#020617" transform="rotate(-15 54 44)" />
         
-        <!-- White Belly -->
-        <ellipse cx="32" cy="42" rx="14" ry="19" fill="#ffffff" />
+        <!-- White Belly / Shirt -->
+        <ellipse cx="32" cy="48" rx="14" ry="19" fill="#ffffff" />
+
+        <!-- 🎩 TOP HAT -->
+        <g id="pTopHat">
+          <!-- Hat Brim -->
+          <ellipse cx="32" cy="18" rx="16" ry="3.5" fill="#020617" />
+          <!-- Hat Crown -->
+          <path d="M 21 18 L 22.5 3 L 41.5 3 L 43 18 Z" fill="#090d16" />
+          <!-- Hat Top -->
+          <ellipse cx="32" cy="3" rx="9.5" ry="2" fill="#1e293b" />
+          <!-- Hat Ribbon Band -->
+          <path d="M 21.8 13.5 L 22.2 17 L 41.8 17 L 42.2 13.5 Z" fill="#e11d48" />
+          <!-- Gold Hat Buckle -->
+          <rect x="30" y="13.2" width="4" height="4" rx="1" fill="#facc15" />
+        </g>
         
         <!-- Eyes -->
-        <ellipse cx="25" cy="24" rx="4" ry="5.5" fill="#ffffff" />
-        <circle cx="26" cy="24" r="2.5" fill="#0f172a" />
-        <circle cx="27" cy="23" r="1" fill="#ffffff" />
+        <ellipse cx="25" cy="30" rx="4" ry="5.5" fill="#ffffff" />
+        <circle cx="26" cy="30" r="2.5" fill="#020617" />
+        <circle cx="27" cy="29" r="1" fill="#ffffff" />
         
-        <ellipse cx="39" cy="24" rx="4" ry="5.5" fill="#ffffff" />
-        <circle cx="38" cy="24" r="2.5" fill="#0f172a" />
-        <circle cx="39" cy="23" r="1" fill="#ffffff" />
+        <ellipse cx="39" cy="30" rx="4" ry="5.5" fill="#ffffff" />
+        <circle cx="38" cy="30" r="2.5" fill="#020617" />
+        <circle cx="39" cy="29" r="1" fill="#ffffff" />
         
-        <!-- Tired/Sweating Eyebrows -->
-        <path d="M 21 17 Q 25 20 28 18" stroke="#0f172a" stroke-width="1.8" stroke-linecap="round" fill="none" />
-        <path d="M 43 17 Q 39 20 36 18" stroke="#0f172a" stroke-width="1.8" stroke-linecap="round" fill="none" />
+        <!-- Eyebrows -->
+        <path d="M 21 23 Q 25 26 28 24" stroke="#0f172a" stroke-width="1.8" stroke-linecap="round" fill="none" />
+        <path d="M 43 23 Q 39 26 36 24" stroke="#0f172a" stroke-width="1.8" stroke-linecap="round" fill="none" />
         
         <!-- Pink Cheeks -->
-        <circle cx="18" cy="32" r="3.5" fill="#fda4af" opacity="0.85" />
-        <circle cx="46" cy="32" r="3.5" fill="#fda4af" opacity="0.85" />
+        <circle cx="18" cy="38" r="3.5" fill="#fda4af" opacity="0.85" />
+        <circle cx="46" cy="38" r="3.5" fill="#fda4af" opacity="0.85" />
+
+        <!-- 👔 TUXEDO LAPELS & BOW TIE -->
+        <!-- Tuxedo Jacket Lapels -->
+        <path d="M 18 40 C 18 52, 21 62, 26 66 C 23 58, 22 47, 24 41 Z" fill="#020617" />
+        <path d="M 46 40 C 46 52, 43 62, 38 66 C 41 58, 42 47, 40 41 Z" fill="#020617" />
+        
+        <!-- Red Bow Tie -->
+        <g id="pBowTie" transform="translate(32, 40)">
+          <polygon points="-6,-3 0,0 -6,3" fill="#e11d48" />
+          <polygon points="6,-3 0,0 6,3" fill="#e11d48" />
+          <circle cx="0" cy="0" r="2" fill="#be123c" />
+        </g>
+        
+        <!-- Gold Vest Buttons -->
+        <circle cx="32" cy="49" r="1.3" fill="#facc15" />
+        <circle cx="32" cy="56" r="1.3" fill="#facc15" />
         
         <!-- Closed Beak (When Running) -->
-        <polygon id="pBeakClosed" points="32,25 26,33 38,33" fill="#f97316" />
+        <polygon id="pBeakClosed" points="32,31 26,38 38,38" fill="#f97316" />
         
         <!-- Open Gasping Beak with Tongue (When Panting) -->
         <g id="pBeakOpen" style="display: none;">
-          <ellipse cx="32" cy="33" rx="6" ry="5.5" fill="#ea580c" />
-          <path d="M 29 33 Q 32 38 35 33" fill="#f43f5e" />
+          <ellipse cx="32" cy="38" rx="6" ry="5.5" fill="#ea580c" />
+          <path d="M 29 38 Q 32 43 35 38" fill="#f43f5e" />
         </g>
         
         <!-- Forehead Sweat Drop -->
-        <path d="M 46 11 C 46 7, 43 4, 43 4 C 43 4, 40 7, 40 11 C 40 13.5, 41.8 15.5, 43 15.5 C 44.2 15.5, 46 13.5, 46 11 Z" fill="#38bdf8" opacity="0.95" />
+        <path d="M 46 19 C 46 15, 43 12, 43 12 C 43 12, 40 15, 40 19 C 40 21.5, 41.8 23.5, 43 23.5 C 44.2 23.5, 46 21.5, 46 19 Z" fill="#38bdf8" opacity="0.95" />
       </svg>
     </div>
   </div>
