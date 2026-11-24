@@ -118,29 +118,6 @@
       transform: scale(0.95);
     }
 
-    /* Shiny Gloss Sheen Effect on Card Hover (desktop only) */
-    @media (hover: hover) {
-      .shine-overlay {
-        position: relative;
-        overflow: hidden;
-      }
-      .shine-overlay::after {
-        content: '';
-        position: absolute;
-        top: -60%;
-        left: -60%;
-        width: 220%;
-        height: 220%;
-        background: linear-gradient(60deg, transparent 40%, rgba(255, 255, 255, 0.38) 50%, transparent 60%);
-        transform: rotate(25deg) translateY(-120%);
-        transition: transform 0.8s ease-in-out;
-        pointer-events: none;
-      }
-      .group:hover .shine-overlay::after {
-        transform: rotate(25deg) translateY(120%);
-      }
-    }
-
     /* Smooth Material 3 Fade & Slide Transitions */
     @keyframes m3FadeSlideUp {
       from { opacity: 0; transform: translateY(14px); }
@@ -282,57 +259,117 @@
       transition: opacity 0.3s ease;
     }
 
-    /* 🌸🧸 COMBINED FX: 2.5D POPOUT PLUSHIE + SAKURA PETAL BURST */
+    /* 🌸🧸 2.5D POPOUT PLUSHIE & SAKURA VORTEX (LỐC XOÁY CÁNH HOA ĐÀO XOAY QUANH THẺ) */
     .card-popout-sakura {
       position: relative;
-      transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), 
-                  box-shadow 0.38s cubic-bezier(0.16, 1, 0.3, 1), 
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                  box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
                   border-color 0.35s ease;
       will-change: transform, box-shadow;
     }
     @media (hover: hover) {
       .card-popout-sakura:hover {
         transform: translateY(-11px) !important;
-        box-shadow: 0 26px 48px -10px rgba(244, 63, 94, 0.28), 0 12px 22px -6px rgba(15, 23, 42, 0.1) !important;
+        box-shadow: 0 24px 45px -10px rgba(244, 63, 94, 0.25), 0 10px 20px -6px rgba(15, 23, 42, 0.08) !important;
         border-color: #fda4af !important;
       }
       .card-popout-sakura:hover img.plushie-img {
         transform: scale(1.14) translateY(-5px) !important;
-        filter: drop-shadow(0 14px 18px rgba(244, 63, 94, 0.35)) !important;
+        filter: drop-shadow(0 14px 18px rgba(244, 63, 94, 0.3)) !important;
+      }
+      .card-popout-sakura:hover .sakura-vortex-ring {
+        opacity: 1;
       }
     }
     .plushie-img {
       transform-origin: bottom center;
       transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.4s ease;
-      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.08));
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.06));
     }
-    .sakura-burst {
+
+    /* Vòng lốc xoáy cánh hoa đào xoay quanh thẻ */
+    .sakura-vortex-ring {
       position: absolute;
-      width: 14px;
-      height: 14px;
-      background: radial-gradient(circle, #f43f5e 30%, #fda4af 90%);
-      border-radius: 14px 0 14px 0;
-      opacity: 0;
+      inset: -14px;
       pointer-events: none;
       z-index: 35;
-      box-shadow: 0 2px 6px rgba(244, 63, 94, 0.3);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      border-radius: 2rem;
+    }
+    .vortex-petal {
+      position: absolute;
+      width: 13px;
+      height: 13px;
+      background: radial-gradient(circle at 35% 35%, #ffc2d1 20%, #f43f5e 85%);
+      border-radius: 13px 0 13px 0;
+      filter: drop-shadow(0 2px 4px rgba(244, 63, 94, 0.35));
+      opacity: 0;
     }
     @media (hover: hover) {
-      .card-popout-sakura:hover .sb-1 { animation: flyPetal1 0.95s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-      .card-popout-sakura:hover .sb-2 { animation: flyPetal2 0.95s cubic-bezier(0.2, 0.8, 0.2, 1) 0.08s forwards; }
-      .card-popout-sakura:hover .sb-3 { animation: flyPetal3 0.95s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s forwards; }
+      /* 6 cánh hoa đào xoay quanh 4 cạnh của thẻ thành lốc xoáy nhẹ */
+      .card-popout-sakura:hover .vp-1 {
+        animation: vortexOrbit1 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      }
+      .card-popout-sakura:hover .vp-2 {
+        animation: vortexOrbit2 3.5s cubic-bezier(0.4, 0, 0.2, 1) 0.5s infinite;
+      }
+      .card-popout-sakura:hover .vp-3 {
+        animation: vortexOrbit3 3.3s cubic-bezier(0.4, 0, 0.2, 1) 1.0s infinite;
+      }
+      .card-popout-sakura:hover .vp-4 {
+        animation: vortexOrbit4 3.4s cubic-bezier(0.4, 0, 0.2, 1) 1.5s infinite;
+      }
+      .card-popout-sakura:hover .vp-5 {
+        animation: vortexOrbit5 3.6s cubic-bezier(0.4, 0, 0.2, 1) 2.0s infinite;
+      }
+      .card-popout-sakura:hover .vp-6 {
+        animation: vortexOrbit6 3.2s cubic-bezier(0.4, 0, 0.2, 1) 2.5s infinite;
+      }
     }
-    @keyframes flyPetal1 {
-      0% { top: 45%; left: 85%; opacity: 1; transform: scale(0.6) rotate(0deg); }
-      100% { top: -8%; left: 102%; opacity: 0; transform: scale(1.3) rotate(210deg) translate(20px, -30px); }
+
+    /* Keyframes xoáy vòng quanh thẻ như lốc xoáy nhẹ */
+    @keyframes vortexOrbit1 {
+      0%   { top: -8px; left: 20%; opacity: 0; transform: scale(0.7) rotate(0deg); }
+      15%  { opacity: 0.95; transform: scale(1.1) rotate(45deg); }
+      50%  { top: 50%; left: 104%; opacity: 0.9; transform: scale(1.2) rotate(160deg); }
+      85%  { top: 102%; left: 60%; opacity: 0.85; transform: scale(1.0) rotate(260deg); }
+      100% { top: 70%; left: -8px; opacity: 0; transform: scale(0.6) rotate(360deg); }
     }
-    @keyframes flyPetal2 {
-      0% { top: 55%; left: 15%; opacity: 1; transform: scale(0.6) rotate(0deg); }
-      100% { top: 10%; left: -10%; opacity: 0; transform: scale(1.2) rotate(-160deg) translate(-25px, -35px); }
+    @keyframes vortexOrbit2 {
+      0%   { top: 25%; left: 104%; opacity: 0; transform: scale(0.7) rotate(30deg); }
+      20%  { opacity: 0.95; transform: scale(1.15) rotate(90deg); }
+      50%  { top: 104%; left: 40%; opacity: 0.9; transform: scale(1.05) rotate(190deg); }
+      80%  { top: 40%; left: -10px; opacity: 0.85; transform: scale(1.1) rotate(290deg); }
+      100% { top: -10px; left: 50%; opacity: 0; transform: scale(0.6) rotate(390deg); }
     }
-    @keyframes flyPetal3 {
-      0% { top: 25%; left: 50%; opacity: 1; transform: scale(0.6) rotate(0deg); }
-      100% { top: -22%; left: 45%; opacity: 0; transform: scale(1.35) rotate(135deg) translateY(-40px); }
+    @keyframes vortexOrbit3 {
+      0%   { top: 90%; left: 80%; opacity: 0; transform: scale(0.8) rotate(15deg); }
+      20%  { opacity: 0.9; transform: scale(1.1) rotate(70deg); }
+      55%  { top: 80%; left: -8px; opacity: 0.85; transform: scale(1.2) rotate(180deg); }
+      85%  { top: -10px; left: 30%; opacity: 0.85; transform: scale(1.0) rotate(280deg); }
+      100% { top: 30%; left: 102%; opacity: 0; transform: scale(0.6) rotate(375deg); }
+    }
+    @keyframes vortexOrbit4 {
+      0%   { top: 102%; left: 25%; opacity: 0; transform: scale(0.7) rotate(0deg); }
+      20%  { opacity: 0.9; transform: scale(1.15) rotate(60deg); }
+      50%  { top: 20%; left: -10px; opacity: 0.95; transform: scale(1.0) rotate(170deg); }
+      80%  { top: -10px; left: 70%; opacity: 0.85; transform: scale(1.2) rotate(270deg); }
+      100% { top: 60%; left: 104%; opacity: 0.6; transform: scale(0.6) rotate(360deg); }
+    }
+    @keyframes vortexOrbit5 {
+      0%   { top: 60%; left: -10px; opacity: 0; transform: scale(0.8) rotate(45deg); }
+      20%  { opacity: 0.95; transform: scale(1.1) rotate(110deg); }
+      50%  { top: -10px; left: 55%; opacity: 0.9; transform: scale(1.2) rotate(200deg); }
+      80%  { top: 50%; left: 104%; opacity: 0.85; transform: scale(0.95) rotate(300deg); }
+      100% { top: 102%; left: 30%; opacity: 0; transform: scale(0.6) rotate(405deg); }
+    }
+    @keyframes vortexOrbit6 {
+      0%   { top: -10px; left: 80%; opacity: 0; transform: scale(0.7) rotate(20deg); }
+      20%  { opacity: 0.9; transform: scale(1.05) rotate(90deg); }
+      50%  { top: 85%; left: 95%; opacity: 0.95; transform: scale(1.2) rotate(190deg); }
+      80%  { top: 95%; left: -8px; opacity: 0.8; transform: scale(1.0) rotate(290deg); }
+      100% { top: 10%; left: -6px; opacity: 0; transform: scale(0.55) rotate(380deg); }
     }
 
     /* 🍬 FX 3: Marshmallow Spring Physics Button (Showcase 3) */
@@ -1308,13 +1345,18 @@
 
         card.innerHTML = `
           <div>
-            <!-- 🌸 Sakura Petal Burst Particles -->
-            <span class="sakura-burst sb-1"></span>
-            <span class="sakura-burst sb-2"></span>
-            <span class="sakura-burst sb-3"></span>
+            <!-- 🌸 Lốc xoáy cánh hoa đào xoay quanh thẻ (Sakura Vortex Ring) -->
+            <div class="sakura-vortex-ring" aria-hidden="true">
+              <span class="vortex-petal vp-1"></span>
+              <span class="vortex-petal vp-2"></span>
+              <span class="vortex-petal vp-3"></span>
+              <span class="vortex-petal vp-4"></span>
+              <span class="vortex-petal vp-5"></span>
+              <span class="vortex-petal vp-6"></span>
+            </div>
 
-            <!-- Image Area (2.5D Popout) -->
-            <div class="relative w-full aspect-square overflow-hidden bg-m3-surface-container cursor-pointer shine-overlay" onclick="openModal('${p.id}')">
+            <!-- Image Area (2.5D Popout, không có ánh sáng shine) -->
+            <div class="relative w-full aspect-square overflow-hidden bg-m3-surface-container cursor-pointer" onclick="openModal('${p.id}')">
               <img src="${p.image}" alt="${p.name}" loading="lazy" class="plushie-img w-full h-full object-cover">
               <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-m3-full text-[10px] font-bold bg-white/90 text-m3-primary shadow-xs">
                 ${p.badge}
@@ -1414,7 +1456,7 @@
             card.innerHTML = `
               <div>
                 <!-- Image Area with Out of Stock overlay -->
-                <div class="relative w-full aspect-square overflow-hidden bg-m3-surface-container cursor-pointer shine-overlay" onclick="openModal('${p.id}')">
+                <div class="relative w-full aspect-square overflow-hidden bg-m3-surface-container cursor-pointer" onclick="openModal('${p.id}')">
                   <img src="${p.image}" alt="${p.name}" loading="lazy" class="w-full h-full object-cover grayscale-30 group-hover:scale-105 transition-transform duration-300">
                   <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-m3-full text-[10px] font-bold bg-amber-600 text-white shadow-xs flex items-center gap-1">
                     <span class="material-symbols-outlined text-[12px]">schedule</span> TẠM HẾT HÀNG
@@ -1964,17 +2006,32 @@
         });
       }
 
-      window.addEventListener('mousemove', (e) => {
-        sakuraMouse.x = e.clientX;
-        sakuraMouse.y = e.clientY;
-        sakuraMouse.active = true;
-      });
-      window.addEventListener('touchmove', (e) => {
-        if (e.touches.length > 0) {
-          sakuraMouse.x = e.touches[0].clientX;
-          sakuraMouse.y = e.touches[0].clientY;
-          sakuraMouse.active = true;
+      let mouseVx = 0;
+      let mouseVy = 0;
+      let lastMouseX = -1000;
+      let lastMouseY = -1000;
+      let lastMouseTime = performance.now();
+
+      function updateCursorWind(clientX, clientY) {
+        const now = performance.now();
+        const dt = Math.max(8, now - lastMouseTime);
+        if (lastMouseX !== -1000) {
+          const rawVx = (clientX - lastMouseX) / dt * 16;
+          const rawVy = (clientY - lastMouseY) / dt * 16;
+          mouseVx += (Math.max(-14, Math.min(14, rawVx)) - mouseVx) * 0.45;
+          mouseVy += (Math.max(-14, Math.min(14, rawVy)) - mouseVy) * 0.45;
         }
+        lastMouseX = clientX;
+        lastMouseY = clientY;
+        sakuraMouse.x = clientX;
+        sakuraMouse.y = clientY;
+        sakuraMouse.active = true;
+        lastMouseTime = now;
+      }
+
+      window.addEventListener('mousemove', (e) => updateCursorWind(e.clientX, e.clientY));
+      window.addEventListener('touchmove', (e) => {
+        if (e.touches.length > 0) updateCursorWind(e.touches[0].clientX, e.touches[0].clientY);
       }, { passive: true });
 
       function renderSakura() {
@@ -1983,6 +2040,10 @@
           return;
         }
         sakuraCtx.clearRect(0, 0, sakuraCanvas.width, sakuraCanvas.height);
+
+        // Giảm dần lực gió của chuột theo thời gian
+        mouseVx *= 0.92;
+        mouseVy *= 0.92;
 
         sakuraPetals.forEach(p => {
           // Smoothly relax speed back to gentle baseline
@@ -1993,15 +2054,17 @@
           p.x += Math.sin(p.angle) * 0.35 + p.speedX;
           p.angle += p.rotSpeed;
 
-          // Mouse vortex repulsion
+          // Luồng gió nhẹ kéo theo hướng chuột di chuyển
           if (sakuraMouse.active) {
             const dx = p.x - sakuraMouse.x;
             const dy = p.y - sakuraMouse.y;
             const dist = Math.hypot(dx, dy);
-            if (dist < 90 && dist > 0) {
-              const force = (90 - dist) / 90 * 1.5;
-              p.x += (dx / dist) * force;
-              p.y += (dy / dist) * force;
+            if (dist < 160 && dist > 0) {
+              const breeze = (160 - dist) / 160;
+              // Kéo các cánh hoa bay theo hướng di chuyển của chuột
+              p.x += mouseVx * breeze * 0.55;
+              p.y += mouseVy * breeze * 0.55;
+              p.angle += (mouseVx * 0.003 + mouseVy * 0.002) * breeze;
             }
           }
 
