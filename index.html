@@ -194,7 +194,26 @@
       font-weight: 700;
       border-color: #b91d57 !important;
     }
-        .tab-active {
+            /* High-contrast Tab Switcher */
+    .tab-active {
+      background: #b91d57 !important;
+      color: #ffffff !important;
+      font-weight: 800 !important;
+      box-shadow: 0 4px 12px rgba(185, 29, 87, 0.35) !important;
+      border: 1px solid #9e1447 !important;
+    }
+    .tab-inactive {
+      background: transparent !important;
+      color: #21191b !important;
+      font-weight: 700 !important;
+      border: 1px solid transparent !important;
+    }
+    .tab-inactive:hover {
+      color: #b91d57 !important;
+      background: rgba(255, 217, 226, 0.4) !important;
+    }
+    /* old */
+    .old-tab {
       background-color: #b91d57 !important;
       color: #ffffff !important;
       font-weight: 800 !important;
@@ -378,9 +397,9 @@
     .neu-pastel-pill:hover {
       box-shadow: 4px 4px 10px rgba(185, 29, 87, 0.12), -4px -4px 10px rgba(255, 255, 255, 1);
     }
-    .neu-pastel-pill.tab-active,
     .neu-pastel-pill.chip-active {
       background: #ffd9e2 !important;
+      color: #3e001d !important;
       box-shadow: inset 2px 2px 4px rgba(185, 29, 87, 0.15), inset -2px -2px 4px rgba(255, 255, 255, 0.8) !important;
       border-color: #b91d57 !important;
     }
@@ -397,6 +416,14 @@
 
     
       to { transform: scaleY(1); opacity: 1; }
+    }
+
+  
+    /* 🍃 Scroll Velocity Wind Tilt Physics */
+    .wind-tilt-item {
+      will-change: transform;
+      transform-origin: center center;
+      transition: transform 0.08s ease-out;
     }
 
   </style>
@@ -670,10 +697,10 @@
       
       <!-- View Switcher Tabs (Responsive full-width 2-column on mobile) -->
       <div class="w-full md:w-auto grid grid-cols-2 md:inline-flex p-1 rounded-m3-full bg-m3-surface-container border border-m3-outline-variant/40 shadow-xs text-center min-w-0">
-        <button id="tabModels" onclick="switchView('models')" class="tab-active marshmallow-btn px-3 sm:px-4 py-2 rounded-m3-full text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+        <button id="tabModels" onclick="switchView('models')" class="tab-active marshmallow-btn px-3.5 sm:px-5 py-2 rounded-m3-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer">
           <span>🧸</span> <span class="hidden sm:inline">Xem Theo Dòng</span><span class="sm:hidden">Theo Dòng</span> (<span id="modelCount">19</span>)
         </button>
-        <button id="tabAllPhotos" onclick="switchView('photos')" class="tab-inactive marshmallow-btn px-3 sm:px-4 py-2 rounded-m3-full text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+        <button id="tabAllPhotos" onclick="switchView('photos')" class="tab-inactive marshmallow-btn px-3.5 sm:px-5 py-2 rounded-m3-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer">
           <span>📷</span> <span class="hidden sm:inline">Toàn Bộ 50 Ảnh Thật</span><span class="sm:hidden">50 Ảnh Thật</span>
         </button>
       </div>
@@ -1213,28 +1240,28 @@
       const photosGrid = document.getElementById('photosGrid');
       const categoryChipsBar = document.getElementById('categoryChipsBar');
 
-      if (view === 'models') {
-        tabModels.className = "tab-active marshmallow-btn neu-pastel-pill px-2.5 sm:px-4 py-2 rounded-m3-full text-xs font-bold transition-all flex items-center justify-center gap-1";
-        tabAllPhotos.className = "marshmallow-btn neu-pastel-pill px-2.5 sm:px-4 py-2 rounded-m3-full text-xs font-bold text-m3-on-surface hover:text-m3-primary transition-all flex items-center justify-center gap-1";
-        productGrid.classList.remove('hidden');
-        productGrid.classList.remove('animate-m3-fade');
-        void productGrid.offsetWidth; // trigger reflow
-        productGrid.classList.add('animate-m3-fade');
-        photosGrid.classList.add('hidden');
-        categoryChipsBar.classList.remove('hidden');
-        renderProducts();
-      } else {
-        tabAllPhotos.className = "tab-active marshmallow-btn neu-pastel-pill px-2.5 sm:px-4 py-2 rounded-m3-full text-xs font-bold transition-all flex items-center justify-center gap-1";
-        tabModels.className = "marshmallow-btn neu-pastel-pill px-2.5 sm:px-4 py-2 rounded-m3-full text-xs font-bold text-m3-on-surface hover:text-m3-primary transition-all flex items-center justify-center gap-1";
-        productGrid.classList.add('hidden');
-        const oos = document.getElementById('outOfStockSection'); if(oos) oos.classList.add('hidden');
-        photosGrid.classList.remove('hidden');
-        photosGrid.classList.remove('animate-m3-fade');
-        void photosGrid.offsetWidth;
-        photosGrid.classList.add('animate-m3-fade');
-        categoryChipsBar.classList.add('hidden');
-        renderPhotosGrid();
-      }
+          if (view === 'models') {
+      tabModels.className = "tab-active marshmallow-btn px-3.5 sm:px-5 py-2 rounded-m3-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer";
+      tabAllPhotos.className = "tab-inactive marshmallow-btn px-3.5 sm:px-5 py-2 rounded-m3-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer";
+      productGrid.classList.remove('hidden');
+      productGrid.classList.remove('animate-m3-fade');
+      void productGrid.offsetWidth; // trigger reflow
+      productGrid.classList.add('animate-m3-fade');
+      photosGrid.classList.add('hidden');
+      categoryChipsBar.classList.remove('hidden');
+      renderProducts();
+    } else {
+      tabAllPhotos.className = "tab-active marshmallow-btn px-3.5 sm:px-5 py-2 rounded-m3-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer";
+      tabModels.className = "tab-inactive marshmallow-btn px-3.5 sm:px-5 py-2 rounded-m3-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer";
+      productGrid.classList.add('hidden');
+      const oos = document.getElementById('outOfStockSection'); if(oos) oos.classList.add('hidden');
+      photosGrid.classList.remove('hidden');
+      photosGrid.classList.remove('animate-m3-fade');
+      void photosGrid.offsetWidth;
+      photosGrid.classList.add('animate-m3-fade');
+      categoryChipsBar.classList.add('hidden');
+      renderPhotosGrid();
+    }
     }
 
     function renderProducts() {
@@ -1269,7 +1296,7 @@
       // 1. Render các sản phẩm CÒN HÀNG lên lưới chính (Holo FX 1 & Bento FX 5)
       inStockList.forEach(p => {
         const card = document.createElement('div');
-        card.className = "group relative rounded-m3-xl bg-m3-surface-container-lowest border border-m3-outline-variant/40 overflow-hidden shadow-xs card-tactile card-holo bento-glow-card flex flex-col justify-between";
+        card.className = "group relative rounded-m3-xl bg-m3-surface-container-lowest border border-m3-outline-variant/40 overflow-hidden shadow-xs card-tactile card-holo bento-glow-card wind-tilt-item flex flex-col justify-between";
         
         const zaloDirectLink = `https://zalo.me/0333870846?text=${encodeURIComponent('Chào shop Gấu Bông Q7, mình muốn hỏi giá và kích thước mẫu: ' + p.name)}`;
 
@@ -1437,7 +1464,7 @@
 
       filteredPhotos.forEach((item, idx) => {
         const photoCard = document.createElement('div');
-        photoCard.className = "group relative rounded-m3-lg overflow-hidden bg-m3-surface-container-lowest border border-m3-outline-variant/40 shadow-xs hover:shadow-m3-2 transition-all cursor-pointer aspect-square";
+        photoCard.className = "group relative rounded-m3-lg overflow-hidden bg-m3-surface-container-lowest border border-m3-outline-variant/40 shadow-xs hover:shadow-m3-2 transition-all cursor-pointer aspect-square wind-tilt-item";
         photoCard.onclick = () => openPhotoPreview(item.file, item.name);
 
         photoCard.innerHTML = `
@@ -2163,6 +2190,71 @@
       initAuroraWaves();
       initHoloAndBentoListeners();
     }
+
+  
+    // =========================================================
+    // 🍃 SCROLL VELOCITY WIND TILT PHYSICS ENGINE
+    // Hiệu ứng nghiêng ngược chiều vuốt như bị gió thổi khi lướt web
+    // =========================================================
+    let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+    let scrollVelocity = 0;
+    let targetSkew = 0;
+    let currentSkew = 0;
+    let isScrolling = false;
+    let scrollTimeout = null;
+
+    window.addEventListener('scroll', () => {
+      const currentY = window.pageYOffset || document.documentElement.scrollTop;
+      const delta = currentY - lastScrollY;
+      lastScrollY = currentY;
+
+      // Calculate velocity (inverted: scrolling down -> delta > 0 -> tilt backward/negative)
+      // Clamped to comfortable smooth range [-4.5deg, 4.5deg]
+      const rawSkew = -delta * 0.12;
+      targetSkew = Math.max(-4.5, Math.min(4.5, rawSkew));
+
+      // Also boost sakura wind speed with scroll!
+      if (typeof sakuraPetals !== 'undefined' && sakuraPetals.length > 0) {
+        sakuraPetals.forEach(p => {
+          p.speedY += delta * 0.05;
+          p.x -= delta * 0.08;
+        });
+      }
+
+      isScrolling = true;
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        isScrolling = false;
+        targetSkew = 0;
+      }, 90);
+    }, { passive: true });
+
+    function updateWindTilt() {
+      // Smooth lerp damping back to 0
+      currentSkew += (targetSkew - currentSkew) * 0.15;
+
+      if (Math.abs(currentSkew) > 0.04 || isScrolling) {
+        const tiltItems = document.querySelectorAll('.wind-tilt-item');
+        const skewStr = `skewY(${currentSkew.toFixed(2)}deg) scale(${1 - Math.abs(currentSkew) * 0.012})`;
+        tiltItems.forEach(el => {
+          // If hovered on desktop with holo tilt, let holo tilt handle, otherwise apply wind skew
+          if (!el.matches(':hover')) {
+            el.style.transform = skewStr;
+          }
+        });
+      } else if (!isScrolling && Math.abs(currentSkew) <= 0.04 && currentSkew !== 0) {
+        currentSkew = 0;
+        const tiltItems = document.querySelectorAll('.wind-tilt-item');
+        tiltItems.forEach(el => {
+          if (!el.matches(':hover')) {
+            el.style.transform = '';
+          }
+        });
+      }
+
+      requestAnimationFrame(updateWindTilt);
+    }
+    requestAnimationFrame(updateWindTilt);
 
   </script>
   </body>
