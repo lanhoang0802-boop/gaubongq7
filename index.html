@@ -165,23 +165,68 @@
     }
 
     
-    /* Về Tiệm Gấu Bông Q7 & FAQ in Penguin Matte Black Theme */
-    body.theme-penguin section {
-      background-color: var(--m3-surface-container-lowest) !important;
-      border-color: rgba(38, 53, 79, 0.7) !important;
-      color: var(--m3-on-surface) !important;
+
+    /* ========================================================
+       🏢 VỀ TIỆM GẤU BÔNG Q7 & FAQ SECTION THEME STYLING
+       ======================================================== */
+    /* Light / Pastel Theme */
+    #aboutShopSection {
+      background-color: #ffffff !important;
+      color: #21191b !important;
+      border-color: rgba(214, 194, 197, 0.4) !important;
     }
-    body.theme-penguin details {
-      background-color: var(--m3-surface-container-low) !important;
-      border-color: rgba(38, 53, 79, 0.7) !important;
-      color: var(--m3-on-surface) !important;
+    #aboutShopSection h2,
+    #aboutShopSection h3 {
+      color: #21191b !important;
     }
-    body.theme-penguin details summary {
-      color: var(--m3-on-surface) !important;
+    #aboutShopSection p,
+    #aboutShopSection span.text-m3-on-surface-variant {
+      color: #514347 !important;
     }
-    body.theme-penguin details p {
-      color: var(--m3-on-surface-variant) !important;
+    #aboutShopSection .feature-box,
+    #aboutShopSection details {
+      background-color: #fdf1f3 !important;
+      border-color: rgba(214, 194, 197, 0.4) !important;
     }
+    #aboutShopSection details summary {
+      color: #21191b !important;
+    }
+
+    /* 🐧 Tuxedo Penguin Matte Black Theme */
+    body.theme-penguin #aboutShopSection {
+      background-color: #101623 !important;
+      color: #f8fafc !important;
+      border-color: rgba(38, 53, 79, 0.8) !important;
+      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.7) !important;
+    }
+    body.theme-penguin #aboutShopSection h2 {
+      color: #ffffff !important;
+    }
+    body.theme-penguin #aboutShopSection h3 {
+      color: #f8fafc !important;
+    }
+    body.theme-penguin #aboutShopSection p {
+      color: #94a3b8 !important;
+    }
+    body.theme-penguin #aboutShopSection strong {
+      color: #38bdf8 !important;
+    }
+    body.theme-penguin #aboutShopSection em {
+      color: #cbd5e1 !important;
+      font-style: normal;
+    }
+    body.theme-penguin #aboutShopSection .feature-box,
+    body.theme-penguin #aboutShopSection details {
+      background-color: #172236 !important;
+      border-color: rgba(38, 53, 79, 0.8) !important;
+    }
+    body.theme-penguin #aboutShopSection details summary {
+      color: #f8fafc !important;
+    }
+    body.theme-penguin #aboutShopSection details p {
+      color: #94a3b8 !important;
+    }
+
     body.theme-penguin #scrollProgress {
       background: linear-gradient(to right, #38bdf8, #818cf8, #c084fc) !important;
     }
@@ -693,7 +738,7 @@
     </div>
   
     <!-- SEO Content Section: Giới thiệu & Câu hỏi thường gặp -->
-    <section class="mt-20 bg-m3-surface-container-lowest rounded-m3-xl p-6 sm:p-10 border border-m3-outline-variant/30 shadow-m3-1">
+    <section id="aboutShopSection" class="mt-20 rounded-m3-xl p-6 sm:p-10 border shadow-m3-1 transition-colors duration-300">
       <div class="max-w-4xl mx-auto">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-m3-primary-container text-m3-on-primary-container text-xs font-bold mb-4">
           <span class="material-symbols-outlined text-sm">verified</span>
@@ -707,17 +752,17 @@
             Chào mừng bạn đến với <strong>Gấu Bông Q7</strong> (tọa lạc tại <em>90 Đường 77, Phường Tân Quy, Quận 7, TP.HCM</em>) — điểm đến uy tín dành cho những ai đang tìm kiếm những chú thú nhồi bông đáng yêu, mềm mại làm quà sinh nhật, quà tặng người yêu, quà tốt nghiệp hay tự thưởng cho chính mình.
           </p>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
-            <div class="p-4 rounded-m3-lg bg-m3-surface-container-low border border-m3-outline-variant/20">
+            <div class="feature-box p-4 rounded-m3-lg border border-m3-outline-variant/20">
               <span class="material-symbols-outlined text-m3-primary text-2xl mb-1">sentiment_very_satisfied</span>
               <h3 class="font-bold text-m3-on-surface text-base mb-1">Gòn Tinh Khiết 100%</h3>
               <p class="text-xs text-m3-on-surface-variant">Lõi nhồi gòn bi đàn hồi 7D, êm ái chống xẹp lún, không độn mút bẩn hay tạp chất.</p>
             </div>
-            <div class="grid-card p-4 rounded-m3-lg bg-m3-surface-container-low border border-m3-outline-variant/20">
+            <div class="feature-box p-4 rounded-m3-lg border border-m3-outline-variant/20">
               <span class="material-symbols-outlined text-m3-primary text-2xl mb-1">favorite</span>
               <h3 class="font-bold text-m3-on-surface text-base mb-1">Lông Mịn Không Rụng</h3>
               <p class="text-xs text-m3-on-surface-variant">Vải co giãn 4 chiều mềm mướt, an toàn cho cả làn da nhạy cảm của em bé.</p>
             </div>
-            <div class="p-4 rounded-m3-lg bg-m3-surface-container-low border border-m3-outline-variant/20">
+            <div class="feature-box p-4 rounded-m3-lg border border-m3-outline-variant/20">
               <span class="material-symbols-outlined text-m3-primary text-2xl mb-1">rocket_launch</span>
               <h3 class="font-bold text-m3-on-surface text-base mb-1">Giao Nhanh 1-2h</h3>
               <p class="text-xs text-m3-on-surface-variant">Hỗ trợ giao siêu tốc tại Quận 7, Quận 4, Nhà Bè, Quận 8. Tặng thiệp viết tay ý nghĩa.</p>
