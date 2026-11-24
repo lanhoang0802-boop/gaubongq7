@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="vi" class="scroll-smooth">
 <head>
+
+  <!-- Anti-cache headers for instant updates -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gấu Bông Q7 - Tiệm Thú Bông Cao Cấp & Quà Tặng Đẹp Giá Rẻ Quận 7</title>
@@ -493,28 +499,22 @@
             </div>
             <h3 id="modalTitle" class="text-xl font-cute font-bold text-m3-on-surface leading-snug"></h3>
             
-            <!-- Price Display: LIÊN HỆ -->
-            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-m3-lg bg-m3-primary-container text-m3-on-primary-container">
-              <span class="material-symbols-outlined text-base fill text-m3-primary">chat</span>
-              <span class="text-sm font-bold text-m3-primary">Giá: Liên hệ shop</span>
+            <!-- In-stock badge -->
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-m3-md bg-emerald-50 text-emerald-700 border border-emerald-200">
+              <span class="material-symbols-outlined text-sm text-emerald-600 fill">check_circle</span>
+              <span class="text-xs font-bold">Mẫu có sẵn tại tiệm Q7</span>
             </div>
 
             <!-- Description -->
             <p id="modalDesc" class="text-xs text-m3-on-surface-variant font-medium leading-relaxed"></p>
 
-            <!-- Size Options -->
-            <div class="space-y-1.5 pt-1">
-              <label class="text-xs font-bold text-m3-on-surface">Kích thước có sẵn:</label>
-              <div id="modalSizes" class="flex flex-wrap gap-1.5">
-                <!-- Size chips -->
-              </div>
-            </div>
+
           </div>
 
           <!-- Modal Action CTA -->
           <div class="space-y-2 pt-2 border-t border-m3-outline-variant/30">
             <a id="modalZaloBtn" href="#" target="_blank" class="w-full inline-flex items-center justify-center gap-2 py-3 rounded-m3-full bg-m3-primary text-white font-bold text-sm hover:bg-m3-primary-hover shadow-m3-1 transition-all">
-              <span class="material-symbols-outlined text-lg">chat</span> Nhắn Zalo Báo Giá Theo Size Ngay
+              <span class="material-symbols-outlined text-lg">chat</span> Nhắn Zalo Tư Vấn Mẫu Này Ngay
             </a>
             <p class="text-[11px] text-center text-m3-on-surface-variant font-medium">
               🎁 Tặng kèm thiệp & túi quà miễn phí | Ship hỏa tốc Quận 7
@@ -570,7 +570,7 @@
     let allPhotosList = [];
 
     // Initialize catalog data
-    fetch('products.json')
+    fetch('products.json?v=' + Date.now())
       .then(res => res.json())
       .then(data => {
         allProducts = data;
@@ -667,10 +667,10 @@
                 ${p.name}
               </h3>
               
-              <!-- Price Badge: LIÊN HỆ -->
+              <!-- Status Badge -->
               <div class="pt-0.5">
-                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-m3-primary-container text-m3-on-primary-container">
-                  <span class="material-symbols-outlined text-xs fill text-m3-primary">chat</span> Giá: Liên hệ
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-m3-surface-container-high text-m3-on-surface-variant">
+                  <span class="material-symbols-outlined text-xs text-m3-primary">favorite</span> Thú bông cao cấp
                 </span>
               </div>
             </div>
@@ -679,10 +679,10 @@
           <!-- Action Buttons -->
           <div class="p-3.5 pt-1 flex items-center gap-2">
             <button onclick="openModal('${p.id}')" class="flex-1 py-2 rounded-m3-full text-xs font-semibold bg-m3-surface-container text-m3-on-surface hover:bg-m3-surface-container-high transition-colors">
-              Xem ảnh & size
+              Xem ảnh chi tiết
             </button>
             <a href="${zaloDirectLink}" target="_blank" class="flex-1 py-2 rounded-m3-full text-xs font-bold bg-m3-primary text-white hover:bg-m3-primary-hover transition-colors text-center shadow-xs flex items-center justify-center gap-1">
-              <span class="material-symbols-outlined text-xs">chat</span> Hỏi giá
+              <span class="material-symbols-outlined text-xs">chat</span> Tư vấn Zalo
             </a>
           </div>
         `;
@@ -792,31 +792,15 @@
         gallery.appendChild(thumb);
       });
 
-      // Sizes Chips
-      const sizesContainer = document.getElementById('modalSizes');
-      sizesContainer.innerHTML = '';
-      selectedSize = p.sizes[0] || '';
-      p.sizes.forEach((s, idx) => {
-        const sBtn = document.createElement('button');
-        sBtn.className = `px-3 py-1 rounded-m3-lg text-xs font-semibold border transition-all ${idx === 0 ? 'bg-m3-primary-container text-m3-on-primary-container border-m3-primary' : 'bg-white text-m3-on-surface border-m3-outline-variant/60 hover:bg-m3-surface-container'}`;
-        sBtn.innerText = s;
-        sBtn.onclick = () => {
-          selectedSize = s;
-          Array.from(sizesContainer.children).forEach(c => {
-            c.className = "px-3 py-1 rounded-m3-lg text-xs font-semibold border transition-all bg-white text-m3-on-surface border-m3-outline-variant/60 hover:bg-m3-surface-container";
-          });
-          sBtn.className = "px-3 py-1 rounded-m3-lg text-xs font-semibold border transition-all bg-m3-primary-container text-m3-on-primary-container border-m3-primary";
-          updateZaloLink(p);
-        };
-        sizesContainer.appendChild(sBtn);
-      });
+// Size selection removed as requested
 
       updateZaloLink(p);
       document.getElementById('productModal').classList.remove('hidden');
     }
 
     function updateZaloLink(p) {
-      const msg = `Chào shop Gấu Bông Q7, mình muốn hỏi giá mẫu: ${p.name} (Kích thước quan tâm: ${selectedSize || 'Tiêu chuẩn'})`;
+      const msg = `Chào shop Gấu Bông Q7, mình muốn tư vấn và hỏi thông tin mẫu: ${p.name}`;;
+      document.getElementById('modalZaloBtn').href = `https://zalo.me/0333870846?text=${encodeURIComponent(msg)}`;
       document.getElementById('modalZaloBtn').href = `https://zalo.me/0333870846?text=${encodeURIComponent(msg)}`;
     }
 
