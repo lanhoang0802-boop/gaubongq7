@@ -194,10 +194,20 @@
       font-weight: 700;
       border-color: #b91d57 !important;
     }
-    .tab-active {
+        .tab-active {
       background-color: #b91d57 !important;
       color: #ffffff !important;
-      box-shadow: 0px 2px 6px 2px rgba(185, 29, 87, 0.25);
+      font-weight: 800 !important;
+      box-shadow: 0px 3px 8px rgba(185, 29, 87, 0.35) !important;
+    }
+    .tab-inactive {
+      background-color: transparent !important;
+      color: #21191b !important;
+      font-weight: 700 !important;
+    }
+    .tab-inactive:hover {
+      color: #b91d57 !important;
+      background-color: rgba(255, 217, 226, 0.5) !important;
     }
     .no-scrollbar::-webkit-scrollbar {
       display: none;
@@ -348,21 +358,7 @@
       opacity: 1;
     }
 
-    /* 🐾 FX 7: Interactive Fur Grooming Simulator (Showcase 7) */
-    #furCanvas {
-      width: 100%;
-      max-width: 360px;
-      height: 180px;
-      border-radius: 16px;
-      background: #fff5f6;
-      border: 1.5px solid #ffd9e2;
-      box-shadow: inset 0 2px 8px rgba(185, 29, 87, 0.06), 0 4px 15px rgba(185, 29, 87, 0.08);
-      cursor: grab;
-      touch-action: none;
-    }
-    #furCanvas:active {
-      cursor: grabbing;
-    }
+    
 
     /* 🌊 FX 8: Aurora Silk Ribbon Canvas (Showcase 8) */
     #auroraCanvas {
@@ -397,90 +393,9 @@
       user-select: none;
     }
 
-    /* 🎠 E14: 3D Rotating Ring Carousel (Expanded 14) */
-    .cylinder-stage {
-      perspective: 900px;
-      width: 100%;
-      height: 100px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      margin: 6px 0;
-    }
-    .cylinder-ring {
-      position: relative;
-      width: 130px;
-      height: 44px;
-      transform-style: preserve-3d;
-      animation: spinCylinder 22s linear infinite;
-    }
-    .cylinder-stage:hover .cylinder-ring {
-      animation-play-state: paused;
-    }
-    @keyframes spinCylinder {
-      to { transform: rotateY(360deg); }
-    }
-    .cylinder-tag {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      background: rgba(255, 255, 255, 0.94);
-      border: 1.5px solid #ffd9e2;
-      border-radius: 999px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: #b91d57;
-      box-shadow: 0 4px 12px rgba(185, 29, 87, 0.12);
-      cursor: pointer;
-      user-select: none;
-      backdrop-filter: blur(8px);
-      white-space: nowrap;
-      padding: 0 12px;
-      backface-visibility: visible;
-      transition: transform 0.2s, background-color 0.2s;
-    }
-    .cylinder-tag:hover {
-      background: #ffd9e2;
-      color: #3e001d;
-    }
+    
 
-    /* 🧾 E20: Order Receipt Machine (Expanded 20) */
-    .printer-box {
-      width: 100%;
-      max-width: 320px;
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 14px;
-      border: 2px dashed #f43f5e;
-      box-shadow: 0 12px 30px rgba(185, 29, 87, 0.1);
-      margin: 12px auto 0;
-      position: relative;
-    }
-    .receipt-slot {
-      height: 6px;
-      background: #ffd9e2;
-      border-radius: 999px;
-      margin-bottom: 10px;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .receipt-paper {
-      background: #fffdf5;
-      border: 1px dashed #d97706;
-      border-radius: 8px;
-      padding: 12px;
-      font-family: ui-monospace, Menlo, Consolas, monospace;
-      font-size: 0.72rem;
-      color: #78350f;
-      animation: ejectReceipt 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      transform-origin: top center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-    @keyframes ejectReceipt {
-      from { transform: scaleY(0.1); opacity: 0; }
+    
       to { transform: scaleY(1); opacity: 1; }
     }
 
@@ -745,24 +660,7 @@
     </div>
   </section>
 
-  <!-- 🎠 E14: 3D Revolving Cylinder Carousel (Expanded 14) -->
-  <section class="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-1 min-w-0">
-    <div class="w-full rounded-m3-xl bg-gradient-to-r from-pink-50 via-white to-rose-50 border border-m3-outline-variant/30 py-2.5 px-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
-      <div class="flex items-center gap-2 flex-shrink-0 text-center sm:text-left">
-        <span class="text-xl animate-bounce">🎠</span>
-        <div>
-          <h4 class="font-cute font-bold text-xs sm:text-sm text-m3-primary">Vòng Xoay 3D Bộ Sưu Tập Hot</h4>
-          <p class="text-[10px] sm:text-[11px] text-m3-on-surface-variant font-medium">Bấm vào mẫu bất kỳ để xem ảnh thật & đặt trước</p>
-        </div>
-      </div>
-      <!-- 3D Revolving Ring Stage -->
-      <div class="cylinder-stage flex-1 max-w-md">
-        <div class="cylinder-ring" id="cylinderRing">
-          <!-- Rendered dynamically via JS -->
-        </div>
-      </div>
-    </div>
-  </section>
+  
 
   <!-- View Mode Tabs & Search Bar -->
   <section class="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4 space-y-3 sm:space-y-4 min-w-0">
@@ -772,10 +670,10 @@
       
       <!-- View Switcher Tabs (Responsive full-width 2-column on mobile) -->
       <div class="w-full md:w-auto grid grid-cols-2 md:inline-flex p-1 rounded-m3-full bg-m3-surface-container border border-m3-outline-variant/40 shadow-xs text-center min-w-0">
-        <button id="tabModels" onclick="switchView('models')" class="tab-active marshmallow-btn neu-pastel-pill px-2.5 sm:px-4 py-2 rounded-m3-full text-xs font-bold transition-all flex items-center justify-center gap-1">
+        <button id="tabModels" onclick="switchView('models')" class="tab-active marshmallow-btn px-3 sm:px-4 py-2 rounded-m3-full text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer">
           <span>🧸</span> <span class="hidden sm:inline">Xem Theo Dòng</span><span class="sm:hidden">Theo Dòng</span> (<span id="modelCount">19</span>)
         </button>
-        <button id="tabAllPhotos" onclick="switchView('photos')" class="marshmallow-btn neu-pastel-pill px-2.5 sm:px-4 py-2 rounded-m3-full text-xs font-bold text-m3-on-surface hover:text-m3-primary transition-all flex items-center justify-center gap-1">
+        <button id="tabAllPhotos" onclick="switchView('photos')" class="tab-inactive marshmallow-btn px-3 sm:px-4 py-2 rounded-m3-full text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer">
           <span>📷</span> <span class="hidden sm:inline">Toàn Bộ 50 Ảnh Thật</span><span class="sm:hidden">50 Ảnh Thật</span>
         </button>
       </div>
@@ -1060,56 +958,14 @@
           </div>
 
           <!-- Modal Action CTA -->
+          <!-- Action Button Zalo -->
           <div class="space-y-2 pt-2 border-t border-m3-outline-variant/30">
-            <div class="flex flex-col sm:flex-row gap-2">
-              <a id="modalZaloBtn" href="#" target="_blank" class="marshmallow-btn flex-1 inline-flex items-center justify-center gap-2 py-3 rounded-m3-full bg-m3-primary text-white font-bold text-xs sm:text-sm hover:bg-m3-primary-hover shadow-m3-1 transition-all text-center">
-                <span class="material-symbols-outlined text-lg">chat</span> Nhắn Zalo Hỏi Giá
-              </a>
-              <!-- 🧾 E20: Print Receipt Button (Expanded 20) -->
-              <button onclick="toggleReceipt()" class="marshmallow-btn px-4 py-3 rounded-m3-full bg-amber-100 text-amber-900 border border-amber-300 text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 hover:bg-amber-200 transition-colors">
-                <span>🧾</span> In Biên Lai
-              </button>
-            </div>
-
-            <!-- 🧾 E20: Order Receipt Machine Box (Expanded 20) -->
-            <div id="receiptMachine" class="hidden printer-box">
-              <div class="receipt-slot"></div>
-              <div class="receipt-paper" id="receiptPaper">
-                <p class="font-bold text-center">══════════════════════════</p>
-                <p class="font-bold text-center text-rose-700">🧸 TIỆM GẤU BÔNG QUẬN 7</p>
-                <p class="text-[10px] text-center">90 Đường 77, P. Tân Quy, Quận 7</p>
-                <p class="text-[10px] text-center">Hotline/Zalo: 0333.870.846</p>
-                <p class="text-center">──────────────────────────</p>
-                <p id="receiptItemName" class="font-bold">1x Gấu Bông Cao Cấp</p>
-                <p id="receiptItemSize" class="text-[11px]">+ Kích thước: Chọn size</p>
-                <p id="receiptItemPrice" class="font-bold text-rose-600">+ Giá niêm yết: Báo qua Zalo</p>
-                <p class="text-[11px]">+ Tặng thiệp chúc mừng: 0đ (FREE)</p>
-                <p class="text-[11px]">+ Gói túi quà xinh: 0đ (FREE)</p>
-                <p class="text-[11px]">+ Giao hỏa tốc 1-2h Quận 7: Sẵn sàng</p>
-                <p class="text-center">══════════════════════════</p>
-                <p class="text-center font-bold text-emerald-700">✓ ĐÓNG GÓI XONG TRONG 15 PHÚT</p>
-              </div>
-              <button onclick="sendReceiptToZalo()" class="marshmallow-btn mt-3 w-full py-2 rounded-m3-full bg-emerald-600 text-white font-bold text-xs shadow-xs hover:bg-emerald-700 flex items-center justify-center gap-1.5">
-                <span class="material-symbols-outlined text-sm">send</span> Gửi Phiếu Này Qua Zalo Shop
-              </button>
-            </div>
-
-            <!-- 🐾 FX 7: Interactive Fur Grooming Simulator (Showcase 7) -->
-            <div class="pt-2 border-t border-pink-100">
-              <details class="group/fur" ontoggle="initFurCanvasOnOpen(this)">
-                <summary class="flex items-center justify-between cursor-pointer text-xs font-bold text-m3-primary hover:text-rose-700 select-none py-1">
-                  <span class="flex items-center gap-1.5">
-                    <span>🐾</span> Chạm & vuốt thử chất lông thỏ siêu mềm mịn
-                  </span>
-                  <span class="text-[10px] bg-pink-100 text-rose-700 px-2 py-0.5 rounded-full group-open/fur:rotate-180 transition-transform">▼</span>
-                </summary>
-                <div class="pt-2 space-y-1.5 text-center">
-                  <p class="text-[10px] text-m3-on-surface-variant">Di chuyển chuột hoặc vuốt ngón tay lên khung để chải các sợi lông mềm:</p>
-                  <canvas id="furCanvas" width="360" height="180" class="mx-auto"></canvas>
-                  <p class="text-[10px] font-semibold text-rose-600">✨ 100% Lông Thỏ Mềm Mịn Kháng Khuẩn Không Rụng Lông</p>
-                </div>
-              </details>
-            </div>
+            <a id="modalZaloBtn" href="#" target="_blank" class="marshmallow-btn w-full inline-flex items-center justify-center gap-2 py-3.5 rounded-m3-full bg-m3-primary text-white font-bold text-sm sm:text-base hover:bg-m3-primary-hover shadow-m3-2 transition-all text-center">
+              <span class="material-symbols-outlined text-xl">chat</span> Nhắn Zalo Tư Vấn & Báo Giá Ưu Đãi
+            </a>
+            <p class="text-[11px] text-center text-m3-on-surface-variant font-medium">
+              🎁 Tặng kèm thiệp viết tay & túi quà xinh xắn | Ship hỏa tốc 1-2h Quận 7
+            </p>
           </div>
 
         </div>
@@ -1715,7 +1571,7 @@
     if (currentModalProduct && currentModalProduct.sizesData && currentModalProduct.sizesData[idx]) {
       selectedModalSizeName = currentModalProduct.sizesData[idx].name;
       selectedModalSizePrice = currentModalProduct.sizesData[idx].price;
-      updateReceiptData();
+      
     }
           selectedSizeIndex = idx;
           const s = p.sizesData[idx];
@@ -2215,152 +2071,6 @@
       });
     }
 
-    // --- 🎠 4. E14: 3D ROTATING RING CAROUSEL (Expanded 14) ---
-    function initCylinderRing() {
-      const ring = document.getElementById('cylinderRing');
-      if (!ring) return;
-
-      const highlights = [
-        { name: '🐘 Voi Bobova Xanh', id: 'bobova-voi-xanh' },
-        { name: '🐷 Heo Hồng Nọng Xù', id: 'bobova-heo-hong' },
-        { name: '🦦 Rái Cá Bụng Bự', id: 'bobova-rai-ca' },
-        { name: '🦆 Thú Mỏ Vịt Dáng Đứng', id: 'bobova-thu-mo-vit' },
-        { name: '🦁 Sư Tử Jellycat Bờm Xù', id: 'jellycat-su-tu' },
-        { name: '🎀 Kuromi Tím Sanrio', id: 'sanrio-kuromi' },
-        { name: '🐰 Thỏ Trắng Dáng Dài', id: 'om-tho-trang' },
-        { name: '🐻 Gấu Dâu Tây Lông Cừu', id: 'gau-dau-tay' }
-      ];
-
-      ring.innerHTML = '';
-      highlights.forEach((item, idx) => {
-        const tag = document.createElement('div');
-        tag.className = 'cylinder-tag';
-        tag.innerHTML = `<span>${item.name}</span>`;
-        tag.onclick = () => {
-          const matched = allProducts.find(p => p.id === item.id) || allProducts[idx % (allProducts.length || 1)];
-          if (matched) openModal(matched.id);
-        };
-        const ang = (idx / highlights.length) * 360;
-        tag.style.transform = `rotateY(${ang}deg) translateZ(125px)`;
-        ring.appendChild(tag);
-      });
-    }
-
-    // --- 🐾 5. FX 7: INTERACTIVE FUR GROOMING SIMULATOR (Showcase 7) ---
-    let furInitialized = false;
-    function initFurCanvasOnOpen(detailsEl) {
-      if (!detailsEl.open || furInitialized) return;
-      furInitialized = true;
-
-      const fCanvas = document.getElementById('furCanvas');
-      if (!fCanvas) return;
-      const fCtx = fCanvas.getContext('2d');
-      const cols = 26, rows = 14;
-      let furGrid = [];
-
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          furGrid.push({
-            x: (c + 1) * (fCanvas.width / (cols + 1)),
-            y: (r + 1) * (fCanvas.height / (rows + 1)),
-            angle: Math.PI / 2, // default pointing down
-            length: 11
-          });
-        }
-      }
-
-      function drawFur() {
-        fCtx.clearRect(0, 0, fCanvas.width, fCanvas.height);
-        fCtx.fillStyle = '#fff5f6';
-        fCtx.fillRect(0, 0, fCanvas.width, fCanvas.height);
-
-        furGrid.forEach(f => {
-          fCtx.strokeStyle = '#f43f5e';
-          fCtx.lineWidth = 2.2;
-          fCtx.lineCap = 'round';
-          fCtx.beginPath();
-          fCtx.moveTo(f.x, f.y);
-          fCtx.lineTo(f.x + Math.cos(f.angle) * f.length, f.y + Math.sin(f.angle) * f.length);
-          fCtx.stroke();
-        });
-        requestAnimationFrame(drawFur);
-      }
-      drawFur();
-
-      function handleFurMove(clientX, clientY) {
-        const rect = fCanvas.getBoundingClientRect();
-        const mx = (clientX - rect.left) * (fCanvas.width / rect.width);
-        const my = (clientY - rect.top) * (fCanvas.height / rect.height);
-
-        furGrid.forEach(f => {
-          const dist = Math.hypot(mx - f.x, my - f.y);
-          if (dist < 40) {
-            f.angle = Math.atan2(my - f.y, mx - f.x);
-          }
-        });
-      }
-
-      fCanvas.addEventListener('mousemove', (e) => handleFurMove(e.clientX, e.clientY));
-      fCanvas.addEventListener('touchmove', (e) => {
-        if (e.touches.length > 0) {
-          handleFurMove(e.touches[0].clientX, e.touches[0].clientY);
-        }
-      }, { passive: true });
-    }
-
-    // --- 🧾 6. E20: ORDER RECEIPT MACHINE (Expanded 20) ---
-    function toggleReceipt() {
-      const box = document.getElementById('receiptMachine');
-      if (!box) return;
-      const isHidden = box.classList.contains('hidden');
-
-      if (isHidden) {
-        box.classList.remove('hidden');
-        updateReceiptData();
-        const paper = document.getElementById('receiptPaper');
-        if (paper) {
-          paper.style.animation = 'none';
-          void paper.offsetHeight; // trigger reflow
-          paper.style.animation = 'ejectReceipt 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards';
-        }
-      } else {
-        box.classList.add('hidden');
-      }
-    }
-
-    function updateReceiptData() {
-      if (!currentModalProduct) return;
-      const p = currentModalProduct;
-      const nameEl = document.getElementById('receiptItemName');
-      const sizeEl = document.getElementById('receiptItemSize');
-      const priceEl = document.getElementById('receiptItemPrice');
-
-      if (nameEl) nameEl.textContent = `1x ${p.name}`;
-      if (sizeEl) sizeEl.textContent = selectedModalSizeName ? `+ Kích thước: ${selectedModalSizeName}` : '+ Kích thước: Tư vấn theo yêu cầu';
-
-      if (priceEl) {
-        if (selectedModalSizePrice) {
-          priceEl.textContent = `+ Giá niêm yết: ${formatVND(selectedModalSizePrice)}`;
-        } else if (p.price) {
-          priceEl.textContent = `+ Giá niêm yết: ${formatVND(p.price)}`;
-        } else {
-          priceEl.textContent = `+ Giá niêm yết: Nhắn Zalo báo giá ưu đãi`;
-        }
-      }
-    }
-
-    function sendReceiptToZalo() {
-      if (!currentModalProduct) return;
-      const p = currentModalProduct;
-      const sizeStr = selectedModalSizeName ? ` - Size: ${selectedModalSizeName}` : '';
-      const priceStr = selectedModalSizePrice ? ` (Giá: ${formatVND(selectedModalSizePrice)})` : '';
-      const msg = `Chào Shop Gấu Bông Q7, mình gửi phiếu biên lai đặt gấu bông:
-🧾 Mẫu: ${p.name}${sizeStr}${priceStr}
-🎁 Tặng thiệp & túi quà
-📍 Shop tư vấn ship giúp mình nhé!`;
-      window.open(`https://zalo.me/0333870846?text=${encodeURIComponent(msg)}`, '_blank');
-    }
-
     // --- 🌊 7. FX 8: AURORA SILK RIBBON WAVES (Showcase 8) ---
     function initAuroraWaves() {
       const aCanvas = document.getElementById('auroraCanvas');
@@ -2450,7 +2160,6 @@
       initSakuraEngine();
       initHeroMesh();
       initProximityHeadline();
-      initCylinderRing();
       initAuroraWaves();
       initHoloAndBentoListeners();
     }
