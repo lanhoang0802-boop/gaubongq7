@@ -190,6 +190,7 @@
   }
   </script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-m3-primary-container selection:text-m3-on-primary-container">
 
@@ -569,34 +570,126 @@
     // Extract all 50 photos list from products
     let allPhotosList = [];
 
-    // Initialize catalog data
-    fetch('products.json?v=' + Date.now())
-      .then(res => res.json())
-      .then(data => {
-        allProducts = data;
-        document.getElementById('modelCount').innerText = allProducts.length;
+    // ========================================================
+    // 📊 CẤU HÌNH ĐỒNG BỘ GOOGLE SHEETS TRỰC TIẾP (LIVE INVENTORY)
+    // ========================================================
+    // Mỗi khi bạn sửa file Google Sheet, trang web sẽ TỰ ĐỘNG CẬP NHẬT theo ngay lập tức!
+    // Cách kết nối:
+    // 1. Mở file Google Sheet quản lý gấu bông
+    // 2. Vào Tệp (File) -> Chia sẻ (Share) -> Xuất bản lên web (Publish to web)
+    // 3. Chọn định dạng: "Giá trị phân tách bằng dấu phẩy (.csv)"
+    // 4. Bấm "Xuất bản" và dán đường link CSV vào giữa 2 dấu ngoặc kép dưới đây:
+    const GOOGLE_SHEET_CSV_URL = "";
 
-        // Build 50 photos list with unique filenames
-        const photoSet = new Set();
-        allProducts.forEach(p => {
-          if (!photoSet.has(p.image)) {
-            photoSet.add(p.image);
-            allPhotosList.push({ file: p.image, name: p.name, category: p.category_name });
+    // Định dạng tiền VNĐ
+    function formatVND(val) {
+      if (!val) return '';
+      const num = parseInt(String(val).replace(/[^0-9]/g, ''));
+      if (isNaN(num)) return val;
+      return num.toLocaleString('vi-VN') + 'đ';
+    }
+
+    // Tự động load dữ liệu: Ưu tiên Google Sheet, nếu chưa cài thì đọc products.json
+    async function loadCatalogData() {
+      let loadedFromGoogleSheet = false;
+
+      // 1. Kiểm tra nếu có Google Sheet CSV
+      if (GOOGLE_SHEET_CSV_URL && GOOGLE_SHEET_CSV_URL.trim() !== '') {
+        try {
+          const freshSheetUrl = GOOGLE_SHEET_CSV_URL + (GOOGLE_SHEET_CSV_URL.includes('?') ? '&' : '?') + 't=' + Date.now();
+          const response = await fetch(freshSheetUrl, { cache: 'no-store' });
+          const csvText = await response.text();
+
+          if (typeof Papa !== 'undefined') {
+            const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
+            if (parsed.data && parsed.data.length > 0) {
+              allProducts = parsed.data.map((row, idx) => {
+                const id = row['Mã Sản Phẩm (ID)'] || row['Mã SP'] || row['ID'] || `SP-${idx+1}`;
+                const name = row['Tên Sản Phẩm'] || row['Tên SP'] || row['Name'] || '';
+                const category = (row['Mã Danh Mục (bobova / om-ngu / sanrio / jellycat / thu-cung)'] || row['Mã Danh Mục'] || row['Danh Mục'] || 'thu-cung').trim().toLowerCase();
+                const category_name = row['Tên Danh Mục Hiển Thị'] || row['Tên Danh Mục'] || 'Thú Bông';
+                const status = (row['Tình Trạng Kho (Còn Hàng / Hết Hàng)'] || row['Tình Trạng'] || 'Còn Hàng').trim();
+                const show_price = (row['Hiện Giá Trên Web? (Có / Không)'] || row['Hiện Giá'] || 'Không').trim().toLowerCase();
+                const price = row['Giá Bán (VNĐ)'] || row['Giá Bán'] || '';
+                const original_price = row['Giá Gốc / Khuyến Mãi (VNĐ)'] || row['Giá Gốc'] || '';
+                
+                const sizesRaw = row['Kích Thước Có Sẵn (Cách nhau dấu phẩy)'] || row['Kích Thước'] || '';
+                const sizes = sizesRaw ? sizesRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+                
+                const badge = row['Nhãn / Badge (HOT, NEW, SALE...)'] || row['Badge'] || 'MẪU MỚI';
+                const image = (row['Ảnh Đại Diện (Đường dẫn hoặc link)'] || row['Ảnh Đại Diện'] || '').trim();
+                
+                const galleryRaw = row['Album Ảnh Chi Tiết (Cách nhau dấu phẩy)'] || row['Album Ảnh'] || image;
+                const gallery = galleryRaw ? galleryRaw.split(',').map(img => img.trim()).filter(Boolean) : [image];
+
+                const description = row['Mô Tả Sản Phẩm'] || row['Mô Tả'] || '';
+
+                return {
+                  id,
+                  name,
+                  category,
+                  category_name,
+                  status,
+                  show_price: (show_price === 'có' || show_price === 'co' || show_price === 'yes' || show_price === 'true'),
+                  price,
+                  original_price,
+                  sizes,
+                  badge,
+                  image,
+                  gallery: gallery.length > 0 ? gallery : [image],
+                  description
+                };
+              }).filter(p => p.name && p.image);
+
+              if (allProducts.length > 0) {
+                loadedFromGoogleSheet = true;
+                console.log(`[Google Sheets] Đồng bộ trực tiếp thành công ${allProducts.length} sản phẩm từ Google Sheets!`);
+              }
+            }
           }
+        } catch (e) {
+          console.warn("[Google Sheets] Lỗi nạp từ Google Sheets, chuyển về products.json dự phòng:", e);
+        }
+      }
+
+      // 2. Dự phòng: Đọc từ products.json nếu chưa cấu hình Google Sheet
+      if (!loadedFromGoogleSheet) {
+        try {
+          const res = await fetch('products.json?v=' + Date.now());
+          allProducts = await res.json();
+          console.log(`[Local JSON] Đã tải ${allProducts.length} sản phẩm từ products.json`);
+        } catch (err) {
+          console.error('Error loading products.json:', err);
+        }
+      }
+
+      // Cập nhật số lượng mẫu
+      document.getElementById('modelCount').innerText = allProducts.length;
+
+      // Xây dựng danh sách 50 ảnh thực tế
+      allPhotosList = [];
+      const photoSet = new Set();
+      allProducts.forEach(p => {
+        if (p.image && !photoSet.has(p.image)) {
+          photoSet.add(p.image);
+          allPhotosList.push({ file: p.image, name: p.name, category: p.category_name });
+        }
+        if (p.gallery && Array.isArray(p.gallery)) {
           p.gallery.forEach(g => {
-            if (!photoSet.has(g)) {
+            if (g && !photoSet.has(g)) {
               photoSet.add(g);
               allPhotosList.push({ file: g, name: p.name, category: p.category_name });
             }
           });
-        });
-
-        renderProducts();
-        renderPhotosGrid();
-      })
-      .catch(err => {
-        console.error('Error loading products.json:', err);
+        }
       });
+
+      renderProducts();
+      renderPhotosGrid();
+    }
+
+    // Khởi chạy
+    loadCatalogData();
 
     function switchView(view) {
       currentView = view;
@@ -667,11 +760,18 @@
                 ${p.name}
               </h3>
               
-              <!-- Status Badge -->
+              <!-- Price / Status Badge (Hỗ trợ hiển thị giá nếu bật trong Google Sheet) -->
               <div class="pt-0.5">
-                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-m3-surface-container-high text-m3-on-surface-variant">
-                  <span class="material-symbols-outlined text-xs text-m3-primary">favorite</span> Thú bông cao cấp
-                </span>
+                ${p.show_price && p.price ? `
+                  <div class="flex items-baseline gap-2">
+                    <span class="text-sm font-bold text-m3-primary">${formatVND(p.price)}</span>
+                    ${p.original_price ? `<span class="text-xs text-m3-outline line-through">${formatVND(p.original_price)}</span>` : ''}
+                  </div>
+                ` : `
+                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-m3-surface-container-high text-m3-on-surface-variant">
+                    <span class="material-symbols-outlined text-xs text-m3-primary">favorite</span> ${p.status === 'Hết Hàng' ? 'Tạm Hết Hàng' : 'Thú bông cao cấp'}
+                  </span>
+                `}
               </div>
             </div>
           </div>
@@ -768,7 +868,7 @@
       filterCategory('all', document.querySelector('.filter-chip'));
     }
 
-    // Modal Operations
+    // Modal Operations (Hỗ trợ hiển thị giá/size linh hoạt nếu được bật trong Google Sheet)
     function openModal(id) {
       const p = allProducts.find(item => item.id === id);
       if (!p) return;
@@ -782,17 +882,41 @@
       // Gallery Thumbnails
       const gallery = document.getElementById('modalGallery');
       gallery.innerHTML = '';
-      p.gallery.forEach(imgSrc => {
-        const thumb = document.createElement('img');
-        thumb.src = imgSrc;
-        thumb.className = "w-14 h-14 rounded-m3-md object-cover border-2 border-transparent hover:border-m3-primary cursor-pointer transition-all";
-        thumb.onclick = () => {
-          document.getElementById('modalMainImg').src = imgSrc;
-        };
-        gallery.appendChild(thumb);
-      });
+      if (p.gallery && Array.isArray(p.gallery)) {
+        p.gallery.forEach(imgSrc => {
+          const thumb = document.createElement('img');
+          thumb.src = imgSrc;
+          thumb.className = "w-14 h-14 rounded-m3-md object-cover border-2 border-transparent hover:border-m3-primary cursor-pointer transition-all";
+          thumb.onclick = () => {
+            document.getElementById('modalMainImg').src = imgSrc;
+          };
+          gallery.appendChild(thumb);
+        });
+      }
 
-// Size selection removed as requested
+      // Xử lý giá trong Modal: Nếu được bật trong Google Sheet thì hiện giá
+      let priceSection = document.getElementById('modalDynamicPrice');
+      if (!priceSection) {
+        priceSection = document.createElement('div');
+        priceSection.id = 'modalDynamicPrice';
+        const titleEl = document.getElementById('modalTitle');
+        titleEl.parentNode.insertBefore(priceSection, titleEl.nextSibling);
+      }
+      if (p.show_price && p.price) {
+        priceSection.innerHTML = `
+          <div class="inline-flex items-baseline gap-2 px-3 py-1.5 rounded-m3-lg bg-m3-primary-container text-m3-on-primary-container my-1">
+            <span class="text-base font-bold text-m3-primary">${formatVND(p.price)}</span>
+            ${p.original_price ? `<span class="text-xs text-m3-outline line-through">${formatVND(p.original_price)}</span>` : ''}
+          </div>
+        `;
+      } else {
+        priceSection.innerHTML = `
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-m3-md bg-emerald-50 text-emerald-700 border border-emerald-200 my-1">
+            <span class="material-symbols-outlined text-sm text-emerald-600 fill">check_circle</span>
+            <span class="text-xs font-bold">${p.status === 'Hết Hàng' ? 'Tạm hết hàng' : 'Mẫu có sẵn tại tiệm Q7'}</span>
+          </div>
+        `;
+      }
 
       updateZaloLink(p);
       document.getElementById('productModal').classList.remove('hidden');
