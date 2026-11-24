@@ -424,6 +424,8 @@
       will-change: transform;
       transform-origin: center center;
       transition: transform 0.08s ease-out;
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
     }
 
   </style>
@@ -1941,14 +1943,18 @@
       sakuraPetals = [];
       const count = window.innerWidth < 640 ? 18 : 36;
       for (let i = 0; i < count; i++) {
+        const baseSpeedY = Math.random() * 0.35 + 0.25;
+        const baseSpeedX = (Math.random() - 0.2) * 0.25;
         sakuraPetals.push({
           x: Math.random() * sakuraCanvas.width,
           y: Math.random() * sakuraCanvas.height,
           size: Math.random() * 8 + 6,
-          speedY: Math.random() * 0.9 + 0.6,
-          speedX: Math.random() * 0.8 + 0.3,
+          baseSpeedY: baseSpeedY,
+          baseSpeedX: baseSpeedX,
+          speedY: baseSpeedY,
+          speedX: baseSpeedX,
           angle: Math.random() * Math.PI * 2,
-          rotSpeed: (Math.random() - 0.5) * 0.03,
+          rotSpeed: (Math.random() - 0.5) * 0.012,
           color: ['rgba(255, 179, 193, 0.75)', 'rgba(255, 204, 213, 0.75)', 'rgba(255, 228, 235, 0.8)'][Math.floor(Math.random() * 3)]
         });
       }
@@ -1974,8 +1980,12 @@
         sakuraCtx.clearRect(0, 0, sakuraCanvas.width, sakuraCanvas.height);
 
         sakuraPetals.forEach(p => {
+          // Smoothly relax speed back to gentle baseline
+          p.speedY += (p.baseSpeedY - p.speedY) * 0.03;
+          p.speedX += (p.baseSpeedX - p.speedX) * 0.03;
+
           p.y += p.speedY;
-          p.x += Math.sin(p.angle) * 0.5 + p.speedX;
+          p.x += Math.sin(p.angle) * 0.35 + p.speedX;
           p.angle += p.rotSpeed;
 
           // Mouse vortex repulsion
@@ -1984,7 +1994,7 @@
             const dy = p.y - sakuraMouse.y;
             const dist = Math.hypot(dx, dy);
             if (dist < 90 && dist > 0) {
-              const force = (90 - dist) / 90 * 2.5;
+              const force = (90 - dist) / 90 * 1.5;
               p.x += (dx / dist) * force;
               p.y += (dy / dist) * force;
             }
@@ -2193,13 +2203,12 @@
 
   
     // =========================================================
-    // 🍃 SCROLL VELOCITY WIND TILT PHYSICS ENGINE
-    // Hiệu ứng nghiêng ngược chiều vuốt như bị gió thổi khi lướt web
+    // 🍃 SCROLL VELOCITY WIND TILT PHYSICS ENGINE (VERTICAL PITCH)
+    // Hiệu ứng nghiêng dọc 3D theo chiều cuộn mượt mà
     // =========================================================
     let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
-    let scrollVelocity = 0;
-    let targetSkew = 0;
-    let currentSkew = 0;
+    let targetTilt = 0;
+    let currentTilt = 0;
     let isScrolling = false;
     let scrollTimeout = null;
 
@@ -2208,16 +2217,16 @@
       const delta = currentY - lastScrollY;
       lastScrollY = currentY;
 
-      // Calculate velocity (inverted: scrolling down -> delta > 0 -> tilt backward/negative)
-      // Clamped to comfortable smooth range [-4.5deg, 4.5deg]
-      const rawSkew = -delta * 0.12;
-      targetSkew = Math.max(-4.5, Math.min(4.5, rawSkew));
+      // Vertical 3D pitch: scrolling down -> delta > 0 -> top tilts slightly backward into screen
+      // Clamped to smooth, comfortable range [-4.5deg, 4.5deg]
+      const rawTilt = -delta * 0.07;
+      targetTilt = Math.max(-4.5, Math.min(4.5, rawTilt));
 
-      // Also boost sakura wind speed with scroll!
+      // Gentle, temporary sakura wind gust (subtle nudge that quickly relaxes back to baseline)
       if (typeof sakuraPetals !== 'undefined' && sakuraPetals.length > 0) {
+        const gust = Math.max(-0.25, Math.min(0.25, delta * 0.004));
         sakuraPetals.forEach(p => {
-          p.speedY += delta * 0.05;
-          p.x -= delta * 0.08;
+          p.speedY = Math.max(0.15, Math.min(0.9, p.speedY + gust));
         });
       }
 
@@ -2225,25 +2234,25 @@
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => {
         isScrolling = false;
-        targetSkew = 0;
+        targetTilt = 0;
       }, 90);
     }, { passive: true });
 
     function updateWindTilt() {
       // Smooth lerp damping back to 0
-      currentSkew += (targetSkew - currentSkew) * 0.15;
+      currentTilt += (targetTilt - currentTilt) * 0.14;
 
-      if (Math.abs(currentSkew) > 0.04 || isScrolling) {
+      if (Math.abs(currentTilt) > 0.03 || isScrolling) {
         const tiltItems = document.querySelectorAll('.wind-tilt-item');
-        const skewStr = `skewY(${currentSkew.toFixed(2)}deg) scale(${1 - Math.abs(currentSkew) * 0.012})`;
+        const tiltStr = `perspective(1000px) rotateX(${currentTilt.toFixed(2)}deg)`;
         tiltItems.forEach(el => {
-          // If hovered on desktop with holo tilt, let holo tilt handle, otherwise apply wind skew
+          // If hovered on desktop with holo tilt, let holo tilt handle, otherwise apply vertical wind tilt
           if (!el.matches(':hover')) {
-            el.style.transform = skewStr;
+            el.style.transform = tiltStr;
           }
         });
-      } else if (!isScrolling && Math.abs(currentSkew) <= 0.04 && currentSkew !== 0) {
-        currentSkew = 0;
+      } else if (!isScrolling && Math.abs(currentTilt) <= 0.03 && currentTilt !== 0) {
+        currentTilt = 0;
         const tiltItems = document.querySelectorAll('.wind-tilt-item');
         tiltItems.forEach(el => {
           if (!el.matches(':hover')) {
