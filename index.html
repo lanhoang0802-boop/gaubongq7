@@ -666,7 +666,7 @@
                 const category = (row['Mã Danh Mục (bobova / om-ngu / sanrio / jellycat / thu-cung)'] || row['Mã Danh Mục'] || row['Danh Mục'] || 'thu-cung').trim().toLowerCase();
                 const category_name = row['Tên Danh Mục Hiển Thị'] || row['Tên Danh Mục'] || 'Thú Bông';
                 const status = (row['Tình Trạng Kho (Còn Hàng / Hết Hàng)'] || row['Tình Trạng Kho'] || row['Tình Trạng'] || 'Còn Hàng').trim();
-                const show_price = (row['Hiện Giá Trên Web? (Có / Không)'] || row['Hiện Giá'] || 'Không').trim().toLowerCase();
+                const show_price = (row['Hiện Giá Trên Web? (Yes / No)'] || row['Hiện Giá Trên Web? (Có / Không)'] || row['Hiện Giá'] || row['Show Price'] || 'no').trim().toLowerCase();
                 const price = row['Giá Bán (VNĐ)'] || row['Giá Bán'] || row['Size 1 - Giá Bán (VNĐ)'] || '';
                 const original_price = row['Giá Gốc / Khuyến Mãi (VNĐ)'] || row['Giá Gốc'] || '';
                 
