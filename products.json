@@ -1,5 +1,19 @@
 [
   {
+    "id": "BOB-01",
+    "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "category": "bobova",
+    "category_name": "Bobova Cao Cấp",
+    "badge": "MẪU MỚI",
+    "image": "",
+    "gallery": [],
+    "sizes": [
+      "Size 40cm",
+      "Size 60cm"
+    ],
+    "description": ""
+  },
+  {
     "id": "BOB-HEO",
     "name": "Heo Hồng Béo Tròn Bobova Mặt Nọng Xả Stress",
     "category": "bobova",
