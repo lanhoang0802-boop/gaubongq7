@@ -1,15 +1,19 @@
 [
   {
-    "id": "BOB-01",
-    "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-    "category": "bobova",
-    "category_name": "Bobova Cao Cấp",
-    "badge": "MẪU MỚI",
-    "image": "",
-    "gallery": [],
+    "id": "TEST",
+    "name": "Test-01",
+    "category": "khac",
+    "category_name": "Khác / Phụ Kiện",
+    "badge": "HOT BÁN CHẠY",
+    "image": "images/test_1_8860.jpg",
+    "gallery": [
+      "images/test_1_8860.jpg",
+      "images/test_2_8866.jpg",
+      "images/test_4_8866.jpg",
+      "images/test_6_8866.jpg"
+    ],
     "sizes": [
-      "Size 40cm",
-      "Size 60cm"
+      "Size 40cm"
     ],
     "description": ""
   },
@@ -315,16 +319,5 @@
       "Size 50cm"
     ],
     "description": "Chú vịt cổ xanh Green Duck chân cam siêu hài hước, tạo hình tròn vo chắc tay, vải nhung mịn không bám bẩn."
-  },
-  {
-    "id": "TEST-NEW-01",
-    "name": "Gấu Mới Chỉ Có Tên",
-    "category": "bobova",
-    "category_name": "Bobova Cao Cấp",
-    "badge": "",
-    "image": "",
-    "gallery": [],
-    "sizes": [],
-    "description": ""
   }
 ]
