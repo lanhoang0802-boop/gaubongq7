@@ -1093,6 +1093,10 @@
     const GOOGLE_SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/export?format=csv`;
 
     // Chuyển đổi link ảnh Google Drive sang ảnh hiển thị được trên web
+    
+    // Ảnh đại diện mặc định cho các mẫu mới chưa kịp chụp/tải ảnh
+    const DEFAULT_PLACEHOLDER_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23FDF1F3'/%3E%3Ctext x='50%25' y='45%25' dominant-baseline='middle' text-anchor='middle' font-size='64'%3E%F0%9F%A7%B8%3C/text%3E%3Ctext x='50%25' y='65%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='16' font-weight='bold' fill='%23B91D57'%3E%C4%90ang c%E1%BA%ADp nh%E1%BA%ADt %E1%BA%A3nh th%E1%BA%ADt%3C/text%3E%3C/svg%3E";
+
     function formatImageUrl(url) {
       if (!url) return '';
       url = url.trim();
@@ -1197,7 +1201,7 @@
 
                 const badge = row['Nhãn / Badge (HOT, NEW, SALE...)'] || row['Nhãn / Badge'] || row['Badge'] || (isOutOfStock ? 'TẠM HẾT HÀNG' : 'MẪU MỚI');
                 const rawImage = (row['Ảnh Đại Diện (Đường dẫn hoặc link)'] || row['Ảnh Đại Diện'] || '').trim();
-                const image = formatImageUrl(rawImage);
+                const image = rawImage ? formatImageUrl(rawImage) : DEFAULT_PLACEHOLDER_IMAGE;
                 
                 const galleryRaw = row['Album Ảnh Chi Tiết'] || row['Album Ảnh Chi Tiết (Cách nhau dấu phẩy)'] || row['Album Ảnh'] || rawImage;
                 const gallery = galleryRaw ? galleryRaw.split(',').map(img => formatImageUrl(img.trim())).filter(Boolean) : [image];
@@ -1222,7 +1226,7 @@
                   gallery: gallery.length > 0 ? gallery : [image],
                   description
                 };
-              }).filter(p => p.name && p.image);
+              }).filter(p => p.name && p.name.trim() !== '');
 
               if (allProducts.length > 0) {
                 loadedFromGoogleSheet = true;
@@ -1239,7 +1243,13 @@
       if (!loadedFromGoogleSheet) {
         try {
           const res = await fetch('products.json?v=' + Date.now());
-          allProducts = await res.json();
+          const rawProds = await res.json();
+          allProducts = rawProds.map(p => {
+            if (!p.image || p.image.trim() === '') {
+              p.image = DEFAULT_PLACEHOLDER_IMAGE;
+            }
+            return p;
+          });
           console.log(`[Local JSON] Đã tải ${allProducts.length} sản phẩm từ products.json`);
         } catch (err) {
           console.error('Error loading products.json:', err);
@@ -1253,7 +1263,7 @@
       allPhotosList = [];
       const photoSet = new Set();
       allProducts.forEach(p => {
-        if (p.image && !photoSet.has(p.image)) {
+        if (p.image && !p.image.startsWith('data:image') && !photoSet.has(p.image)) {
           photoSet.add(p.image);
           allPhotosList.push({ file: p.image, name: p.name, category: p.category_name });
         }
