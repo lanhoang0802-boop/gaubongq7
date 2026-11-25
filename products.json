@@ -1,20 +1,5 @@
 [
   {
-    "id": "BOB-ALL",
-    "name": "Đại Gia Đình Thú Bông Bobova Cao Cấp",
-    "category": "bobova",
-    "category_name": "Bobova Cao Cấp",
-    "badge": "FULL BỘ",
-    "image": "images/IMG_3408.JPG",
-    "gallery": [
-      "images/IMG_3408.JPG"
-    ],
-    "sizes": [
-      "Nhiều kích cỡ lựa chọn"
-    ],
-    "description": "Đại tiệc thú bông Bobova trên giường với đầy đủ các thành viên: Voi tai to, heo hồng, rái cá, chim cánh cụt... Món quà hoàn hảo cho mùa lễ hội."
-  },
-  {
     "id": "BOB-HEO",
     "name": "Heo Hồng Béo Tròn Bobova Mặt Nọng Xả Stress",
     "category": "bobova",
@@ -152,22 +137,6 @@
       "Size 50cm"
     ],
     "description": "Chim cánh cụt Sarah với dáng tròn núng nính, mỏ vàng chân cam. Chất vải co giãn 4 chiều mềm mịn mát tay, chiếc gối ôm lý tưởng cho mùa lạnh."
-  },
-  {
-    "id": "OM-CAVOI",
-    "name": "Cá Voi Xanh Làm Mát N-Cool Ôm Ngủ Dáng Dài",
-    "category": "om-ngu",
-    "category_name": "Gấu Ôm Ngủ",
-    "badge": "MÁT LẠNH",
-    "image": "images/IMG_3392.JPG",
-    "gallery": [
-      "images/IMG_3392.JPG"
-    ],
-    "sizes": [
-      "Size 80cm",
-      "Size 1m1"
-    ],
-    "description": "Cá voi xanh công nghệ vải mát N-Cool điều hòa giấc ngủ, dáng dài ôm hoặc gác chân cực đã, không xẹp lún sau thời gian dài sử dụng."
   },
   {
     "id": "OM-GAUNAU",
