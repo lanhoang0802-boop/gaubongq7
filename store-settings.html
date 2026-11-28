@@ -78,6 +78,42 @@
   </header>
 
   <main class="max-w-6xl mx-auto px-4 sm:px-6 pt-6 space-y-5">
+    <!-- Trình Chỉnh Sửa Nội Dung Banner Theo Mùa -->
+    <section class="glass-card rounded-3xl p-5 space-y-3">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h2 class="text-sm sm:text-base font-extrabold text-slate-900">🎨 Nội Dung Banner Trang Chủ (Chỉnh Theo Mùa)</h2>
+          <p class="text-xs text-slate-500">Thay đổi tiêu đề &amp; lời giới thiệu trên đầu trang chủ theo từng dịp lễ (Tốt nghiệp, Noel, Valentine, 8/3, 20/10...).</p>
+        </div>
+        <div class="flex flex-wrap gap-1.5 text-[11px] font-bold">
+          <button type="button" onclick="applyHeroPreset('default')" class="px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 cursor-pointer">🌸 Mặc định</button>
+          <button type="button" onclick="applyHeroPreset('noel')" class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 cursor-pointer">🎄 Noel</button>
+          <button type="button" onclick="applyHeroPreset('valentine')" class="px-2.5 py-1 rounded-full bg-pink-50 text-pink-700 hover:bg-pink-100 border border-pink-200 cursor-pointer">💝 14/2</button>
+          <button type="button" onclick="applyHeroPreset('women')" class="px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200 cursor-pointer">💐 8/3 &amp; 20/10</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">Tiêu đề dòng 1</label>
+          <input id="heroTitle1Input" type="text" placeholder="Gấu Bông Quận 7" class="w-full px-3 py-2 rounded-xl border border-rose-200 bg-white focus:outline-none focus:ring-2 focus:ring-rose-300">
+        </div>
+        <div>
+          <label class="font-bold text-slate-700 block mb-1">Tiêu đề dòng 2 (Màu hồng nổi bật)</label>
+          <input id="heroTitle2Input" type="text" placeholder="Quà Tặng Người Yêu & Tốt Nghiệp" class="w-full px-3 py-2 rounded-xl border border-rose-200 bg-white focus:outline-none focus:ring-2 focus:ring-rose-300">
+        </div>
+        <div class="sm:col-span-2">
+          <label class="font-bold text-slate-700 block mb-1">Đoạn mô tả dưới tiêu đề</label>
+          <textarea id="heroDescInput" rows="2" class="w-full px-3 py-2 rounded-xl border border-rose-200 bg-white focus:outline-none focus:ring-2 focus:ring-rose-300"></textarea>
+        </div>
+      </div>
+      <div class="flex justify-end">
+        <button type="button" onclick="saveHeroFromInputs()" class="px-4 py-2 rounded-full text-xs font-bold bg-rose-600 text-white hover:bg-rose-700 shadow-xs cursor-pointer">
+          💾 Lưu Nội Dung Banner Ngay
+        </button>
+      </div>
+    </section>
+
     <!-- Info Banner -->
     <div class="glass-card rounded-3xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
@@ -313,6 +349,12 @@
       if (!Array.isArray(config.order)) config.order = [];
       if (!config.badges) config.badges = {};
       if (!config.stockOverrides) config.stockOverrides = {};
+      if (!config.hero) config.hero = {};
+
+      // Populate Hero Editor
+      document.getElementById('heroTitle1Input').value = config.hero.title1 || 'Gấu Bông Quận 7';
+      document.getElementById('heroTitle2Input').value = config.hero.title2 || 'Quà Tặng Người Yêu & Tốt Nghiệp';
+      document.getElementById('heroDescInput').value = config.hero.desc || 'Gửi gắm yêu thương qua từng bé gấu lông mềm mịn chuẩn xịn — món quà ngọt ngào dành tặng người yêu, bạn gái hay mừng lễ tốt nghiệp ĐH Tôn Đức Thắng, RMIT. Ghé tiệm hoặc nhắn Zalo để được tư vấn chọn mẫu & giao hỏa tốc 1–2h tận tay tại Quận 7!';
 
       // 2. Load Google Sheet products
       const res = await fetch(GOOGLE_SHEET_CSV_URL, { cache: 'no-store' });
@@ -434,6 +476,46 @@
       config.stockOverrides[id] = currentOut ? 'in' : 'out';
       saveConfig();
       renderList();
+    }
+
+    const HERO_PRESETS = {
+      default: {
+        title1: 'Gấu Bông Quận 7',
+        title2: 'Quà Tặng Người Yêu & Tốt Nghiệp',
+        desc: 'Gửi gắm yêu thương qua từng bé gấu lông mềm mịn chuẩn xịn — món quà ngọt ngào dành tặng người yêu, bạn gái hay mừng lễ tốt nghiệp ĐH Tôn Đức Thắng, RMIT. Ghé tiệm hoặc nhắn Zalo để được tư vấn chọn mẫu & giao hỏa tốc 1–2h tận tay tại Quận 7!'
+      },
+      noel: {
+        title1: 'Gấu Bông Quận 7',
+        title2: 'Quà Giáng Sinh Ấm Áp Mùa Noel',
+        desc: 'Đón Giáng Sinh rộn ràng cùng những bé gấu bông lông mềm siêu ấm áp — món quà Noel ngọt ngào cho người yêu, bạn bè & sinh viên TDTU, RMIT. Tặng kèm túi quà, thiệp Giáng Sinh & ship hỏa tốc 1–2h tại Quận 7!'
+      },
+      valentine: {
+        title1: 'Gấu Bông Quận 7',
+        title2: 'Quà Valentine 14/2 Ngọt Ngào',
+        desc: 'Trao gửi yêu thương ngày lễ tình nhân 14/2 với bó hoa gấu bông, Thỏ Jellycat & Bobova siêu mềm mịn. Miễn phí gói quà, viết thiệp tỏ tình & giao hỏa tốc tận nơi Quận 7!'
+      },
+      women: {
+        title1: 'Gấu Bông Quận 7',
+        title2: 'Quà Tặng Phái Đẹp 8/3 & 20/10',
+        desc: 'Bó hoa gấu bông không bao giờ tàn & các bé thú bông pastel cực cưng dành tặng người yêu, bạn gái nhân dịp 8/3 & 20/10. Mở 24/7, ship nhanh 1–2h tại Quận 7!'
+      }
+    };
+
+    function applyHeroPreset(key) {
+      const p = HERO_PRESETS[key] || HERO_PRESETS.default;
+      document.getElementById('heroTitle1Input').value = p.title1;
+      document.getElementById('heroTitle2Input').value = p.title2;
+      document.getElementById('heroDescInput').value = p.desc;
+      saveHeroFromInputs();
+    }
+
+    function saveHeroFromInputs() {
+      config.hero = {
+        title1: (document.getElementById('heroTitle1Input').value || '').trim() || HERO_PRESETS.default.title1,
+        title2: (document.getElementById('heroTitle2Input').value || '').trim() || HERO_PRESETS.default.title2,
+        desc: (document.getElementById('heroDescInput').value || '').trim() || HERO_PRESETS.default.desc
+      };
+      saveConfig();
     }
 
     function resetAllOverrides() {
