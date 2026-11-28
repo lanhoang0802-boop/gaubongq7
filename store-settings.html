@@ -7,6 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%238c1d40'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle'%3E🐾%3C/text%3E%3C/svg%3E" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet" />
   <style>
@@ -108,7 +109,8 @@
     const OVERRIDE_KEY = 'gbq7_product_overrides';
 
     let products = [];
-    let config = { order: [], badges: {} }; // badges[id] = '' | 'BEST SELLER' | 'NEW' | 'HOT TREND'
+    let config = { order: [], badges: {}, stockOverrides: {} }; // stockOverrides[id] = 'out' | 'in'
+    let sortableInstance = null;
 
     function formatImageUrl(url) {
       if (!url) return '';
@@ -130,6 +132,7 @@
       } catch {}
       if (!Array.isArray(config.order)) config.order = [];
       if (!config.badges) config.badges = {};
+      if (!config.stockOverrides) config.stockOverrides = {};
 
       // 2. Load Google Sheet products
       const res = await fetch(GOOGLE_SHEET_CSV_URL);
@@ -143,9 +146,13 @@
         const id = (row['Mã Sản Phẩm (ID)'] || row['Mã SP'] || row['ID'] || `SP-${idx+1}`).trim();
         const name = (row['Tên Sản Phẩm'] || row['Tên SP'] || row['Name'] || '').trim();
         const cat = (row['Tên Danh Mục Hiển Thị'] || row['Tên Danh Mục'] || 'Thú Bông').trim();
+        const status = (row['Tình Trạng Kho (Còn Hàng / Hết Hàng)'] || row['Tình Trạng Kho'] || row['Tình Trạng'] || 'Còn Hàng').trim();
+        const rawTon = row['Tổng Tồn Kho (Nhập 0 = Tự nhảy xuống mục Hết Hàng)'] || row['Tổng Tồn Kho'] || '';
+        const tonNum = String(rawTon).replace(/[^0-9]/g, '');
+        const sheetOut = status.toLowerCase().includes('hết') || (tonNum !== '' && parseInt(tonNum, 10) <= 0);
         const badge = (row['Nhãn / Badge (HOT, NEW, SALE...)'] || row['Nhãn / Badge'] || row['Badge'] || 'MẪU MỚI').trim();
         const rawImg = (row['Ảnh Đại Diện (Đường dẫn hoặc link)'] || row['Ảnh Đại Diện'] || '').trim();
-        return { id, name, category: cat, sheetBadge: badge, image: formatImageUrl(rawImg), origIdx: idx };
+        return { id, name, category: cat, sheetOut, sheetBadge: badge, image: formatImageUrl(rawImg), origIdx: idx };
       }).filter(p => p.name);
 
       // Apply existing order
@@ -223,8 +230,17 @@
       renderList();
     }
 
+    function toggleStockStatus(id) {
+      const p = products.find(x => x.id === id);
+      if (!p) return;
+      const currentOut = config.stockOverrides[id] ? (config.stockOverrides[id] === 'out') : p.sheetOut;
+      config.stockOverrides[id] = currentOut ? 'in' : 'out';
+      saveConfig();
+      renderList();
+    }
+
     function resetAllOverrides() {
-      config = { order: [], badges: {} };
+      config = { order: [], badges: {}, stockOverrides: {} };
       localStorage.removeItem(OVERRIDE_KEY);
       init();
     }
@@ -236,14 +252,16 @@
 
       container.innerHTML = filtered.map(({ p, idx }) => {
         const activeBadge = config.badges[p.id] || '';
+        const isOut = config.stockOverrides[p.id] ? (config.stockOverrides[p.id] === 'out') : p.sheetOut;
         return `
-          <div class="glass-card rounded-2xl p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${activeBadge ? 'ring-2 ring-rose-300/80 bg-rose-50/30' : ''}">
-            <div class="flex items-center gap-3 min-w-0">
-              <span class="w-7 h-7 rounded-full bg-rose-100 text-rose-700 font-extrabold text-xs flex items-center justify-center flex-shrink-0">#${idx + 1}</span>
-              <img src="${p.image}" alt="${p.name}" class="w-12 h-12 rounded-xl object-cover bg-rose-50 flex-shrink-0 border border-rose-100" onerror="this.style.display='none'">
+          <div data-id="${p.id}" class="drag-row glass-card rounded-2xl p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 select-none ${activeBadge ? 'ring-2 ring-rose-300/80 bg-rose-50/30' : ''} ${isOut ? 'opacity-70 bg-slate-50/90' : ''}">
+            <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+              <span class="drag-handle cursor-grab active:cursor-grabbing text-slate-400 hover:text-rose-600 px-1 text-base font-bold flex-shrink-0" title="Nhấn giữ và kéo để đổi thứ tự">⋮⋮</span>
+              <span class="rank-num w-7 h-7 rounded-full bg-rose-100 text-rose-700 font-extrabold text-xs flex items-center justify-center flex-shrink-0">#${idx + 1}</span>
+              <img src="${p.image}" alt="${p.name}" class="w-12 h-12 rounded-xl object-cover bg-rose-50 flex-shrink-0 border border-rose-100 ${isOut ? 'grayscale' : ''}" onerror="this.style.display='none'">
               <div class="min-w-0">
                 <div class="font-bold text-xs sm:text-sm text-slate-900 truncate">${p.name}</div>
-                <div class="text-[11px] text-slate-500 flex items-center gap-2">
+                <div class="text-[11px] text-slate-500 flex items-center gap-2 flex-wrap">
                   <span>${p.id}</span> · <span>${p.category}</span>
                   ${activeBadge ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-rose-600 text-white">${activeBadge}</span>` : ''}
                 </div>
@@ -251,6 +269,11 @@
             </div>
 
             <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 flex-shrink-0">
+              <!-- Nút 1 chạm chuyển Còn Hàng / Hết Hàng -->
+              <button onclick="toggleStockStatus('${p.id}')" title="Bấm để chuyển nhanh giữa Còn Hàng và Tạm Hết Hàng" class="px-2.5 py-1 rounded-full text-[11px] font-bold border transition-all cursor-pointer ${isOut ? 'bg-rose-100 text-rose-800 border-rose-300 hover:bg-rose-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'}">
+                ${isOut ? '🔴 Hết Hàng' : '🟢 Còn Hàng'}
+              </button>
+
               <!-- Nhãn hiệu ứng -->
               <button onclick="setBadge('${p.id}', '${activeBadge === 'BEST SELLER' ? '' : 'BEST SELLER'}')" class="px-2.5 py-1 rounded-full text-[11px] font-bold border transition-all cursor-pointer ${activeBadge === 'BEST SELLER' ? 'bg-gradient-to-r from-amber-500 to-rose-500 text-white border-transparent shadow-sm' : 'bg-white text-slate-600 border-slate-200 hover:border-amber-400'}">
                 🔥 Best Seller
@@ -272,6 +295,29 @@
           </div>
         `;
       }).join('');
+
+      // Kích hoạt Hold & Drag (SortableJS) khi không đang lọc tìm kiếm
+      if (sortableInstance) {
+        sortableInstance.destroy();
+        sortableInstance = null;
+      }
+      if (!q && typeof Sortable !== 'undefined') {
+        sortableInstance = Sortable.create(container, {
+          animation: 180,
+          delay: 90,
+          delayOnTouchOnly: true,
+          ghostClass: 'opacity-40',
+          chosenClass: 'ring-2',
+          onEnd: function (evt) {
+            if (evt.oldIndex === evt.newIndex) return;
+            const [moved] = products.splice(evt.oldIndex, 1);
+            products.splice(evt.newIndex, 0, moved);
+            saveConfig();
+            // Update rank numbers without full re-render flicker
+            container.querySelectorAll('.rank-num').forEach((el, i) => { el.textContent = '#' + (i + 1); });
+          }
+        });
+      }
     }
 
     function openPublishModal() {
