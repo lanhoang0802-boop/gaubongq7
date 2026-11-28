@@ -40,13 +40,10 @@
 
       <div class="flex items-center gap-2">
         <span id="saveStatus" class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 opacity-0 transition-opacity">
-          ✓ Đã lưu
+          ✓ Đã lưu tự động
         </span>
         <button onclick="resetAllOverrides()" class="px-3 py-1.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer">
           ↺ Mặc định
-        </button>
-        <button onclick="openPublishModal()" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-rose-600 text-white hover:bg-rose-700 transition-colors shadow-xs cursor-pointer">
-          🚀 Xuất / Lưu Lên GitHub
         </button>
       </div>
     </div>
@@ -79,29 +76,6 @@
       <div class="glass-card rounded-2xl p-8 text-center text-sm text-slate-400">Đang tải danh sách gấu bông từ Google Sheet...</div>
     </div>
   </main>
-
-  <!-- Publish / Export Modal -->
-  <div id="publishModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
-      <div class="flex items-center justify-between">
-        <h3 class="font-extrabold text-base text-slate-900">🚀 Lưu cấu hình cho toàn bộ khách hàng</h3>
-        <button onclick="document.getElementById('publishModal').classList.add('hidden')" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center font-bold cursor-pointer">✕</button>
-      </div>
-      <p class="text-xs text-slate-600">
-        Mọi thay đổi của bạn đã được lưu ngay trên trình duyệt này (bấm <strong>Quay lại Cửa Hàng</strong> là thấy liền). Để đồng bộ cho tất cả khách hàng khác, bạn có thể dán GitHub Token (Classic PAT) để đẩy thẳng vào <code>data/product_config.json</code> hoặc tải file JSON về:
-      </p>
-      <input type="password" id="ghTokenInput" placeholder="Dán GitHub PAT (ghp_...) nếu muốn đẩy trực tiếp" class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs">
-      <div class="flex flex-wrap items-center justify-end gap-2 pt-2">
-        <button onclick="downloadConfigJson()" class="px-4 py-2 rounded-full text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">
-          ⬇️ Tải product_config.json
-        </button>
-        <button onclick="pushConfigToGithub()" id="pushGhBtn" class="px-4 py-2 rounded-full text-xs font-bold bg-rose-600 text-white hover:bg-rose-700 cursor-pointer">
-          ☁️ Lưu lên GitHub
-        </button>
-      </div>
-      <p id="pushMsg" class="text-xs font-semibold hidden"></p>
-    </div>
-  </div>
 
   <script>
     const GOOGLE_SHEET_ID = "10ylwZCFYsBWnx4dp5lZ8s8HWyba2RNnyhicAs-0AjFw";
@@ -317,53 +291,6 @@
             container.querySelectorAll('.rank-num').forEach((el, i) => { el.textContent = '#' + (i + 1); });
           }
         });
-      }
-    }
-
-    function openPublishModal() {
-      document.getElementById('publishModal').classList.remove('hidden');
-      const savedPat = localStorage.getItem('gbq7_gh_pat');
-      if (savedPat) document.getElementById('ghTokenInput').value = savedPat;
-    }
-
-    function downloadConfigJson() {
-      const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'product_config.json';
-      a.click();
-    }
-
-    async function pushConfigToGithub() {
-      const pat = (document.getElementById('ghTokenInput').value || '').trim();
-      const msgEl = document.getElementById('pushMsg');
-      if (!pat) {
-        msgEl.textContent = 'Vui lòng nhập GitHub PAT (hoặc bấm Tải product_config.json).';
-        msgEl.className = 'text-xs font-semibold text-rose-600';
-        return;
-      }
-      localStorage.setItem('gbq7_gh_pat', pat);
-      msgEl.textContent = 'Đang lưu lên GitHub...';
-      msgEl.className = 'text-xs font-semibold text-amber-600';
-
-      const apiUrl = 'https://api.github.com/repos/lanhoang0802-boop/gaubongq7/contents/data/product_config.json';
-      try {
-        let sha = null;
-        const getRes = await fetch(apiUrl, { headers: { Authorization: `token ${pat}` } });
-        if (getRes.ok) sha = (await getRes.json()).sha;
-
-        const content = btoa(unescape(encodeURIComponent(JSON.stringify(config, null, 2))));
-        const putRes = await fetch(apiUrl, {
-          method: 'PUT',
-          headers: { Authorization: `token ${pat}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: 'Update product order & featured badges', content, ...(sha ? { sha } : {}) })
-        });
-        if (!putRes.ok) throw new Error('HTTP ' + putRes.status);
-        msgEl.textContent = '✓ Đã lưu thành công lên GitHub! Mọi khách hàng sẽ thấy thứ tự mới sau ~30 giây.';
-        msgEl.className = 'text-xs font-semibold text-emerald-600';
-      } catch (e) {
-        msgEl.textContent = 'Lỗi đẩy GitHub: ' + e.message;
-        msgEl.className = 'text-xs font-semibold text-rose-600';
       }
     }
 
