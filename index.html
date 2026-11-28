@@ -625,6 +625,8 @@
   </script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 
 </head>
 <!-- 🌸 E5: Dual-Layer 3D Depth-of-Field Sakura Petals Canvases (Đằng sau & Đằng trước thẻ SP) -->
@@ -635,93 +637,15 @@
   <!-- Reading Scroll Progress Bar -->
   <div id="scrollProgress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-pink-500 via-rose-400 to-pink-600 z-[100] w-0 transition-all duration-75 pointer-events-none"></div>
 
-  <!-- 🐧 SWEATING RUNNING & PANTING GENTLEMAN PENGUIN MOUSE COMPANION -->
+  <!-- 🐧🦆 3D GLB RUNNING & WALKING MASCOT MOUSE COMPANION -->
   <div id="cursorPenguin" class="pointer-events-none fixed z-[99999] transition-opacity duration-200 select-none" style="top: 0; left: 0; will-change: transform;">
-    <div id="penguinInner" style="position: relative; width: 46px; height: 56px; transform-origin: bottom center;">
+    <div id="penguinInner" style="position: relative; width: 60px; height: 60px; transform-origin: bottom center;">
       <!-- Sweat Droplets Container -->
-      <div id="penguinSweat" style="position: absolute; top: -6px; left: 0; width: 100%; pointer-events: none;"></div>
+      <div id="penguinSweat" style="position: absolute; top: -4px; left: 0; width: 100%; pointer-events: none;"></div>
       <!-- Breath Puff Container -->
-      <div id="penguinBreath" style="position: absolute; top: 14px; left: 0; width: 100%; pointer-events: none;"></div>
-      
-      <!-- SVG Penguin Gentleman in Top Hat & Tuxedo -->
-      <svg id="penguinSvg" viewBox="0 0 64 78" width="46" height="56" style="display: block; filter: drop-shadow(0 6px 8px rgba(0,0,0,0.3)); overflow: visible;">
-        <!-- Ground Shadow -->
-        <ellipse cx="32" cy="73" rx="19" ry="4" fill="rgba(0,0,0,0.28)" />
-        
-        <!-- Left Foot -->
-        <ellipse id="pFootL" cx="24" cy="71" rx="7" ry="3.5" fill="#f97316" />
-        <!-- Right Foot -->
-        <ellipse id="pFootR" cx="40" cy="71" rx="7" ry="3.5" fill="#f97316" />
-        
-        <!-- Body -->
-        <ellipse cx="32" cy="44" rx="22" ry="26" fill="#0f172a" />
-        
-        <!-- Left Wing -->
-        <ellipse id="pWingL" cx="10" cy="44" rx="5" ry="12" fill="#020617" transform="rotate(15 10 44)" />
-        <!-- Right Wing -->
-        <ellipse id="pWingR" cx="54" cy="44" rx="5" ry="12" fill="#020617" transform="rotate(-15 54 44)" />
-        
-        <!-- White Belly / Shirt -->
-        <ellipse cx="32" cy="48" rx="14" ry="19" fill="#ffffff" />
-
-        <!-- 🎩 TOP HAT -->
-        <g id="pTopHat">
-          <!-- Hat Brim -->
-          <ellipse cx="32" cy="18" rx="16" ry="3.5" fill="#020617" />
-          <!-- Hat Crown -->
-          <path d="M 21 18 L 22.5 3 L 41.5 3 L 43 18 Z" fill="#090d16" />
-          <!-- Hat Top -->
-          <ellipse cx="32" cy="3" rx="9.5" ry="2" fill="#1e293b" />
-          <!-- Hat Ribbon Band -->
-          <path d="M 21.8 13.5 L 22.2 17 L 41.8 17 L 42.2 13.5 Z" fill="#e11d48" />
-          <!-- Gold Hat Buckle -->
-          <rect x="30" y="13.2" width="4" height="4" rx="1" fill="#facc15" />
-        </g>
-        
-        <!-- Eyes -->
-        <ellipse cx="25" cy="30" rx="4" ry="5.5" fill="#ffffff" />
-        <circle cx="26" cy="30" r="2.5" fill="#020617" />
-        <circle cx="27" cy="29" r="1" fill="#ffffff" />
-        
-        <ellipse cx="39" cy="30" rx="4" ry="5.5" fill="#ffffff" />
-        <circle cx="38" cy="30" r="2.5" fill="#020617" />
-        <circle cx="39" cy="29" r="1" fill="#ffffff" />
-        
-        <!-- Eyebrows -->
-        <path d="M 21 23 Q 25 26 28 24" stroke="#0f172a" stroke-width="1.8" stroke-linecap="round" fill="none" />
-        <path d="M 43 23 Q 39 26 36 24" stroke="#0f172a" stroke-width="1.8" stroke-linecap="round" fill="none" />
-        
-        <!-- Pink Cheeks -->
-        <circle cx="18" cy="38" r="3.5" fill="#fda4af" opacity="0.85" />
-        <circle cx="46" cy="38" r="3.5" fill="#fda4af" opacity="0.85" />
-
-        <!-- 👔 TUXEDO LAPELS & BOW TIE -->
-        <path d="M 18 40 C 18 52, 21 62, 26 66 C 23 58, 22 47, 24 41 Z" fill="#020617" />
-        <path d="M 46 40 C 46 52, 43 62, 38 66 C 41 58, 42 47, 40 41 Z" fill="#020617" />
-        
-        <!-- Red Bow Tie -->
-        <g id="pBowTie" transform="translate(32, 40)">
-          <polygon points="-6,-3 0,0 -6,3" fill="#e11d48" />
-          <polygon points="6,-3 0,0 6,3" fill="#e11d48" />
-          <circle cx="0" cy="0" r="2" fill="#be123c" />
-        </g>
-        
-        <!-- Gold Vest Buttons -->
-        <circle cx="32" cy="49" r="1.3" fill="#facc15" />
-        <circle cx="32" cy="56" r="1.3" fill="#facc15" />
-        
-        <!-- Closed Beak (When Running) -->
-        <polygon id="pBeakClosed" points="32,31 26,38 38,38" fill="#f97316" />
-        
-        <!-- Open Gasping Beak with Tongue (When Panting) -->
-        <g id="pBeakOpen" style="display: none;">
-          <ellipse cx="32" cy="38" rx="6" ry="5.5" fill="#ea580c" />
-          <path d="M 29 38 Q 32 43 35 38" fill="#f43f5e" />
-        </g>
-        
-        <!-- Forehead Sweat Drop -->
-        <path d="M 46 19 C 46 15, 43 12, 43 12 C 43 12, 40 15, 40 19 C 40 21.5, 41.8 23.5, 43 23.5 C 44.2 23.5, 46 21.5, 46 19 Z" fill="#38bdf8" opacity="0.95" />
-      </svg>
+      <div id="penguinBreath" style="position: absolute; top: 18px; left: 0; width: 100%; pointer-events: none;"></div>
+      <!-- 3D Three.js Transparent Canvas -->
+      <canvas id="mascot3dCanvas" width="128" height="128" style="width: 60px; height: 60px; display: block; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.2));"></canvas>
     </div>
   </div>
 
@@ -747,6 +671,10 @@
 
       <!-- Quick Action Buttons -->
       <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+        <!-- 🐧/🦆 Đổi Linh Vật 3D (Bên trái nút Lượt xem) -->
+        <button id="mascotToggleBtn" onclick="toggleMascotModel()" title="Đổi linh vật 3D theo chuột (Cánh cụt / Vịt ngỗng)" class="hidden md:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-m3-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200/80 hover:bg-amber-100 transition-colors shadow-xs cursor-pointer">
+          <span id="mascotToggleIcon">🐧</span>
+        </button>
         <!-- 📊 Thống Kê Lượt Xem Trang (Bấm để mở trang Analytics chi tiết) -->
         <a href="analytics.html" id="visitorStatsBtn" title="Xem báo cáo phân tích & thống kê chi tiết" class="marshmallow-btn inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-m3-full text-xs font-bold bg-pink-100/90 text-rose-700 hover:bg-pink-200 transition-colors shadow-xs">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -1849,173 +1777,241 @@
     }, { passive: true });
 
     // ========================================================
-    // 🐧 GENTLEMAN PENGUIN IN TOP HAT & TUXEDO MOUSE COMPANION
+    // 🐧🦆 3D GLB MASCOT MOUSE COMPANION (PENGUIN / DUCK SWITCHER)
     // ========================================================
+    let currentMascotType = localStorage.getItem('gbq7_mascot') || 'penguin';
+    let switchMascotFn = null;
+
+    function toggleMascotModel() {
+      currentMascotType = currentMascotType === 'penguin' ? 'duck' : 'penguin';
+      localStorage.setItem('gbq7_mascot', currentMascotType);
+      const iconEl = document.getElementById('mascotToggleIcon');
+      if (iconEl) iconEl.textContent = currentMascotType === 'penguin' ? '🐧' : '🦆';
+      if (typeof switchMascotFn === 'function') {
+        switchMascotFn(currentMascotType);
+      }
+    }
+
     function initPenguinMascot() {
+      const iconEl = document.getElementById('mascotToggleIcon');
+      if (iconEl) iconEl.textContent = currentMascotType === 'penguin' ? '🐧' : '🦆';
+
       const penguinEl = document.getElementById('cursorPenguin');
       const innerEl = document.getElementById('penguinInner');
-      const beakClosed = document.getElementById('pBeakClosed');
-      const beakOpen = document.getElementById('pBeakOpen');
-      const wingL = document.getElementById('pWingL');
-      const wingR = document.getElementById('pWingR');
-      const footL = document.getElementById('pFootL');
-      const footR = document.getElementById('pFootR');
+      const canvasEl = document.getElementById('mascot3dCanvas');
       const sweatContainer = document.getElementById('penguinSweat');
       const breathContainer = document.getElementById('penguinBreath');
 
-      if (!penguinEl || !innerEl) {
-        console.warn('Penguin elements not found, retrying...');
-        setTimeout(initPenguinMascot, 100);
+      if (!penguinEl || !innerEl || !canvasEl || typeof THREE === 'undefined' || typeof THREE.GLTFLoader === 'undefined') {
+        setTimeout(initPenguinMascot, 120);
         return;
       }
 
-      console.log('✓ Gentleman Penguin mascot initialized successfully!');
+      // Skip heavy WebGL on touch devices where mascot is hidden
+      if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
+
+      const renderer = new THREE.WebGLRenderer({ canvas: canvasEl, alpha: true, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setSize(60, 60, false);
+      renderer.outputEncoding = THREE.sRGBEncoding;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 50);
+      camera.position.set(0, 0.45, 3.3);
+      camera.lookAt(0, 0.05, 0);
+
+      // Soft Boutique Studio Lighting
+      const hemi = new THREE.HemisphereLight(0xfff5f8, 0xd8b4fe, 1.15);
+      scene.add(hemi);
+      const dirLight = new THREE.DirectionalLight(0xffffff, 1.15);
+      dirLight.position.set(2.5, 4, 3);
+      scene.add(dirLight);
+      const rimLight = new THREE.DirectionalLight(0xfda4af, 0.55);
+      rimLight.position.set(-2.5, 1.5, -2);
+      scene.add(rimLight);
+
+      const mascotRoot = new THREE.Group();
+      scene.add(mascotRoot);
+
+      const loadedModels = {};
+      const loader = new THREE.GLTFLoader();
+
+      function normalizeAndCache(type, gltf) {
+        const wrapper = new THREE.Group();
+        const model = gltf.scene;
+        const box = new THREE.Box3().setFromObject(model);
+        const size = new THREE.Vector3();
+        const center = new THREE.Vector3();
+        box.getSize(size);
+        box.getCenter(center);
+
+        const maxDim = Math.max(size.x, size.y, size.z) || 1;
+        // Scale nhỏ gọn tương đương kích thước icon chim cánh cụt cũ (~46px)
+        const targetSize = type === 'duck' ? 1.25 : 1.32;
+        const s = targetSize / maxDim;
+        model.scale.setScalar(s);
+
+        // Căn tâm X/Z về 0 và đặt chân đứng tại y = -0.52 để bật nhảy tự nhiên
+        model.position.x = -center.x * s;
+        model.position.z = -center.z * s;
+        model.position.y = -box.min.y * s - 0.52;
+
+        wrapper.add(model);
+        loadedModels[type] = wrapper;
+        return wrapper;
+      }
+
+      function showMascot(type) {
+        while (mascotRoot.children.length > 0) {
+          mascotRoot.remove(mascotRoot.children[0]);
+        }
+        if (loadedModels[type]) {
+          mascotRoot.add(loadedModels[type]);
+        } else {
+          const url = type === 'duck' ? 'models/duck.glb' : 'models/penguin.glb';
+          loader.load(url, (gltf) => {
+            const w = normalizeAndCache(type, gltf);
+            if (currentMascotType === type) {
+              while (mascotRoot.children.length > 0) mascotRoot.remove(mascotRoot.children[0]);
+              mascotRoot.add(w);
+            }
+          });
+        }
+      }
+
+      switchMascotFn = showMascot;
+      showMascot(currentMascotType);
+      // Preload mẫu còn lại để chuyển qua lại tức thì
+      const otherType = currentMascotType === 'penguin' ? 'duck' : 'penguin';
+      loader.load(otherType === 'duck' ? 'models/duck.glb' : 'models/penguin.glb', (gltf) => {
+        normalizeAndCache(otherType, gltf);
+      });
 
       let mouseX = window.innerWidth / 2;
       let mouseY = window.innerHeight / 2;
-      let posX = window.innerWidth / 2 - 25;
-      let posY = window.innerHeight / 2 + 15;
-      let stepTimer = 0;
-      let pantTimer = 0;
+      let posX = window.innerWidth / 2 - 30;
+      let posY = window.innerHeight / 2 + 12;
+      let stepPhase = 0;
+      let idlePhase = 0;
+      let currentYaw = 0.35;
+      let currentPitch = 0;
+      let currentRoll = 0;
+      let currentHopY = 0;
       let lastSweatSpawn = 0;
       let lastBreathSpawn = 0;
       let facingRight = true;
+      let wasRunning = false;
 
       window.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
         penguinEl.style.opacity = '1';
       }, { passive: true });
-
-      window.addEventListener('mouseleave', () => {
-        penguinEl.style.opacity = '0.3';
-      });
-      window.addEventListener('mouseenter', () => {
-        penguinEl.style.opacity = '1';
-      });
+      window.addEventListener('mouseleave', () => { penguinEl.style.opacity = '0.35'; });
+      window.addEventListener('mouseenter', () => { penguinEl.style.opacity = '1'; });
 
       function spawnSweatDrop() {
         if (!sweatContainer) return;
         const drop = document.createElement('span');
         drop.textContent = '💦';
-        drop.style.position = 'absolute';
-        drop.style.fontSize = '13px';
-        drop.style.top = '-6px';
-        drop.style.left = facingRight ? '-12px' : '36px';
-        drop.style.pointerEvents = 'none';
-        drop.style.transition = 'all 0.55s ease-out';
-        drop.style.opacity = '1';
-        drop.style.transform = 'scale(0.8) translateY(0)';
+        drop.style.cssText = `position:absolute;font-size:12px;top:-4px;left:${facingRight ? '-6px' : '48px'};pointer-events:none;transition:all 0.5s ease-out;opacity:1;transform:scale(0.8);`;
         sweatContainer.appendChild(drop);
-
         requestAnimationFrame(() => {
           drop.style.opacity = '0';
-          drop.style.transform = `scale(1.3) translate(${facingRight ? '-20px' : '20px'}, -16px)`;
+          drop.style.transform = `scale(1.2) translate(${facingRight ? '-16px' : '16px'}, -14px)`;
         });
-        setTimeout(() => drop.remove(), 550);
+        setTimeout(() => drop.remove(), 520);
       }
 
       function spawnBreathPuff() {
         if (!breathContainer) return;
         const puff = document.createElement('span');
         puff.textContent = '💨';
-        puff.style.position = 'absolute';
-        puff.style.fontSize = '14px';
-        puff.style.top = '14px';
-        puff.style.left = facingRight ? '36px' : '-16px';
-        puff.style.pointerEvents = 'none';
-        puff.style.transition = 'all 0.65s cubic-bezier(0.16, 1, 0.3, 1)';
-        puff.style.opacity = '0.95';
-        puff.style.transform = 'scale(0.6)';
+        puff.style.cssText = `position:absolute;font-size:12px;top:16px;left:${facingRight ? '46px' : '-10px'};pointer-events:none;transition:all 0.6s cubic-bezier(0.16,1,0.3,1);opacity:0.9;transform:scale(0.6);`;
         breathContainer.appendChild(puff);
-
         requestAnimationFrame(() => {
           puff.style.opacity = '0';
-          puff.style.transform = `scale(1.3) translate(${facingRight ? '24px' : '-24px'}, -8px)`;
+          puff.style.transform = `scale(1.25) translate(${facingRight ? '20px' : '-20px'}, -8px)`;
         });
-        setTimeout(() => puff.remove(), 650);
+        setTimeout(() => puff.remove(), 620);
       }
 
       function animate() {
-        const targetX = mouseX + (facingRight ? -40 : 16);
-        const targetY = mouseY + 14;
+        const targetX = mouseX + (facingRight ? -52 : 14);
+        const targetY = mouseY + 8;
 
         const dx = targetX - posX;
         const dy = targetY - posY;
         const dist = Math.hypot(dx, dy);
 
-        const speed = dist > 140 ? 0.16 : 0.11;
-        posX += dx * speed;
-        posY += dy * speed;
+        const followSpeed = dist > 140 ? 0.16 : 0.11;
+        posX += dx * followSpeed;
+        posY += dy * followSpeed;
 
-        if (mouseX > posX + 20) {
-          facingRight = true;
-        } else if (mouseX < posX - 20) {
-          facingRight = false;
-        }
+        if (mouseX > posX + 26) facingRight = true;
+        else if (mouseX < posX - 18) facingRight = false;
 
         penguinEl.style.transform = `translate3d(${posX}px, ${posY}px, 0)`;
 
         const now = performance.now();
+        let targetYaw, targetPitch, targetRoll, targetHopY;
+        let squashY = 1, squashXZ = 1;
 
-        if (dist > 8) {
-          // RUNNING & SWEATING
-          stepTimer += 0.24;
-          const waddle = Math.sin(stepTimer) * 14;
-          const wingFlap = Math.cos(stepTimer) * 26;
-          const footLift = Math.sin(stepTimer) * 5;
+        if (dist > 65) {
+          // 🏃 RUNNING / CHASING GAIT (Bước chạy năng động)
+          wasRunning = true;
+          stepPhase += 0.30;
+          const hop = Math.abs(Math.sin(stepPhase));
+          targetYaw = facingRight ? 1.15 : -1.15;
+          targetPitch = 0.22 + Math.sin(stepPhase * 2) * 0.06;
+          targetRoll = Math.sin(stepPhase) * 0.20;
+          targetHopY = hop * 0.22;
+          // Squash & stretch khi tiếp đất và bật lên
+          squashY = 0.92 + hop * 0.14;
+          squashXZ = 1.05 - hop * 0.07;
 
-          innerEl.style.transform = `scaleX(${facingRight ? 1 : -1}) rotate(${waddle}deg) translateY(${Math.abs(Math.sin(stepTimer)) * -6}px)`;
-
-          if (wingL && wingR) {
-            wingL.setAttribute('transform', `rotate(${15 + wingFlap} 10 44)`);
-            wingR.setAttribute('transform', `rotate(${-15 - wingFlap} 54 44)`);
-          }
-          if (footL && footR) {
-            footL.setAttribute('cy', `${71 - footLift}`);
-            footR.setAttribute('cy', `${71 + footLift}`);
-          }
-
-          if (beakClosed) beakClosed.style.display = 'block';
-          if (beakOpen) beakOpen.style.display = 'none';
-
-          if (now - lastSweatSpawn > 220) {
+          if (now - lastSweatSpawn > 240) {
             spawnSweatDrop();
             lastSweatSpawn = now;
           }
-
+        } else if (dist > 7) {
+          // 🚶 WALKING / WADDLING GAIT (Bước đi lạch bạch dễ thương)
+          stepPhase += 0.17;
+          const hop = Math.abs(Math.sin(stepPhase));
+          targetYaw = facingRight ? 0.95 : -0.95;
+          targetPitch = 0.09 + Math.sin(stepPhase * 2) * 0.03;
+          targetRoll = Math.sin(stepPhase) * 0.15;
+          targetHopY = hop * 0.11;
+          squashY = 0.96 + hop * 0.07;
+          squashXZ = 1.02 - hop * 0.03;
         } else {
-          // STOPPED & PANTING
-          pantTimer += 0.20;
-          const pantScaleY = 0.94 + Math.sin(pantTimer) * 0.10;
-          const pantScaleX = 1.05 - Math.sin(pantTimer) * 0.08;
-          const pantTilt = 8;
+          // 😌 IDLE / BREATHING (Đứng nghỉ & thở nhẹ)
+          idlePhase += 0.08;
+          targetYaw = facingRight ? 0.42 : -0.42;
+          targetPitch = Math.sin(idlePhase * 0.5) * 0.04;
+          targetRoll = Math.sin(idlePhase * 0.7) * 0.03;
+          targetHopY = 0;
+          squashY = 1 + Math.sin(idlePhase * 1.4) * 0.035;
+          squashXZ = 1 - Math.sin(idlePhase * 1.4) * 0.02;
 
-          innerEl.style.transform = `scaleX(${facingRight ? 1 : -1}) rotate(${pantTilt}deg) scale(${pantScaleX}, ${pantScaleY})`;
-
-          if (wingL && wingR) {
-            wingL.setAttribute('transform', `rotate(${32 + Math.sin(pantTimer)*5} 10 44)`);
-            wingR.setAttribute('transform', `rotate(${-32 - Math.sin(pantTimer)*5} 54 44)`);
-          }
-          if (footL && footR) {
-            footL.setAttribute('cy', '71');
-            footR.setAttribute('cy', '71');
-          }
-
-          if (beakClosed) beakClosed.style.display = 'none';
-          if (beakOpen) beakOpen.style.display = 'block';
-
-          if (now - lastSweatSpawn > 450) {
-            spawnSweatDrop();
-            lastSweatSpawn = now;
-          }
-
-          if (Math.sin(pantTimer) > 0.82 && (now - lastBreathSpawn > 350)) {
+          if (wasRunning && now - lastBreathSpawn > 420) {
             spawnBreathPuff();
             lastBreathSpawn = now;
+            setTimeout(() => { wasRunning = false; }, 1400);
           }
         }
 
+        // Smooth interpolation for silky 60fps transitions
+        currentYaw += (targetYaw - currentYaw) * 0.16;
+        currentPitch += (targetPitch - currentPitch) * 0.18;
+        currentRoll += (targetRoll - currentRoll) * 0.22;
+        currentHopY += (targetHopY - currentHopY) * 0.28;
+
+        mascotRoot.rotation.set(currentPitch, currentYaw, currentRoll);
+        mascotRoot.position.y = currentHopY;
+        mascotRoot.scale.set(squashXZ, squashY, squashXZ);
+
+        renderer.render(scene, camera);
         requestAnimationFrame(animate);
       }
 
@@ -2350,8 +2346,8 @@
     // --- 📊 9. 3-IN-1 ANALYTICS & VISITOR STATS TRACKER ---
     // Cấu hình miễn phí GA4 & Microsoft Clarity (Điền ID của bạn để kích hoạt thêm báo cáo chuyên sâu)
     const GBQ7_ANALYTICS_CONFIG = {
-      ga4Id: '',      // Ví dụ: 'G-XXXXXXXXXX'
-      clarityId: ''   // Ví dụ: 'p123abcxyz'
+      ga4Id: 'G-TX0DMCYJCY',      // Google Analytics 4 Measurement ID
+      clarityId: 'zkita9udlg'   // Microsoft Clarity Project ID
     };
 
     function initExternalAnalytics() {
