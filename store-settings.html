@@ -25,6 +25,25 @@
   </style>
 </head>
 <body class="min-h-screen pb-16">
+  <!-- 🔒 Màn hình khoá mật khẩu Admin (080219) -->
+  <div id="adminLockOverlay" class="fixed inset-0 z-[100] bg-rose-50/95 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 sm:p-7 shadow-2xl border border-rose-100 text-center space-y-4">
+      <div class="w-14 h-14 mx-auto rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-2xl shadow-xs">🐾</div>
+      <div>
+        <h2 class="text-lg font-extrabold text-slate-900">Quản Lý Gấu Bông Q7</h2>
+        <p class="text-xs text-slate-500 mt-1">Nhập mật khẩu quản trị viên để chỉnh sửa cửa hàng</p>
+      </div>
+      <form onsubmit="unlockAdmin(event)" class="space-y-3">
+        <input id="adminPassInput" type="password" inputmode="numeric" autofocus placeholder="Nhập mật khẩu..." class="w-full px-4 py-2.5 rounded-full border border-rose-200 text-center text-sm font-bold tracking-widest focus:outline-none focus:ring-2 focus:ring-rose-400">
+        <p id="adminPassErr" class="text-xs font-bold text-rose-600 hidden">Mật khẩu chưa đúng, vui lòng thử lại!</p>
+        <button type="submit" class="w-full py-2.5 rounded-full text-sm font-bold bg-rose-600 text-white hover:bg-rose-700 transition-colors shadow-sm cursor-pointer">
+          🔓 Mở Khoá Quản Lý
+        </button>
+      </form>
+      <a href="index.html" class="inline-block text-xs font-semibold text-slate-500 hover:text-rose-600">← Quay lại Cửa Hàng</a>
+    </div>
+  </div>
+
   <!-- Header -->
   <header class="sticky top-0 z-40 bg-white/85 backdrop-blur-md border-b border-rose-100">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
@@ -50,6 +69,9 @@
         </button>
         <button onclick="resetAllOverrides()" class="px-3 py-1.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer">
           ↺ Mặc định
+        </button>
+        <button onclick="lockAdmin()" title="Khoá lại trang quản lý" class="px-2.5 py-1.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer">
+          🔒
         </button>
       </div>
     </div>
@@ -211,6 +233,35 @@
     const GOOGLE_SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/export?format=csv`;
     const GBQ7_SYNC_URL = "https://script.google.com/macros/s/AKfycbzFSYTMoSm8MG861nAFVol2Z9JX1Pg3QM4lAkwtkS5B7PckQHJ-qTRso7xUtEzNNz9mgQ/exec";
     const OVERRIDE_KEY = 'gbq7_product_overrides';
+    const ADMIN_AUTH_KEY = 'gbq7_admin_unlocked';
+
+    // Kiểm tra khoá mật khẩu Admin
+    (function checkAdminLock() {
+      // Nếu vừa bấm ?pat= hợp lệ hoặc đã mở khoá trên trình duyệt này thì mở sẵn
+      const hasPatParam = new URLSearchParams(window.location.search).has('pat');
+      if (hasPatParam || localStorage.getItem(ADMIN_AUTH_KEY) === '1') {
+        const ov = document.getElementById('adminLockOverlay');
+        if (ov) ov.classList.add('hidden');
+      }
+    })();
+
+    function unlockAdmin(e) {
+      e.preventDefault();
+      const val = (document.getElementById('adminPassInput').value || '').trim();
+      if (val === '080219') {
+        localStorage.setItem(ADMIN_AUTH_KEY, '1');
+        document.getElementById('adminLockOverlay').classList.add('hidden');
+        document.getElementById('adminPassErr').classList.add('hidden');
+      } else {
+        document.getElementById('adminPassErr').classList.remove('hidden');
+      }
+    }
+
+    function lockAdmin() {
+      localStorage.removeItem(ADMIN_AUTH_KEY);
+      document.getElementById('adminPassInput').value = '';
+      document.getElementById('adminLockOverlay').classList.remove('hidden');
+    }
 
     let products = [];
     let config = { order: [], badges: {}, stockOverrides: {} };
