@@ -709,12 +709,13 @@
     <div class="relative w-full overflow-hidden rounded-m3-xl bg-gradient-to-br from-m3-primary-container via-m3-surface-container to-amber-50 p-4 sm:p-8 lg:p-10 border border-m3-outline-variant/40 shadow-sm">
       <!-- 🎨 FX 2: Fluid Pastel Mesh Gradient Canvas (Showcase 2) -->
       <canvas id="heroMeshCanvas" class="absolute inset-0 w-full h-full pointer-events-none opacity-60 rounded-m3-xl"></canvas>
-      <div class="w-full max-w-2xl relative z-10 space-y-2.5 sm:space-y-3">
-        <h1 id="proxStage" class="text-2xl sm:text-4xl lg:text-5xl font-cute font-bold tracking-tight text-m3-on-surface leading-tight select-none">
-          <span class="prox-char">G</span><span class="prox-char">ấ</span><span class="prox-char">u</span> <span class="prox-char">B</span><span class="prox-char">ô</span><span class="prox-char">n</span><span class="prox-char">g</span> <span class="prox-char">Q</span><span class="prox-char">u</span><span class="prox-char">ậ</span><span class="prox-char">n</span> <span class="prox-char">7</span> <br class="hidden sm:block">
-          <span class="text-m3-primary"><span class="prox-char text-m3-primary">Q</span><span class="prox-char text-m3-primary">u</span><span class="prox-char text-m3-primary">à</span> <span class="prox-char text-m3-primary">T</span><span class="prox-char text-m3-primary">ặ</span><span class="prox-char text-m3-primary">n</span><span class="prox-char text-m3-primary">g</span> <span class="prox-char text-m3-primary">N</span><span class="prox-char text-m3-primary">g</span><span class="prox-char text-m3-primary">ư</span><span class="prox-char text-m3-primary">ờ</span><span class="prox-char text-m3-primary">i</span> <span class="prox-char text-m3-primary">Y</span><span class="prox-char text-m3-primary">ê</span><span class="prox-char text-m3-primary">u</span> <span class="prox-char text-m3-primary">&amp;</span> <span class="prox-char text-m3-primary">T</span><span class="prox-char text-m3-primary">ố</span><span class="prox-char text-m3-primary">t</span> <span class="prox-char text-m3-primary">N</span><span class="prox-char text-m3-primary">g</span><span class="prox-char text-m3-primary">h</span><span class="prox-char text-m3-primary">i</span><span class="prox-char text-m3-primary">ệ</span><span class="prox-char text-m3-primary">p</span></span>
+      <div class="w-full relative z-10 space-y-3 sm:space-y-4">
+        <h1 id="proxStage" style="font-size: clamp(1.45rem, 3.1vw, 3.05rem);" class="font-cute font-bold tracking-tight text-m3-on-surface leading-[1.2] select-none w-full">
+          <span id="heroTitleLine1" class="inline-block">Gấu Bông Quận 7</span>
+          <br>
+          <span id="heroTitleLine2" class="text-m3-primary inline-block">Quà Tặng Người Yêu &amp; Tốt Nghiệp</span>
         </h1>
-        <p class="text-sm sm:text-base text-m3-on-surface-variant font-medium leading-relaxed">
+        <p id="heroDescText" style="font-size: clamp(0.875rem, 1.15vw, 1.1rem);" class="w-full text-m3-on-surface-variant font-medium leading-relaxed">
           Gửi gắm yêu thương qua từng bé gấu lông mềm mịn chuẩn xịn — món quà ngọt ngào dành tặng <strong>người yêu, bạn gái</strong> hay <strong>mừng lễ tốt nghiệp ĐH Tôn Đức Thắng, RMIT</strong>. Ghé tiệm hoặc nhắn Zalo để được tư vấn chọn mẫu &amp; <strong>giao hỏa tốc 1–2h tận tay tại Quận 7!</strong>
         </p>
         
@@ -1293,6 +1294,22 @@
         const localRaw = localStorage.getItem('gbq7_product_overrides');
         if (localRaw) storeCfg = { ...storeCfg, ...JSON.parse(localRaw) };
       } catch {}
+
+      // Áp dụng nội dung Hero Banner theo mùa (chỉnh từ Store Settings)
+      function renderProximityWords(el, text, extraClass = '') {
+        if (!el || !text) return;
+        el.innerHTML = text.trim().split(/\s+/).map(word =>
+          `<span class="inline-block whitespace-nowrap">${Array.from(word).map(ch => `<span class="prox-char ${extraClass}">${ch}</span>`).join('')}</span>`
+        ).join(' ');
+      }
+      const hTitle1 = (storeCfg.hero && storeCfg.hero.title1) || 'Gấu Bông Quận 7';
+      const hTitle2 = (storeCfg.hero && storeCfg.hero.title2) || 'Quà Tặng Người Yêu & Tốt Nghiệp';
+      renderProximityWords(document.getElementById('heroTitleLine1'), hTitle1);
+      renderProximityWords(document.getElementById('heroTitleLine2'), hTitle2, 'text-m3-primary');
+      if (storeCfg.hero && storeCfg.hero.desc) {
+        const descEl = document.getElementById('heroDescText');
+        if (descEl) descEl.textContent = storeCfg.hero.desc;
+      }
 
       if (storeCfg && storeCfg.badges) {
         allProducts.forEach((p, idx) => {
