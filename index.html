@@ -1412,12 +1412,18 @@
         }
       }
 
-      // Áp dụng cấu hình thứ tự & nhãn nổi bật (Best Seller / New / Hot Trend) từ store-settings
-      let storeCfg = { order: [], badges: {} };
+      // Áp dụng cấu hình thứ tự, nhãn nổi bật & tồn kho trực tiếp từ Google Apps Script (đồng bộ cho mọi khách hàng)
+      const GBQ7_SYNC_URL = 'https://script.google.com/macros/s/AKfycbzFSYTMoSm8MG861nAFVol2Z9JX1Pg3QM4lAkwtkS5B7PckQHJ-qTRso7xUtEzNNz9mgQ/exec';
+      let storeCfg = { order: [], badges: {}, stockOverrides: {} };
       try {
-        const resCfg = await fetch('data/product_config.json', { cache: 'no-store' });
-        if (resCfg.ok) storeCfg = await resCfg.json();
-      } catch {}
+        const resGas = await fetch(GBQ7_SYNC_URL, { cache: 'no-store' });
+        if (resGas.ok) storeCfg = await resGas.json();
+      } catch {
+        try {
+          const resCfg = await fetch('data/product_config.json', { cache: 'no-store' });
+          if (resCfg.ok) storeCfg = await resCfg.json();
+        } catch {}
+      }
       try {
         const localRaw = localStorage.getItem('gbq7_product_overrides');
         if (localRaw) storeCfg = { ...storeCfg, ...JSON.parse(localRaw) };
