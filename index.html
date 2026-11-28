@@ -1429,6 +1429,10 @@
             p.featuredBadge = storeCfg.badges[p.id];
             p.badge = storeCfg.badges[p.id];
           }
+          if (storeCfg.stockOverrides && storeCfg.stockOverrides[p.id]) {
+            p.isOutOfStock = (storeCfg.stockOverrides[p.id] === 'out');
+            p.status = p.isOutOfStock ? 'Hết Hàng' : 'Còn Hàng';
+          }
         });
       }
       if (storeCfg && Array.isArray(storeCfg.order) && storeCfg.order.length > 0) {
