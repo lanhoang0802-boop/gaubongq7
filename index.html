@@ -247,15 +247,23 @@
        Expanded: 5, 13, 14, 20
        ============================================================== */
 
-    /* 🌸 E5: Dual-Layer 3D Depth-of-Field Sakura Petals Canvas */
+    /* 🌸 E5: 3-Plane Pinhole + Thin-Lens Circle-of-Confusion (CoC) 3D DoF Canvases */
     #sakuraBackCanvas {
       position: fixed;
       inset: 0;
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 5;
-      opacity: 0.9;
+      z-index: 5; /* Sau Hero (10), sau Thẻ SP (20), sau Header (40) */
+      transition: opacity 0.35s ease;
+    }
+    #sakuraMidCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 15; /* Trước Hero (10), nhưng vẫn SAU Thẻ SP (20) & Header (40) */
       transition: opacity 0.35s ease;
     }
     #sakuraFrontCanvas {
@@ -264,14 +272,14 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 35;
-      opacity: 0.92;
+      z-index: 35; /* Trước Thẻ SP (20 & hover 30), sau Header (40) & Modal (50) */
       transition: opacity 0.35s ease;
     }
 
     /* 🌸🧸 2.5D POPOUT PLUSHIE, 3D DEPTH SHADOWS & AMBIENT RIM SHADER */
     .card-popout-sakura {
       position: relative;
+      z-index: 20;
       transform-style: preserve-3d;
       box-shadow:
         0 10px 24px -6px rgba(140, 29, 64, 0.08),
@@ -629,8 +637,9 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 
 </head>
-<!-- 🌸 E5: Dual-Layer 3D Depth-of-Field Sakura Petals Canvases (Đằng sau & Đằng trước thẻ SP) -->
+<!-- 🌸 E5: 3-Plane 3D Depth-of-Field Sakura Canvases (Far: z=5 | Mid: z=15 | Near/Front: z=35) -->
   <canvas id="sakuraBackCanvas"></canvas>
+  <canvas id="sakuraMidCanvas"></canvas>
   <canvas id="sakuraFrontCanvas"></canvas>
 
   <body class="min-h-screen flex flex-col w-full overflow-x-hidden selection:bg-m3-primary selection:text-white">
@@ -2034,13 +2043,21 @@
     // 🎨 12 PASTEL LUXURY BOUTIQUE FX ENGINES
     // =========================================================
 
-    // --- 🌸 1. E5: 3D DEPTH-OF-FIELD DUAL-LAYER SAKURA ENGINE (CUSTOMIZABLE) ---
+    // --- 🌸 1. E5: 3D PINHOLE PERSPECTIVE + THIN-LENS CoC DEPTH-OF-FIELD ENGINE ---
+    // Công thức chuẩn đồ họa 3D:
+    //   1. Phối cảnh Pinhole: scale(z) = f / z  (z nhỏ = gần = to & nhanh; z lớn = xa = nhỏ & chậm)
+    //   2. Thin-Lens Circle of Confusion (CoC): CoC(z) = K * |z - z_focus| / z
+    //      -> Tại z ≈ z_focus (450): nét 100%. Quá gần (z < 300) hoặc quá xa (z > 650): mờ dần (bokeh).
+    //   3. Multi-Plane Z-Occlusion:
+    //      - z > 660  -> Canvas Back (z-index: 5)  : rơi sau Hero, sau Thẻ SP, sau Header
+    //      - 460 < z <= 660 -> Canvas Mid (z-index: 15) : rơi trước Hero, nhưng SAU Thẻ SP (z-index: 20)
+    //      - z <= 460 -> Canvas Front (z-index: 35): rơi TRƯỚC Thẻ SP, sau Header (40) & Modal (50)
     let sakuraSettings = {
       enabled: true,
       dofEnabled: true,
       count: 80,
       minSize: 6,
-      maxSize: 22,
+      maxSize: 24,
       speedMultiplier: 1.0,
       backRatio: 55,
       windStrength: 1.0
@@ -2051,28 +2068,29 @@
     } catch {}
 
     let sakuraActive = sakuraSettings.enabled;
-    let sakuraBackCanvas, sakuraBackCtx, sakuraFrontCanvas, sakuraFrontCtx;
+    let sakuraBackCanvas, sakuraBackCtx, sakuraMidCanvas, sakuraMidCtx, sakuraFrontCanvas, sakuraFrontCtx;
     let sakuraPetals = [];
     let sakuraMouse = { x: -1000, y: -1000, active: false };
+    // Pre-rendered CoC blur mipmap levels (0 = sharp, 1 = soft, 2 = medium bokeh, 3 = heavy bokeh)
     let sakuraSprites = {};
 
     function buildSakuraSprites() {
       const palette = [
-        'rgba(255, 179, 193, 0.85)',
-        'rgba(255, 204, 213, 0.85)',
-        'rgba(255, 228, 235, 0.90)'
+        'rgba(255, 179, 193, 0.88)',
+        'rgba(255, 204, 213, 0.88)',
+        'rgba(255, 228, 235, 0.92)'
       ];
-      // Pre-render normalized 12px petal sprites at 3 depth blur tiers: 'far', 'mid', 'near'
-      ['far', 'mid', 'near'].forEach(tier => {
-        sakuraSprites[tier] = palette.map(color => {
+      const blurLevels = { 0: 0, 1: 0.9, 2: 1.8, 3: 3.0 };
+      Object.keys(blurLevels).forEach(lvl => {
+        const blurPx = blurLevels[lvl];
+        sakuraSprites[lvl] = palette.map(color => {
           const c = document.createElement('canvas');
-          const base = 36;
+          const base = 40;
           c.width = base;
           c.height = base;
           const ctx = c.getContext('2d');
-          if (sakuraSettings.dofEnabled) {
-            if (tier === 'far') ctx.filter = 'blur(1.4px)';
-            else if (tier === 'near') ctx.filter = 'blur(2.2px)';
+          if (sakuraSettings.dofEnabled && blurPx > 0) {
+            ctx.filter = `blur(${blurPx}px)`;
           }
           ctx.translate(base * 0.32, base * 0.25);
           const s = 12;
@@ -2087,27 +2105,38 @@
       });
     }
 
+    function computeCoCBucket(z, zFocus) {
+      if (!sakuraSettings.dofEnabled) return 0;
+      // Thin-Lens Circle of Confusion: CoC = |z - zFocus| / z
+      const coc = Math.abs(z - zFocus) / z;
+      if (coc < 0.24) return 0;      // Nét căng (trong vùng lấy nét)
+      if (coc < 0.45) return 1;      // Mờ nhẹ
+      if (coc < 0.72) return 2;      // Mờ vừa (bokeh)
+      return 3;                      // Mờ sâu (bokeh cận cảnh)
+    }
+
     function initSakuraEngine() {
       sakuraBackCanvas = document.getElementById('sakuraBackCanvas');
+      sakuraMidCanvas = document.getElementById('sakuraMidCanvas');
       sakuraFrontCanvas = document.getElementById('sakuraFrontCanvas');
-      if (!sakuraBackCanvas || !sakuraFrontCanvas) return;
+      if (!sakuraBackCanvas || !sakuraMidCanvas || !sakuraFrontCanvas) return;
       sakuraBackCtx = sakuraBackCanvas.getContext('2d');
+      sakuraMidCtx = sakuraMidCanvas.getContext('2d');
       sakuraFrontCtx = sakuraFrontCanvas.getContext('2d');
 
       if (!sakuraSettings.enabled) {
         sakuraActive = false;
-        sakuraBackCtx.clearRect(0, 0, sakuraBackCanvas.width, sakuraBackCanvas.height);
-        sakuraFrontCtx.clearRect(0, 0, sakuraFrontCanvas.width, sakuraFrontCanvas.height);
+        [sakuraBackCtx, sakuraMidCtx, sakuraFrontCtx].forEach(c => c.clearRect(0, 0, window.innerWidth, window.innerHeight));
         return;
       }
 
       buildSakuraSprites();
 
       function resizeSakura() {
-        sakuraBackCanvas.width = window.innerWidth;
-        sakuraBackCanvas.height = window.innerHeight;
-        sakuraFrontCanvas.width = window.innerWidth;
-        sakuraFrontCanvas.height = window.innerHeight;
+        [sakuraBackCanvas, sakuraMidCanvas, sakuraFrontCanvas].forEach(cv => {
+          cv.width = window.innerWidth;
+          cv.height = window.innerHeight;
+        });
       }
       window.addEventListener('resize', resizeSakura);
       resizeSakura();
@@ -2116,38 +2145,55 @@
       const baseCount = Number(sakuraSettings.count) || 80;
       const count = window.innerWidth < 640 ? Math.max(8, Math.round(baseCount * 0.5)) : baseCount;
       const minS = Number(sakuraSettings.minSize) || 6;
-      const maxS = Math.max(minS, Number(sakuraSettings.maxSize) || 22);
+      const maxS = Math.max(minS, Number(sakuraSettings.maxSize) || 24);
       const speedMult = Number(sakuraSettings.speedMultiplier) || 1.0;
-      const backRatio = Number(sakuraSettings.backRatio) ?? 55;
+
+      // Pinhole camera parameters
+      const FOCAL_LENGTH = 450;
+      const Z_FOCUS = 450;
+      const Z_MIN = 175;  // Gần nhất (to + bokeh)
+      const Z_MAX = 1050; // Xa nhất (nhỏ + rơi sau mọi element)
 
       for (let i = 0; i < count; i++) {
-        const r = Math.random();
-        const depthTier = r < 0.35 ? 'far' : (r < 0.80 ? 'mid' : 'near');
-        const layer = sakuraSettings.dofEnabled
-          ? (Math.random() * 100 < backRatio ? 'back' : 'front')
-          : 'front';
+        // Phân bố độ sâu z (hơi nghiêng về vùng giữa-xa theo backRatio)
+        const u = Math.random();
+        const z = Z_MIN + Math.pow(u, 0.92) * (Z_MAX - Z_MIN);
 
-        // Map size linearly within [minSize, maxSize] biased by depthTier
-        const tierT = depthTier === 'far' ? Math.random() * 0.35 : (depthTier === 'mid' ? 0.3 + Math.random() * 0.45 : 0.7 + Math.random() * 0.3);
-        const targetPx = minS + tierT * (maxS - minS);
-        const depthScale = targetPx / 12; // Sprite base size is 12px
+        // Phép chiếu phối cảnh: scale = f / z, chuẩn hoá vào [minS, maxS]
+        const rawProj = FOCAL_LENGTH / z; // ~ [0.43, 2.57]
+        const normT = Math.max(0, Math.min(1, (rawProj - 0.43) / (2.57 - 0.43)));
+        const targetPx = minS + normT * (maxS - minS);
+        const depthScale = targetPx / 12;
 
-        const baseSpeedY = (Math.random() * 0.3 + 0.22) * (0.7 + tierT * 0.8) * speedMult;
-        const baseSpeedX = (Math.random() - 0.2) * 0.25 * (0.7 + tierT * 0.6) * speedMult;
+        // Multi-plane Z-occlusion theo độ sâu z
+        let layer = 'front';
+        if (sakuraSettings.dofEnabled) {
+          if (z > 660) layer = 'back';       // Sau Hero (10) & Thẻ SP (20)
+          else if (z > 460) layer = 'mid';   // Trước Hero (10), nhưng SAU Thẻ SP (20)
+          else layer = 'front';              // Trước Thẻ SP (20)
+        }
+
+        const cocBucket = computeCoCBucket(z, Z_FOCUS);
+        const parallaxFactor = FOCAL_LENGTH / z; // Vận tốc tỷ lệ thuận với 1/z
+
+        const baseSpeedY = (Math.random() * 0.25 + 0.24) * parallaxFactor * speedMult;
+        const baseSpeedX = (Math.random() - 0.25) * 0.24 * parallaxFactor * speedMult;
 
         sakuraPetals.push({
           x: Math.random() * window.innerWidth,
           y: Math.random() * window.innerHeight,
-          depthTier: depthTier,
+          z: z,
+          parallax: parallaxFactor,
           layer: layer,
+          cocBucket: cocBucket,
           scale: depthScale,
-          opacity: depthTier === 'far' ? (0.55 + Math.random() * 0.25) : depthTier === 'mid' ? (0.82 + Math.random() * 0.18) : (0.7 + Math.random() * 0.25),
+          opacity: z > 720 ? 0.62 : (z < 240 ? 0.72 : 0.88),
           baseSpeedY: baseSpeedY,
           baseSpeedX: baseSpeedX,
           speedY: baseSpeedY,
           speedX: baseSpeedX,
           angle: Math.random() * Math.PI * 2,
-          rotSpeed: (Math.random() - 0.5) * 0.015 * Math.max(0.6, depthScale),
+          rotSpeed: (Math.random() - 0.5) * 0.014 * Math.min(1.8, parallaxFactor),
           colorIdx: Math.floor(Math.random() * 3)
         });
       }
@@ -2181,13 +2227,10 @@
       }, { passive: true });
 
       function renderSakura() {
-        if (!sakuraActive) {
-          sakuraBackCtx.clearRect(0, 0, sakuraBackCanvas.width, sakuraBackCanvas.height);
-          sakuraFrontCtx.clearRect(0, 0, sakuraFrontCanvas.width, sakuraFrontCanvas.height);
-          return;
-        }
         sakuraBackCtx.clearRect(0, 0, sakuraBackCanvas.width, sakuraBackCanvas.height);
+        sakuraMidCtx.clearRect(0, 0, sakuraMidCanvas.width, sakuraMidCanvas.height);
         sakuraFrontCtx.clearRect(0, 0, sakuraFrontCanvas.width, sakuraFrontCanvas.height);
+        if (!sakuraActive) return;
 
         mouseVx *= 0.92;
         mouseVy *= 0.92;
@@ -2199,18 +2242,18 @@
           p.speedX += (p.baseSpeedX - p.speedX) * 0.03;
 
           p.y += p.speedY;
-          p.x += Math.sin(p.angle) * 0.35 * Math.min(1.8, p.scale) + p.speedX;
+          p.x += Math.sin(p.angle) * 0.35 * Math.min(1.8, p.parallax) + p.speedX;
           p.angle += p.rotSpeed;
 
-          // Luồng gió nhẹ theo chuột
+          // Gió chuột theo thị sai 3D (gần phản ứng mạnh, xa trôi nhẹ)
           if (sakuraMouse.active && windMult > 0) {
             const dx = p.x - sakuraMouse.x;
             const dy = p.y - sakuraMouse.y;
             const dist = Math.hypot(dx, dy);
             if (dist < 170 && dist > 0) {
               const breeze = ((170 - dist) / 170) * windMult;
-              p.x += mouseVx * breeze * 0.5 * Math.min(1.6, p.scale);
-              p.y += mouseVy * breeze * 0.5 * Math.min(1.6, p.scale);
+              p.x += mouseVx * breeze * 0.45 * Math.min(1.6, p.parallax);
+              p.y += mouseVy * breeze * 0.45 * Math.min(1.6, p.parallax);
               p.angle += (mouseVx * 0.003 + mouseVy * 0.002) * breeze;
             }
           }
@@ -2222,8 +2265,8 @@
           if (p.x > window.innerWidth + 35) p.x = -35;
           if (p.x < -35) p.x = window.innerWidth + 35;
 
-          const targetCtx = p.layer === 'back' ? sakuraBackCtx : sakuraFrontCtx;
-          const sprite = sakuraSprites[p.depthTier][p.colorIdx];
+          const targetCtx = p.layer === 'back' ? sakuraBackCtx : (p.layer === 'mid' ? sakuraMidCtx : sakuraFrontCtx);
+          const sprite = sakuraSprites[p.cocBucket][p.colorIdx];
           targetCtx.save();
           targetCtx.globalAlpha = p.opacity;
           targetCtx.translate(p.x, p.y);
