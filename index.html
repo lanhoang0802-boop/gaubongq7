@@ -248,6 +248,83 @@
        ============================================================== */
 
     /* 🌸 E5: 3-Plane Pinhole + Thin-Lens Circle-of-Confusion (CoC) 3D DoF Canvases */
+    #sakuraTreeWrap {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2; /* Đằng sau toàn bộ element & canvas hoa */
+      overflow: hidden;
+    }
+    #sakuraTreeSvg {
+      width: 100%;
+      height: 100%;
+      transform-origin: bottom left;
+      transition: transform 0.2s ease;
+    }
+    #sakuraTreeSvg.tree-shaking {
+      animation: treeShakeSpring 1.05s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+    @keyframes treeShakeSpring {
+      0%, 100% { transform: rotate(0deg) translateX(0); }
+      15% { transform: rotate(-1.6deg) translateX(-6px); }
+      30% { transform: rotate(1.4deg) translateX(5px); }
+      45% { transform: rotate(-1.0deg) translateX(-4px); }
+      60% { transform: rotate(0.7deg) translateX(3px); }
+      75% { transform: rotate(-0.4deg) translateX(-1px); }
+    }
+    #treeShakeHotspot {
+      position: fixed;
+      z-index: 38;
+      pointer-events: auto;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 9999px;
+      background: radial-gradient(circle, rgba(255, 241, 245, 0.95) 0%, rgba(251, 113, 133, 0.35) 70%, transparent 100%);
+      box-shadow: 0 0 18px rgba(244, 63, 94, 0.45), 0 0 6px rgba(251, 191, 36, 0.55);
+      animation: hotspotPulse 2.4s ease-in-out infinite;
+      transition: transform 0.25s ease, opacity 0.3s ease;
+    }
+    #treeShakeHotspot:hover {
+      transform: scale(1.18);
+    }
+    @keyframes hotspotPulse {
+      0%, 100% { box-shadow: 0 0 14px rgba(244, 63, 94, 0.4), 0 0 0 0 rgba(251, 113, 133, 0.45); }
+      50% { box-shadow: 0 0 24px rgba(244, 63, 94, 0.7), 0 0 0 12px rgba(251, 113, 133, 0); }
+    }
+
+    /* ✨ Hiệu ứng nhãn BEST SELLER / NEW / HOT TREND */
+    .badge-effect-bestseller {
+      background: linear-gradient(120deg, #f59e0b, #e11d48, #f59e0b) !important;
+      background-size: 200% auto !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 12px rgba(225, 29, 72, 0.38) !important;
+      animation: badgeShimmer 2.5s linear infinite;
+    }
+    .badge-effect-new {
+      background: linear-gradient(120deg, #10b981, #0ea5e9, #10b981) !important;
+      background-size: 200% auto !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35) !important;
+      animation: badgeShimmer 2.8s linear infinite;
+    }
+    .badge-effect-hottrend {
+      background: linear-gradient(120deg, #ec4899, #8b5cf6, #ec4899) !important;
+      background-size: 200% auto !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.35) !important;
+      animation: badgeShimmer 2.8s linear infinite;
+    }
+    @keyframes badgeShimmer {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
     #sakuraBackCanvas {
       position: fixed;
       inset: 0;
@@ -637,6 +714,49 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 
 </head>
+<!-- 🌸🌳 Interactive Background Sakura Tree (Đằng sau toàn bộ elements) -->
+  <div id="sakuraTreeWrap" aria-hidden="true">
+    <svg id="sakuraTreeSvg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="trunkGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#6b4438" stop-opacity="0.34"/>
+          <stop offset="60%" stop-color="#8c5a4c" stop-opacity="0.28"/>
+          <stop offset="100%" stop-color="#a17163" stop-opacity="0.2"/>
+        </linearGradient>
+        <radialGradient id="blossomCloud" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#fbcfe8" stop-opacity="0.58"/>
+          <stop offset="65%" stop-color="#f9a8d4" stop-opacity="0.34"/>
+          <stop offset="100%" stop-color="#f9a8d4" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <!-- Thân & cành cây bên trái uốn lượn -->
+      <path d="M-20,920 C25,740 40,560 32,380 C25,240 65,140 165,70 C215,35 280,22 340,36" fill="none" stroke="url(#trunkGrad)" stroke-width="26" stroke-linecap="round"/>
+      <path d="M35,510 C80,440 140,395 210,365" fill="none" stroke="url(#trunkGrad)" stroke-width="11" stroke-linecap="round"/>
+      <path d="M42,275 C105,215 170,185 250,170" fill="none" stroke="url(#trunkGrad)" stroke-width="13" stroke-linecap="round"/>
+      <path d="M90,145 C140,95 200,75 270,82" fill="none" stroke="url(#trunkGrad)" stroke-width="9" stroke-linecap="round"/>
+      <!-- Cành hoa vươn từ góc phải trên -->
+      <path d="M1460,260 C1380,200 1300,180 1215,195 C1165,204 1120,230 1085,260" fill="none" stroke="url(#trunkGrad)" stroke-width="15" stroke-linecap="round"/>
+      <path d="M1340,205 C1310,145 1265,105 1200,85" fill="none" stroke="url(#trunkGrad)" stroke-width="9" stroke-linecap="round"/>
+      <path d="M1455,680 C1395,620 1355,565 1335,500" fill="none" stroke="url(#trunkGrad)" stroke-width="12" stroke-linecap="round"/>
+
+      <!-- Tán hoa anh đào mềm mại -->
+      <circle cx="150" cy="110" r="145" fill="url(#blossomCloud)"/>
+      <circle cx="265" cy="95" r="115" fill="url(#blossomCloud)"/>
+      <circle cx="95" cy="245" r="120" fill="url(#blossomCloud)"/>
+      <circle cx="215" cy="195" r="95" fill="url(#blossomCloud)"/>
+      <circle cx="170" cy="365" r="85" fill="url(#blossomCloud)"/>
+      <circle cx="1290" cy="165" r="145" fill="url(#blossomCloud)"/>
+      <circle cx="1165" cy="215" r="105" fill="url(#blossomCloud)"/>
+      <circle cx="1220" cy="100" r="90" fill="url(#blossomCloud)"/>
+      <circle cx="1365" cy="535" r="115" fill="url(#blossomCloud)"/>
+    </svg>
+  </div>
+
+  <!-- 🎐 Chi tiết nổi bật trên cây hoa anh đào (Luôn đặt ở vùng trống không đè element chính) -->
+  <button id="treeShakeHotspot" onclick="triggerTreeShake()" title="Bấm để rung cây hoa anh đào 🌸" aria-label="Rung cây hoa anh đào">
+    <span class="text-xl drop-shadow-sm select-none">🎐</span>
+  </button>
+
 <!-- 🌸 E5: 3-Plane 3D Depth-of-Field Sakura Canvases (Far: z=5 | Mid: z=15 | Near/Front: z=35) -->
   <canvas id="sakuraBackCanvas"></canvas>
   <canvas id="sakuraMidCanvas"></canvas>
@@ -663,20 +783,21 @@
     <div class="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-18 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-4">
       
       <!-- Brand Logo & Title -->
-      <a href="#" class="flex items-center gap-2.5 sm:gap-3 group min-w-0">
-        <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-m3-primary-container flex-shrink-0 flex items-center justify-center text-m3-primary shadow-xs group-hover:scale-105 transition-transform">
+      <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+        <!-- 🐾 Bấm vào biểu tượng chân chó để vào Cài đặt Thứ tự & Nhãn Sản phẩm -->
+        <a href="store-settings.html" title="Cài đặt thứ tự & gắn nhãn Best Seller / New" class="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-m3-primary-container flex-shrink-0 flex items-center justify-center text-m3-primary shadow-xs hover:scale-110 hover:bg-rose-200 transition-all">
           <span class="material-symbols-outlined text-xl sm:text-2xl fill">pets</span>
-        </div>
-        <div class="min-w-0">
+        </a>
+        <a href="#" class="min-w-0 group">
           <div class="flex items-center gap-1.5 sm:gap-2">
-            <span class="font-cute font-bold text-base sm:text-xl tracking-tight text-m3-primary truncate">Gấu Bông Q7</span>
+            <span class="font-cute font-bold text-base sm:text-xl tracking-tight text-m3-primary truncate group-hover:opacity-85 transition-opacity">Gấu Bông Q7</span>
             <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800 flex-shrink-0">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Mở 24/7
             </span>
           </div>
           <p class="text-[11px] sm:text-xs text-m3-on-surface-variant font-medium truncate">90 Đường 77, P. Tân Quy, Quận 7</p>
-        </div>
-      </a>
+        </a>
+      </div>
 
       <!-- Quick Action Buttons -->
       <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
@@ -752,7 +873,7 @@
           <span>🧸</span> <span class="hidden sm:inline">Xem Theo Dòng</span><span class="sm:hidden">Theo Dòng</span> (<span id="modelCount">19</span>)
         </button>
         <button id="tabAllPhotos" onclick="switchView('photos')" class="tab-inactive marshmallow-btn px-3.5 sm:px-5 py-2 rounded-m3-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer">
-          <span>📷</span> <span class="hidden sm:inline">Toàn Bộ 50 Ảnh Thật</span><span class="sm:hidden">50 Ảnh Thật</span>
+          <span>📷</span> <span id="allPhotosLabelDesktop" class="hidden sm:inline">Toàn Bộ Ảnh Thật</span><span id="allPhotosLabelMobile" class="sm:hidden">Ảnh Thật</span>
         </button>
       </div>
 
@@ -1246,10 +1367,39 @@
         }
       }
 
+      // Áp dụng cấu hình thứ tự & nhãn nổi bật (Best Seller / New / Hot Trend) từ store-settings
+      let storeCfg = { order: [], badges: {} };
+      try {
+        const resCfg = await fetch('data/product_config.json', { cache: 'no-store' });
+        if (resCfg.ok) storeCfg = await resCfg.json();
+      } catch {}
+      try {
+        const localRaw = localStorage.getItem('gbq7_product_overrides');
+        if (localRaw) storeCfg = { ...storeCfg, ...JSON.parse(localRaw) };
+      } catch {}
+
+      if (storeCfg && storeCfg.badges) {
+        allProducts.forEach((p, idx) => {
+          p._origIdx = idx;
+          if (storeCfg.badges[p.id]) {
+            p.featuredBadge = storeCfg.badges[p.id];
+            p.badge = storeCfg.badges[p.id];
+          }
+        });
+      }
+      if (storeCfg && Array.isArray(storeCfg.order) && storeCfg.order.length > 0) {
+        const orderMap = new Map(storeCfg.order.map((id, i) => [id, i]));
+        allProducts.sort((a, b) => {
+          const oa = orderMap.has(a.id) ? orderMap.get(a.id) : 10000 + (a._origIdx || 0);
+          const ob = orderMap.has(b.id) ? orderMap.get(b.id) : 10000 + (b._origIdx || 0);
+          return oa - ob;
+        });
+      }
+
       // Cập nhật số lượng mẫu
       document.getElementById('modelCount').innerText = allProducts.length;
 
-      // Xây dựng danh sách 50 ảnh thực tế
+      // Xây dựng danh sách ảnh thực tế tự động từ toàn bộ sản phẩm
       allPhotosList = [];
       const photoSet = new Set();
       allProducts.forEach(p => {
@@ -1266,6 +1416,11 @@
           });
         }
       });
+
+      const deskLbl = document.getElementById('allPhotosLabelDesktop');
+      const mobLbl = document.getElementById('allPhotosLabelMobile');
+      if (deskLbl) deskLbl.innerText = `Toàn Bộ ${allPhotosList.length} Ảnh Thật`;
+      if (mobLbl) mobLbl.innerText = `${allPhotosList.length} Ảnh Thật`;
 
       renderProducts();
       renderPhotosGrid();
@@ -1357,8 +1512,8 @@
             <!-- Image Area (2.5D Popout Uncropped) -->
             <div class="img-frame relative aspect-square px-2.5 sm:px-3 overflow-visible cursor-pointer" onclick="openModal('${p.id}')">
               <img src="${p.image}" alt="${p.name}" loading="lazy" class="plushie-img w-full h-full object-cover rounded-m3-lg">
-              <span class="absolute top-2 left-4 px-2 py-0.5 rounded-m3-full text-[10px] font-bold bg-white/90 text-m3-primary shadow-xs">
-                ${p.badge}
+              <span class="absolute top-2 left-4 px-2 py-0.5 rounded-m3-full text-[10px] font-bold shadow-xs ${p.featuredBadge === 'BEST SELLER' ? 'badge-effect-bestseller' : p.featuredBadge === 'NEW' ? 'badge-effect-new' : p.featuredBadge === 'HOT TREND' ? 'badge-effect-hottrend' : 'bg-white/90 text-m3-primary'}">
+                ${p.featuredBadge === 'BEST SELLER' ? '🔥 ' : p.featuredBadge === 'NEW' ? '✨ ' : p.featuredBadge === 'HOT TREND' ? '💖 ' : ''}${p.badge}
               </span>
               <span class="absolute bottom-2 right-4 px-2 py-0.5 rounded-m3-full text-[10px] font-medium bg-black/60 text-white backdrop-blur-xs flex items-center gap-1">
                 <span class="material-symbols-outlined text-xs">photo_camera</span> ${p.gallery.length} ảnh
@@ -2528,6 +2683,103 @@
       });
     }
 
+    // --- 🌳 10. INTERACTIVE SAKURA TREE & NON-OVERLAPPING HOTSPOT ---
+    function positionTreeHotspotSafely() {
+      const spot = document.getElementById('treeShakeHotspot');
+      if (!spot) return;
+
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      // 4 toạ độ trên cành cây ở lề trái/phải
+      const candidates = [
+        { x: 48, y: Math.round(vh * 0.34) },
+        { x: vw - 86, y: Math.round(vh * 0.28) },
+        { x: 42, y: Math.round(vh * 0.68) },
+        { x: vw - 86, y: Math.round(vh * 0.62) }
+      ];
+
+      const obstacles = Array.from(document.querySelectorAll('header, #heroBanner, section, #productGrid > div, footer, #floatingActions'));
+      const pad = 12;
+      const size = 44;
+
+      let chosen = null;
+      for (const pt of candidates) {
+        if (pt.x < 10 || pt.x + size > vw - 10 || pt.y < 74 || pt.y + size > vh - 16) continue;
+        const r = { left: pt.x - pad, right: pt.x + size + pad, top: pt.y - pad, bottom: pt.y + size + pad };
+        let overlaps = false;
+        for (const el of obstacles) {
+          const er = el.getBoundingClientRect();
+          if (er.width === 0 || er.height === 0) continue;
+          if (!(r.right < er.left || r.left > er.right || r.bottom < er.top || r.top > er.bottom)) {
+            overlaps = true;
+            break;
+          }
+        }
+        if (!overlaps) {
+          chosen = pt;
+          break;
+        }
+      }
+
+      if (chosen) {
+        spot.style.left = chosen.x + 'px';
+        spot.style.top = chosen.y + 'px';
+        spot.style.display = 'inline-flex';
+      } else {
+        spot.style.display = 'none';
+      }
+    }
+
+    function triggerTreeShake() {
+      const svg = document.getElementById('sakuraTreeSvg');
+      if (svg) {
+        svg.classList.remove('tree-shaking');
+        void svg.offsetWidth;
+        svg.classList.add('tree-shaking');
+        setTimeout(() => svg.classList.remove('tree-shaking'), 1100);
+      }
+
+      // Thả thêm 38 cánh hoa anh đào từ các cành cây!
+      if (typeof sakuraPetals !== 'undefined' && sakuraActive) {
+        const spot = document.getElementById('treeShakeHotspot');
+        const originX = spot && spot.style.display !== 'none' ? parseFloat(spot.style.left) + 22 : window.innerWidth * 0.12;
+        const originY = spot && spot.style.display !== 'none' ? parseFloat(spot.style.top) + 22 : window.innerHeight * 0.25;
+        const speedMult = (typeof sakuraSettings !== 'undefined' ? Number(sakuraSettings.speedMultiplier) : 1.0) || 1.0;
+
+        for (let i = 0; i < 38; i++) {
+          const z = 200 + Math.random() * 750;
+          const parallax = 450 / z;
+          const layer = sakuraSettings.dofEnabled ? (z > 660 ? 'back' : (z > 460 ? 'mid' : 'front')) : 'front';
+          const cocBucket = typeof computeCoCBucket === 'function' ? computeCoCBucket(z, 450) : 0;
+          const burstVx = (Math.random() - 0.35) * 4.5 * parallax;
+          const burstVy = (Math.random() * 1.6 + 0.5) * parallax * speedMult;
+
+          sakuraPetals.push({
+            x: originX + (Math.random() - 0.5) * 140,
+            y: originY + (Math.random() - 0.5) * 90,
+            z: z,
+            parallax: parallax,
+            layer: layer,
+            cocBucket: cocBucket,
+            scale: Math.max(0.5, Math.min(2.0, parallax)),
+            opacity: 0.9,
+            baseSpeedY: (0.28 + Math.random() * 0.25) * parallax * speedMult,
+            baseSpeedX: (Math.random() - 0.25) * 0.25 * parallax * speedMult,
+            speedY: burstVy,
+            speedX: burstVx,
+            angle: Math.random() * Math.PI * 2,
+            rotSpeed: (Math.random() - 0.5) * 0.04,
+            colorIdx: Math.floor(Math.random() * 3)
+          });
+        }
+        // Giữ tổng số cánh không vượt quá giới hạn mượt
+        setTimeout(() => {
+          const maxKeep = (Number(sakuraSettings.count) || 80) + 10;
+          if (sakuraPetals.length > maxKeep) sakuraPetals.splice(maxKeep);
+        }, 7500);
+      }
+    }
+
     // Master initialization for all FX
     function initAllPastelEffects() {
       initSakuraEngine();
@@ -2536,6 +2788,9 @@
       initAuroraWaves();
       initHoloAndBentoListeners();
       initVisitorStats();
+      positionTreeHotspotSafely();
+      window.addEventListener('resize', positionTreeHotspotSafely);
+      window.addEventListener('scroll', positionTreeHotspotSafely, { passive: true });
     }
 
   
