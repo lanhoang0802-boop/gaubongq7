@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cài Đặt Hiệu Ứng Hoa Anh Đào 3D - Gấu Bông Q7</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%238c1d40'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle'%3E🌸%3C/text%3E%3C/svg%3E" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: linear-gradient(135deg, #fff5f8 0%, #fffafb 55%, #fdf2f8 100%);
+      color: #1f1a1b;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(251, 113, 133, 0.24);
+      box-shadow: 0 12px 32px -10px rgba(140, 29, 64, 0.09);
+    }
+    input[type="range"] {
+      accent-color: #e11d48;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-16">
+  <!-- Header -->
+  <header class="sticky top-0 z-40 bg-white/85 backdrop-blur-md border-b border-rose-100">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-rose-50 text-rose-700 hover:bg-rose-100 transition-colors">
+          <span class="material-symbols-outlined text-base">arrow_back</span>
+          Quay lại Cửa Hàng
+        </a>
+        <h1 class="hidden sm:block text-base sm:text-lg font-extrabold text-slate-900">
+          🌸 Cài Đặt Hiệu Ứng Hoa Anh Đào 3D
+        </h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="resetDefaults()" class="px-3 py-1.5 rounded-full text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer">
+          ↺ Mặc định
+        </button>
+        <a href="index.html" class="px-4 py-1.5 rounded-full text-xs font-bold bg-rose-600 text-white hover:bg-rose-700 transition-colors shadow-xs">
+          Xem trên Web ↗
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 pt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <!-- CỘT TRÁI: BẢNG ĐIỀU KHIỂN -->
+    <section class="lg:col-span-6 glass-card rounded-3xl p-6 space-y-5">
+      <div class="flex items-center justify-between pb-3 border-b border-rose-100">
+        <div>
+          <h2 class="text-base font-extrabold text-slate-900">Tuỳ Chỉnh Thông Số</h2>
+          <p class="text-xs text-slate-500">Mọi thay đổi tự động lưu và áp dụng ngay cho trang chủ.</p>
+        </div>
+        <span id="saveToast" class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 opacity-0 transition-opacity">
+          ✓ Đã lưu
+        </span>
+      </div>
+
+      <!-- 1. Bật / Tắt Hoa Anh Đào -->
+      <div class="flex items-center justify-between p-3.5 rounded-2xl bg-rose-50/70 border border-rose-100">
+        <div>
+          <div class="font-bold text-sm text-slate-900">Bật hiệu ứng Hoa Anh Đào</div>
+          <div class="text-xs text-slate-500">Tắt nếu muốn giao diện tĩnh hoàn toàn</div>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" id="optEnabled" class="sr-only peer" onchange="onSettingChange()">
+          <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-600"></div>
+        </label>
+      </div>
+
+      <!-- 2. Bật / Tắt 3D Depth of Field -->
+      <div class="flex items-center justify-between p-3.5 rounded-2xl bg-pink-50/60 border border-rose-100">
+        <div>
+          <div class="font-bold text-sm text-slate-900">Hiệu ứng 3D Depth of Field (2 Lớp)</div>
+          <div class="text-xs text-slate-500">Hoa rơi cả đằng sau & đằng trước thẻ sản phẩm, xa mờ gần rõ</div>
+        </div>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" id="optDof" class="sr-only peer" onchange="onSettingChange()">
+          <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-600"></div>
+        </label>
+      </div>
+
+      <!-- 3. Số lượng cánh hoa -->
+      <div class="space-y-1.5">
+        <div class="flex justify-between text-xs font-bold">
+          <span class="text-slate-700">🌸 Số lượng cánh hoa</span>
+          <span id="valCount" class="text-rose-600">80 cánh</span>
+        </div>
+        <input type="range" id="optCount" min="10" max="200" step="2" class="w-full" oninput="onSettingChange()">
+        <div class="flex justify-between text-[10px] text-slate-400"><span>10 (Nhẹ)</span><span>80 (Chuẩn x2)</span><span>200 (Dày đặc)</span></div>
+      </div>
+
+      <!-- 4. Min Size & Max Size -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="space-y-1.5">
+          <div class="flex justify-between text-xs font-bold">
+            <span class="text-slate-700">📏 Min Size (Nhỏ nhất)</span>
+            <span id="valMinSize" class="text-rose-600">6 px</span>
+          </div>
+          <input type="range" id="optMinSize" min="4" max="20" step="1" class="w-full" oninput="onSettingChange()">
+        </div>
+        <div class="space-y-1.5">
+          <div class="flex justify-between text-xs font-bold">
+            <span class="text-slate-700">📐 Max Size (Lớn nhất)</span>
+            <span id="valMaxSize" class="text-rose-600">22 px</span>
+          </div>
+          <input type="range" id="optMaxSize" min="8" max="40" step="1" class="w-full" oninput="onSettingChange()">
+        </div>
+      </div>
+
+      <!-- 5. Tốc độ rơi -->
+      <div class="space-y-1.5">
+        <div class="flex justify-between text-xs font-bold">
+          <span class="text-slate-700">🍃 Tốc độ rơi của hoa</span>
+          <span id="valSpeed" class="text-rose-600">1.0x</span>
+        </div>
+        <input type="range" id="optSpeed" min="0.2" max="3.0" step="0.1" class="w-full" oninput="onSettingChange()">
+        <div class="flex justify-between text-[10px] text-slate-400"><span>0.2x (Chậm dịu)</span><span>1.0x (Vừa phải)</span><span>3.0x (Nhanh)</span></div>
+      </div>
+
+      <!-- 6. Tỷ lệ hoa rơi đằng sau khung hình -->
+      <div class="space-y-1.5">
+        <div class="flex justify-between text-xs font-bold">
+          <span class="text-slate-700">🧊 Tỷ lệ hoa rơi ĐẰNG SAU thẻ SP</span>
+          <span id="valBackRatio" class="text-rose-600">55%</span>
+        </div>
+        <input type="range" id="optBackRatio" min="0" max="100" step="5" class="w-full" oninput="onSettingChange()">
+        <div class="flex justify-between text-[10px] text-slate-400"><span>0% (Toàn bộ trước)</span><span>55% (Cân bằng 3D)</span><span>100% (Toàn bộ sau)</span></div>
+      </div>
+
+      <!-- 7. Độ nhạy gió theo chuột -->
+      <div class="space-y-1.5">
+        <div class="flex justify-between text-xs font-bold">
+          <span class="text-slate-700">💨 Lực gió kéo theo chuột</span>
+          <span id="valWind" class="text-rose-600">1.0x</span>
+        </div>
+        <input type="range" id="optWind" min="0" max="2.5" step="0.1" class="w-full" oninput="onSettingChange()">
+      </div>
+    </section>
+
+    <!-- CỘT PHẢI: KHUNG XEM TRƯỚC TRỰC TIẾP (LIVE 3D PREVIEW) -->
+    <section class="lg:col-span-6 glass-card rounded-3xl p-6 flex flex-col">
+      <div class="mb-3">
+        <h2 class="text-base font-extrabold text-slate-900">👁️ Xem Trước Trực Tiếp (Live 3D Preview)</h2>
+        <p class="text-xs text-slate-500">Di chuột vào khung bên dưới để kiểm tra luồng gió và lớp hoa trước/sau thẻ mẫu.</p>
+      </div>
+
+      <div id="previewStage" class="relative flex-1 min-h-[380px] rounded-2xl overflow-hidden bg-gradient-to-br from-rose-50 via-white to-pink-50 border border-rose-200/70 flex items-center justify-center p-6">
+        <!-- Back Canvas (Sau thẻ) -->
+        <canvas id="prevBackCanvas" class="absolute inset-0 w-full h-full pointer-events-none z-[5]"></canvas>
+
+        <!-- Sample Cards (Giữa 2 lớp hoa) -->
+        <div class="relative z-[15] grid grid-cols-2 gap-4 w-full max-w-sm pointer-events-none">
+          <div class="bg-white rounded-2xl p-3 border border-rose-100 shadow-lg text-center">
+            <div class="h-24 rounded-xl bg-rose-100/70 flex items-center justify-center text-4xl mb-2">🧸</div>
+            <div class="text-xs font-bold text-slate-800">Gấu Bobova</div>
+            <div class="text-[10px] text-rose-600 font-semibold">Hoa bay sau & trước</div>
+          </div>
+          <div class="bg-white rounded-2xl p-3 border border-rose-100 shadow-lg text-center">
+            <div class="h-24 rounded-xl bg-pink-100/70 flex items-center justify-center text-4xl mb-2">🐷</div>
+            <div class="text-xs font-bold text-slate-800">Heo Hồng Béo</div>
+            <div class="text-[10px] text-rose-600 font-semibold">3D Depth of Field</div>
+          </div>
+        </div>
+
+        <!-- Front Canvas (Trước thẻ) -->
+        <canvas id="prevFrontCanvas" class="absolute inset-0 w-full h-full pointer-events-none z-[25]"></canvas>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = 'gbq7_sakura_settings';
+    const DEFAULT_SETTINGS = {
+      enabled: true,
+      dofEnabled: true,
+      count: 80,
+      minSize: 6,
+      maxSize: 22,
+      speedMultiplier: 1.0,
+      backRatio: 55,
+      windStrength: 1.0
+    };
+
+    let settings = loadSettings();
+
+    function loadSettings() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return { ...DEFAULT_SETTINGS };
+        return { ...DEFAULT_SETTINGS, ...JSON.parse(raw) };
+      } catch {
+        return { ...DEFAULT_SETTINGS };
+      }
+    }
+
+    function syncUI() {
+      document.getElementById('optEnabled').checked = settings.enabled;
+      document.getElementById('optDof').checked = settings.dofEnabled;
+      document.getElementById('optCount').value = settings.count;
+      document.getElementById('optMinSize').value = settings.minSize;
+      document.getElementById('optMaxSize').value = settings.maxSize;
+      document.getElementById('optSpeed').value = settings.speedMultiplier;
+      document.getElementById('optBackRatio').value = settings.backRatio;
+      document.getElementById('optWind').value = settings.windStrength;
+
+      document.getElementById('valCount').innerText = `${settings.count} cánh`;
+      document.getElementById('valMinSize').innerText = `${settings.minSize} px`;
+      document.getElementById('valMaxSize').innerText = `${settings.maxSize} px`;
+      document.getElementById('valSpeed').innerText = `${Number(settings.speedMultiplier).toFixed(1)}x`;
+      document.getElementById('valBackRatio').innerText = `${settings.backRatio}%`;
+      document.getElementById('valWind').innerText = `${Number(settings.windStrength).toFixed(1)}x`;
+    }
+
+    function onSettingChange() {
+      let minS = parseInt(document.getElementById('optMinSize').value, 10);
+      let maxS = parseInt(document.getElementById('optMaxSize').value, 10);
+      if (maxS < minS) maxS = minS;
+
+      settings = {
+        enabled: document.getElementById('optEnabled').checked,
+        dofEnabled: document.getElementById('optDof').checked,
+        count: parseInt(document.getElementById('optCount').value, 10),
+        minSize: minS,
+        maxSize: maxS,
+        speedMultiplier: parseFloat(document.getElementById('optSpeed').value),
+        backRatio: parseInt(document.getElementById('optBackRatio').value, 10),
+        windStrength: parseFloat(document.getElementById('optWind').value)
+      };
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+      syncUI();
+      rebuildPreviewPetals();
+
+      const toast = document.getElementById('saveToast');
+      toast.style.opacity = '1';
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => { toast.style.opacity = '0'; }, 1200);
+    }
+
+    function resetDefaults() {
+      settings = { ...DEFAULT_SETTINGS };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+      syncUI();
+      rebuildPreviewPetals();
+    }
+
+    // Live Preview Engine
+    const stage = document.getElementById('previewStage');
+    const backCanvas = document.getElementById('prevBackCanvas');
+    const frontCanvas = document.getElementById('prevFrontCanvas');
+    const backCtx = backCanvas.getContext('2d');
+    const frontCtx = frontCanvas.getContext('2d');
+    let petals = [];
+    let mouse = { x: -1000, y: -1000, vx: 0, vy: 0, lx: -1000, ly: -1000, active: false };
+
+    function resizePreview() {
+      backCanvas.width = stage.clientWidth;
+      backCanvas.height = stage.clientHeight;
+      frontCanvas.width = stage.clientWidth;
+      frontCanvas.height = stage.clientHeight;
+    }
+    window.addEventListener('resize', resizePreview);
+    resizePreview();
+
+    stage.addEventListener('mousemove', (e) => {
+      const rect = stage.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      if (mouse.lx !== -1000) {
+        mouse.vx += (Math.max(-12, Math.min(12, x - mouse.lx)) - mouse.vx) * 0.4;
+        mouse.vy += (Math.max(-12, Math.min(12, y - mouse.ly)) - mouse.vy) * 0.4;
+      }
+      mouse.lx = x; mouse.ly = y;
+      mouse.x = x; mouse.y = y;
+      mouse.active = true;
+    });
+    stage.addEventListener('mouseleave', () => { mouse.active = false; mouse.lx = -1000; });
+
+    function rebuildPreviewPetals() {
+      petals = [];
+      const colors = ['rgba(255, 179, 193, 0.85)', 'rgba(255, 204, 213, 0.88)', 'rgba(255, 228, 235, 0.92)'];
+      const previewCount = Math.max(6, Math.round(settings.count * 0.55));
+      for (let i = 0; i < previewCount; i++) {
+        const isBack = settings.dofEnabled ? (Math.random() * 100 < settings.backRatio) : false;
+        const t = Math.random();
+        const size = settings.minSize + t * (settings.maxSize - settings.minSize);
+        const speedScale = (0.7 + t * 0.8) * settings.speedMultiplier;
+        petals.push({
+          x: Math.random() * backCanvas.width,
+          y: Math.random() * backCanvas.height,
+          size: size,
+          layer: isBack ? 'back' : 'front',
+          blur: settings.dofEnabled ? (isBack ? 1.2 : (t > 0.78 ? 2.0 : 0)) : 0,
+          speedY: (Math.random() * 0.35 + 0.25) * speedScale,
+          speedX: (Math.random() - 0.25) * 0.3 * speedScale,
+          angle: Math.random() * Math.PI * 2,
+          rotSpeed: (Math.random() - 0.5) * 0.02,
+          opacity: isBack ? (0.55 + t * 0.3) : (0.75 + t * 0.25),
+          color: colors[Math.floor(Math.random() * 3)]
+        });
+      }
+    }
+
+    function renderPreview() {
+      backCtx.clearRect(0, 0, backCanvas.width, backCanvas.height);
+      frontCtx.clearRect(0, 0, frontCanvas.width, frontCanvas.height);
+
+      if (settings.enabled) {
+        mouse.vx *= 0.92;
+        mouse.vy *= 0.92;
+
+        petals.forEach(p => {
+          p.y += p.speedY;
+          p.x += Math.sin(p.angle) * 0.35 + p.speedX;
+          p.angle += p.rotSpeed;
+
+          if (mouse.active && settings.windStrength > 0) {
+            const dx = p.x - mouse.x;
+            const dy = p.y - mouse.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < 130 && dist > 0) {
+              const b = ((130 - dist) / 130) * settings.windStrength;
+              p.x += mouse.vx * b * 0.5;
+              p.y += mouse.vy * b * 0.5;
+            }
+          }
+
+          if (p.y > backCanvas.height + 20) { p.y = -20; p.x = Math.random() * backCanvas.width; }
+          if (p.x > backCanvas.width + 20) p.x = -20;
+          if (p.x < -20) p.x = backCanvas.width + 20;
+
+          const ctx = p.layer === 'back' ? backCtx : frontCtx;
+          ctx.save();
+          ctx.globalAlpha = p.opacity;
+          if (p.blur > 0) ctx.filter = `blur(${p.blur}px)`;
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.angle);
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.bezierCurveTo(p.size / 2, -p.size / 2, p.size, 0, p.size / 2, p.size);
+          ctx.bezierCurveTo(0, p.size / 2, -p.size / 2, 0, 0, 0);
+          ctx.fill();
+          ctx.restore();
+        });
+      }
+
+      requestAnimationFrame(renderPreview);
+    }
+
+    syncUI();
+    rebuildPreviewPetals();
+    requestAnimationFrame(renderPreview);
+  </script>
+</body>
+</html>
