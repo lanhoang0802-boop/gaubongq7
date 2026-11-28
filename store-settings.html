@@ -42,6 +42,9 @@
         <span id="saveStatus" class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 transition-opacity">
           🟢 Đã kết nối Sheet
         </span>
+        <button id="headerGhBtn" onclick="promptGhPat()" title="Kiểm tra hoặc kết nối GitHub để Upload/Xoá ảnh" class="text-xs font-bold px-3 py-1 rounded-full border transition-colors cursor-pointer bg-amber-50 text-amber-800 border-amber-200">
+          ⏳ Kiểm tra GitHub...
+        </button>
         <button onclick="openProductEditor()" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-rose-600 text-white hover:bg-rose-700 transition-colors shadow-xs cursor-pointer">
           ➕ Thêm Mẫu Mới
         </button>
@@ -234,6 +237,7 @@
     }
 
     async function init() {
+      renderGhAuthBar();
       // 1. Load live config from Google Apps Script (source of truth for all visitors)
       try {
         const resGas = await fetch(GBQ7_SYNC_URL, { cache: 'no-store' });
@@ -395,19 +399,34 @@
 
     function renderGhAuthBar() {
       const bar = document.getElementById('ghAuthBar');
-      if (!bar) return;
+      const headerBtn = document.getElementById('headerGhBtn');
       const pat = getGhPat();
+
       if (pat) {
-        bar.innerHTML = `
-          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">🟢 Đã kết nối Upload GitHub</span>
-          <button type="button" onclick="promptGhPat()" class="text-[10px] font-semibold text-slate-500 underline cursor-pointer">Đổi Token</button>
-        `;
+        if (bar) {
+          bar.innerHTML = `
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">🟢 Đã kết nối Upload GitHub</span>
+            <button type="button" onclick="promptGhPat()" class="text-[10px] font-semibold text-slate-500 underline cursor-pointer">Đổi Token</button>
+          `;
+        }
+        if (headerBtn) {
+          headerBtn.textContent = '🟢 Đã kết nối GitHub';
+          headerBtn.className = 'text-xs font-bold px-3 py-1 rounded-full border transition-colors cursor-pointer bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100';
+          headerBtn.title = 'Trình duyệt đã lưu GitHub Token và sẵn sàng Upload/Xoá ảnh';
+        }
       } else {
-        bar.innerHTML = `
-          <button type="button" onclick="promptGhPat()" class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 cursor-pointer">
-            🔑 Kết nối GitHub để Upload/Xoá ảnh
-          </button>
-        `;
+        if (bar) {
+          bar.innerHTML = `
+            <button type="button" onclick="promptGhPat()" class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 cursor-pointer">
+              🔑 Kết nối GitHub để Upload/Xoá ảnh
+            </button>
+          `;
+        }
+        if (headerBtn) {
+          headerBtn.textContent = '🔑 Kết nối GitHub';
+          headerBtn.className = 'text-xs font-bold px-3 py-1 rounded-full border transition-colors cursor-pointer bg-amber-100 text-amber-900 border-amber-300 hover:bg-amber-200 animate-pulse';
+          headerBtn.title = 'Trình duyệt chưa có GitHub Token — Bấm để dán Token 1 lần duy nhất';
+        }
       }
     }
 
