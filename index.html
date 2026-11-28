@@ -681,9 +681,9 @@
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
           <span id="visitorStatsNum">...</span> <span class="hidden sm:inline">lượt xem</span>
         </a>
-        <button id="toggleSakuraBtn" onclick="toggleSakura()" title="Bật/Tắt hiệu ứng hoa anh đào 3D" class="marshmallow-btn inline-flex items-center justify-center w-8 h-8 rounded-m3-full text-xs bg-pink-50 hover:bg-pink-100 transition-colors shadow-xs cursor-pointer">
+        <a href="sakura-settings.html" id="toggleSakuraBtn" title="Cài đặt hiệu ứng Hoa Anh Đào 3D (Số lượng, Kích thước, Tốc độ)" class="marshmallow-btn inline-flex items-center justify-center w-8 h-8 rounded-m3-full text-xs bg-pink-50 hover:bg-pink-100 transition-colors shadow-xs cursor-pointer">
           🌸
-        </button>
+        </a>
         <a href="https://maps.app.goo.gl/eLYNVKUNGd8gYN2K9" target="_blank" onclick="trackGaubongEvent('gaubongq7-click-maps', 'click_maps')" class="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-m3-full text-xs font-semibold bg-m3-surface-container text-m3-on-surface hover:bg-m3-surface-container-high transition-colors">
           <span class="material-symbols-outlined text-sm text-m3-primary">location_on</span>
           Chỉ đường
@@ -2034,8 +2034,23 @@
     // 🎨 12 PASTEL LUXURY BOUTIQUE FX ENGINES
     // =========================================================
 
-    // --- 🌸 1. E5: 3D DEPTH-OF-FIELD DUAL-LAYER SAKURA ENGINE (X2 PETALS) ---
-    let sakuraActive = true;
+    // --- 🌸 1. E5: 3D DEPTH-OF-FIELD DUAL-LAYER SAKURA ENGINE (CUSTOMIZABLE) ---
+    let sakuraSettings = {
+      enabled: true,
+      dofEnabled: true,
+      count: 80,
+      minSize: 6,
+      maxSize: 22,
+      speedMultiplier: 1.0,
+      backRatio: 55,
+      windStrength: 1.0
+    };
+    try {
+      const savedSakura = localStorage.getItem('gbq7_sakura_settings');
+      if (savedSakura) sakuraSettings = { ...sakuraSettings, ...JSON.parse(savedSakura) };
+    } catch {}
+
+    let sakuraActive = sakuraSettings.enabled;
     let sakuraBackCanvas, sakuraBackCtx, sakuraFrontCanvas, sakuraFrontCtx;
     let sakuraPetals = [];
     let sakuraMouse = { x: -1000, y: -1000, active: false };
@@ -2047,18 +2062,20 @@
         'rgba(255, 204, 213, 0.85)',
         'rgba(255, 228, 235, 0.90)'
       ];
-      // Pre-render petal sprites at 3 depth blur tiers: 'far' (blur 1.4px), 'mid' (crisp), 'near' (bokeh blur 2.4px)
+      // Pre-render normalized 12px petal sprites at 3 depth blur tiers: 'far', 'mid', 'near'
       ['far', 'mid', 'near'].forEach(tier => {
         sakuraSprites[tier] = palette.map(color => {
           const c = document.createElement('canvas');
-          const base = tier === 'near' ? 44 : tier === 'mid' ? 28 : 22;
+          const base = 36;
           c.width = base;
           c.height = base;
           const ctx = c.getContext('2d');
-          if (tier === 'far') ctx.filter = 'blur(1.4px)';
-          else if (tier === 'near') ctx.filter = 'blur(2.4px)';
-          ctx.translate(base * 0.35, base * 0.25);
-          const s = tier === 'near' ? 16 : tier === 'mid' ? 11 : 7;
+          if (sakuraSettings.dofEnabled) {
+            if (tier === 'far') ctx.filter = 'blur(1.4px)';
+            else if (tier === 'near') ctx.filter = 'blur(2.2px)';
+          }
+          ctx.translate(base * 0.32, base * 0.25);
+          const s = 12;
           ctx.fillStyle = color;
           ctx.beginPath();
           ctx.moveTo(0, 0);
@@ -2077,6 +2094,13 @@
       sakuraBackCtx = sakuraBackCanvas.getContext('2d');
       sakuraFrontCtx = sakuraFrontCanvas.getContext('2d');
 
+      if (!sakuraSettings.enabled) {
+        sakuraActive = false;
+        sakuraBackCtx.clearRect(0, 0, sakuraBackCanvas.width, sakuraBackCanvas.height);
+        sakuraFrontCtx.clearRect(0, 0, sakuraFrontCanvas.width, sakuraFrontCanvas.height);
+        return;
+      }
+
       buildSakuraSprites();
 
       function resizeSakura() {
@@ -2089,19 +2113,27 @@
       resizeSakura();
 
       sakuraPetals = [];
-      // X2 số lượng cánh hoa anh đào để hiệu ứng 3D Depth-of-Field rõ nét
-      const count = window.innerWidth < 640 ? 40 : 80;
+      const baseCount = Number(sakuraSettings.count) || 80;
+      const count = window.innerWidth < 640 ? Math.max(8, Math.round(baseCount * 0.5)) : baseCount;
+      const minS = Number(sakuraSettings.minSize) || 6;
+      const maxS = Math.max(minS, Number(sakuraSettings.maxSize) || 22);
+      const speedMult = Number(sakuraSettings.speedMultiplier) || 1.0;
+      const backRatio = Number(sakuraSettings.backRatio) ?? 55;
+
       for (let i = 0; i < count; i++) {
-        // Phân chia 3 tầng chiều sâu:
-        // - 35% far (nhỏ, mờ nhẹ, rơi đằng sau thẻ & chữ)
-        // - 45% mid (rõ nét, chia đôi 50% rơi ĐẰNG SAU thẻ SP/chữ và 50% rơi ĐẰNG TRƯỚC thẻ SP/chữ để thấy rõ lớp 3D)
-        // - 20% near (lớn, bokeh mờ cận cảnh, bay ĐẰNG TRƯỚC khung hình)
         const r = Math.random();
         const depthTier = r < 0.35 ? 'far' : (r < 0.80 ? 'mid' : 'near');
-        const layer = depthTier === 'far' ? 'back' : (depthTier === 'near' ? 'front' : (Math.random() < 0.55 ? 'back' : 'front'));
-        const depthScale = depthTier === 'far' ? (0.65 + Math.random() * 0.3) : depthTier === 'mid' ? (0.9 + Math.random() * 0.32) : (1.3 + Math.random() * 0.55);
-        const baseSpeedY = (Math.random() * 0.3 + 0.22) * (depthTier === 'far' ? 0.72 : depthTier === 'mid' ? 1.0 : 1.45);
-        const baseSpeedX = (Math.random() - 0.2) * 0.25 * depthScale;
+        const layer = sakuraSettings.dofEnabled
+          ? (Math.random() * 100 < backRatio ? 'back' : 'front')
+          : 'front';
+
+        // Map size linearly within [minSize, maxSize] biased by depthTier
+        const tierT = depthTier === 'far' ? Math.random() * 0.35 : (depthTier === 'mid' ? 0.3 + Math.random() * 0.45 : 0.7 + Math.random() * 0.3);
+        const targetPx = minS + tierT * (maxS - minS);
+        const depthScale = targetPx / 12; // Sprite base size is 12px
+
+        const baseSpeedY = (Math.random() * 0.3 + 0.22) * (0.7 + tierT * 0.8) * speedMult;
+        const baseSpeedX = (Math.random() - 0.2) * 0.25 * (0.7 + tierT * 0.6) * speedMult;
 
         sakuraPetals.push({
           x: Math.random() * window.innerWidth,
@@ -2115,7 +2147,7 @@
           speedY: baseSpeedY,
           speedX: baseSpeedX,
           angle: Math.random() * Math.PI * 2,
-          rotSpeed: (Math.random() - 0.5) * 0.015 * depthScale,
+          rotSpeed: (Math.random() - 0.5) * 0.015 * Math.max(0.6, depthScale),
           colorIdx: Math.floor(Math.random() * 3)
         });
       }
@@ -2160,33 +2192,35 @@
         mouseVx *= 0.92;
         mouseVy *= 0.92;
 
+        const windMult = Number(sakuraSettings.windStrength) ?? 1.0;
+
         sakuraPetals.forEach(p => {
           p.speedY += (p.baseSpeedY - p.speedY) * 0.03;
           p.speedX += (p.baseSpeedX - p.speedX) * 0.03;
 
           p.y += p.speedY;
-          p.x += Math.sin(p.angle) * 0.35 * p.scale + p.speedX;
+          p.x += Math.sin(p.angle) * 0.35 * Math.min(1.8, p.scale) + p.speedX;
           p.angle += p.rotSpeed;
 
-          // Luồng gió nhẹ theo chuột (cánh gần bị tác động mạnh hơn cánh xa)
-          if (sakuraMouse.active) {
+          // Luồng gió nhẹ theo chuột
+          if (sakuraMouse.active && windMult > 0) {
             const dx = p.x - sakuraMouse.x;
             const dy = p.y - sakuraMouse.y;
             const dist = Math.hypot(dx, dy);
             if (dist < 170 && dist > 0) {
-              const breeze = (170 - dist) / 170;
-              p.x += mouseVx * breeze * 0.55 * p.scale;
-              p.y += mouseVy * breeze * 0.55 * p.scale;
+              const breeze = ((170 - dist) / 170) * windMult;
+              p.x += mouseVx * breeze * 0.5 * Math.min(1.6, p.scale);
+              p.y += mouseVy * breeze * 0.5 * Math.min(1.6, p.scale);
               p.angle += (mouseVx * 0.003 + mouseVy * 0.002) * breeze;
             }
           }
 
-          if (p.y > window.innerHeight + 30) {
-            p.y = -30;
+          if (p.y > window.innerHeight + 35) {
+            p.y = -35;
             p.x = Math.random() * window.innerWidth;
           }
-          if (p.x > window.innerWidth + 30) p.x = -30;
-          if (p.x < -30) p.x = window.innerWidth + 30;
+          if (p.x > window.innerWidth + 35) p.x = -35;
+          if (p.x < -35) p.x = window.innerWidth + 35;
 
           const targetCtx = p.layer === 'back' ? sakuraBackCtx : sakuraFrontCtx;
           const sprite = sakuraSprites[p.depthTier][p.colorIdx];
