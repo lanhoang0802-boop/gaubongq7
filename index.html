@@ -282,20 +282,28 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 42px;
-      height: 42px;
+      width: 46px;
+      height: 46px;
+      border: none;
+      padding: 0;
       border-radius: 9999px;
-      background: radial-gradient(circle, rgba(255, 241, 245, 0.95) 0%, rgba(251, 113, 133, 0.35) 70%, transparent 100%);
-      box-shadow: 0 0 18px rgba(244, 63, 94, 0.45), 0 0 6px rgba(251, 191, 36, 0.55);
-      animation: hotspotPulse 2.4s ease-in-out infinite;
-      transition: transform 0.25s ease, opacity 0.3s ease;
+      background: radial-gradient(circle, rgba(255, 245, 248, 0.92) 0%, rgba(244, 114, 182, 0.34) 62%, transparent 100%);
+      box-shadow: 0 0 18px rgba(236, 72, 153, 0.45), 0 0 8px rgba(251, 191, 36, 0.45);
+      animation: hotspotPulse 2.6s ease-in-out infinite;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
     }
     .tree-shake-hotspot:hover {
-      transform: scale(1.2);
+      transform: scale(1.26) rotate(14deg);
+    }
+    .tree-shake-hotspot svg {
+      width: 34px;
+      height: 34px;
+      filter: drop-shadow(0 2px 5px rgba(190, 24, 93, 0.35));
+      transition: transform 0.35s ease;
     }
     @keyframes hotspotPulse {
-      0%, 100% { box-shadow: 0 0 14px rgba(244, 63, 94, 0.4), 0 0 0 0 rgba(251, 113, 133, 0.45); }
-      50% { box-shadow: 0 0 24px rgba(244, 63, 94, 0.7), 0 0 0 12px rgba(251, 113, 133, 0); }
+      0%, 100% { box-shadow: 0 0 14px rgba(236, 72, 153, 0.42), 0 0 0 0 rgba(244, 114, 182, 0.48); }
+      50% { box-shadow: 0 0 24px rgba(236, 72, 153, 0.72), 0 0 0 13px rgba(244, 114, 182, 0); }
     }
 
     /* ✨ Hiệu ứng nhãn BEST SELLER / NEW / HOT TREND */
@@ -596,37 +604,110 @@
   <div id="sakuraTreeWrap" aria-hidden="true">
     <svg id="sakuraTreeSvg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
       <defs>
-        <linearGradient id="trunkGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#6b4438" stop-opacity="0.34"/>
-          <stop offset="60%" stop-color="#8c5a4c" stop-opacity="0.28"/>
-          <stop offset="100%" stop-color="#a17163" stop-opacity="0.2"/>
+        <linearGradient id="trunkGradLeft" x1="0%" y1="50%" x2="100%" y2="30%">
+          <stop offset="0%" stop-color="#3b231d" stop-opacity="0.48"/>
+          <stop offset="55%" stop-color="#5a382e" stop-opacity="0.38"/>
+          <stop offset="100%" stop-color="#7c5246" stop-opacity="0.26"/>
         </linearGradient>
-        <radialGradient id="blossomCloud" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#fbcfe8" stop-opacity="0.58"/>
-          <stop offset="65%" stop-color="#f9a8d4" stop-opacity="0.34"/>
-          <stop offset="100%" stop-color="#f9a8d4" stop-opacity="0"/>
+        <linearGradient id="trunkGradRight" x1="100%" y1="60%" x2="0%" y2="40%">
+          <stop offset="0%" stop-color="#3b231d" stop-opacity="0.48"/>
+          <stop offset="55%" stop-color="#5a382e" stop-opacity="0.38"/>
+          <stop offset="100%" stop-color="#7c5246" stop-opacity="0.26"/>
+        </linearGradient>
+        <radialGradient id="petalGradPink" cx="50%" cy="35%" r="65%">
+          <stop offset="0%" stop-color="#fbcfe8"/>
+          <stop offset="60%" stop-color="#f472b6"/>
+          <stop offset="100%" stop-color="#ec4899"/>
         </radialGradient>
-      </defs>
-      <!-- Thân & cành cây bên trái uốn lượn -->
-      <path d="M-20,920 C25,740 40,560 32,380 C25,240 65,140 165,70 C215,35 280,22 340,36" fill="none" stroke="url(#trunkGrad)" stroke-width="26" stroke-linecap="round"/>
-      <path d="M35,510 C80,440 140,395 210,365" fill="none" stroke="url(#trunkGrad)" stroke-width="11" stroke-linecap="round"/>
-      <path d="M42,275 C105,215 170,185 250,170" fill="none" stroke="url(#trunkGrad)" stroke-width="13" stroke-linecap="round"/>
-      <path d="M90,145 C140,95 200,75 270,82" fill="none" stroke="url(#trunkGrad)" stroke-width="9" stroke-linecap="round"/>
-      <!-- Cành hoa vươn từ góc phải trên -->
-      <path d="M1460,260 C1380,200 1300,180 1215,195 C1165,204 1120,230 1085,260" fill="none" stroke="url(#trunkGrad)" stroke-width="15" stroke-linecap="round"/>
-      <path d="M1340,205 C1310,145 1265,105 1200,85" fill="none" stroke="url(#trunkGrad)" stroke-width="9" stroke-linecap="round"/>
-      <path d="M1455,680 C1395,620 1355,565 1335,500" fill="none" stroke="url(#trunkGrad)" stroke-width="12" stroke-linecap="round"/>
+        <radialGradient id="petalGradSoft" cx="50%" cy="35%" r="65%">
+          <stop offset="0%" stop-color="#fff1f5"/>
+          <stop offset="65%" stop-color="#f9a8d4"/>
+          <stop offset="100%" stop-color="#f472b6"/>
+        </radialGradient>
 
-      <!-- Tán hoa anh đào mềm mại -->
-      <circle cx="150" cy="110" r="145" fill="url(#blossomCloud)"/>
-      <circle cx="265" cy="95" r="115" fill="url(#blossomCloud)"/>
-      <circle cx="95" cy="245" r="120" fill="url(#blossomCloud)"/>
-      <circle cx="215" cy="195" r="95" fill="url(#blossomCloud)"/>
-      <circle cx="170" cy="365" r="85" fill="url(#blossomCloud)"/>
-      <circle cx="1290" cy="165" r="145" fill="url(#blossomCloud)"/>
-      <circle cx="1165" cy="215" r="105" fill="url(#blossomCloud)"/>
-      <circle cx="1220" cy="100" r="90" fill="url(#blossomCloud)"/>
-      <circle cx="1365" cy="535" r="115" fill="url(#blossomCloud)"/>
+        <!-- Bông hoa anh đào 5 cánh sắc nét (Đậm vừa) -->
+        <g id="sakuraFlowerDeep">
+          <g fill="url(#petalGradPink)" opacity="0.62">
+            <path d="M0,-4 C-6,-11 -11,-21 -4,-26 L0,-22 L4,-26 C11,-21 6,-11 0,-4 Z" transform="rotate(0)"/>
+            <path d="M0,-4 C-6,-11 -11,-21 -4,-26 L0,-22 L4,-26 C11,-21 6,-11 0,-4 Z" transform="rotate(72)"/>
+            <path d="M0,-4 C-6,-11 -11,-21 -4,-26 L0,-22 L4,-26 C11,-21 6,-11 0,-4 Z" transform="rotate(144)"/>
+            <path d="M0,-4 C-6,-11 -11,-21 -4,-26 L0,-22 L4,-26 C11,-21 6,-11 0,-4 Z" transform="rotate(216)"/>
+            <path d="M0,-4 C-6,-11 -11,-21 -4,-26 L0,-22 L4,-26 C11,-21 6,-11 0,-4 Z" transform="rotate(288)"/>
+          </g>
+          <circle cx="0" cy="0" r="3.4" fill="#be185d" opacity="0.55"/>
+          <circle cx="0" cy="0" r="1.6" fill="#fde68a" opacity="0.8"/>
+        </g>
+
+        <!-- Bông hoa anh đào 5 cánh hồng phấn nhẹ -->
+        <g id="sakuraFlowerSoft">
+          <g fill="url(#petalGradSoft)" opacity="0.68">
+            <path d="M0,-4 C-6,-11 -11,-21 -4,-26 L0,-22 L4,-26 C11,-21 6,-11 0,-4 Z" transform="rotate(0)"/>
+            <path d="M0,-4 C-6,-11 -11,-21 -4,-26 L0,-22 L4,-26 C11,-21 6,-11 0,-4 Z" transform="rotate(72)"/>
+            <path d="M0,-4 C-6,-11 -11,-21 -4,-26 L0,-22 L4,-26 C11,-21 6,-11 0,-4 Z" transform="rotate(144)"/>
+            <path d="M0,-4 C-6,-11 -11,-21 -4,-26 L0,-22 L4,-26 C11,-21 6,-11 0,-4 Z" transform="rotate(216)"/>
+            <path d="M0,-4 C-6,-11 -11,-21 -4,-26 L0,-22 L4,-26 C11,-21 6,-11 0,-4 Z" transform="rotate(288)"/>
+          </g>
+          <circle cx="0" cy="0" r="3" fill="#db2777" opacity="0.45"/>
+          <circle cx="0" cy="0" r="1.4" fill="#fef08a" opacity="0.75"/>
+        </g>
+      </defs>
+
+      <!-- 🌿 CÀNH TRÁI VƯƠN VÀO (Tapered organic silhouette) -->
+      <path d="M-25,252 C55,248 135,232 225,204 C290,184 352,188 418,215 C360,174 298,162 228,178 C275,142 325,112 392,98 C312,102 252,135 196,174 C156,144 128,112 104,76 C116,118 140,152 176,184 C112,208 42,222 -25,224 Z" fill="url(#trunkGradLeft)"/>
+      <!-- Nhánh phụ rủ xuống bên trái -->
+      <path d="M135,224 C172,256 205,292 238,342 C215,290 185,250 152,216 Z" fill="url(#trunkGradLeft)"/>
+      <path d="M278,188 C312,218 340,252 365,292 C346,248 320,214 292,184 Z" fill="url(#trunkGradLeft)"/>
+      <path d="M108,116 C82,126 52,132 28,128 C58,136 88,132 118,124 Z" fill="url(#trunkGradLeft)"/>
+
+      <!-- 🌿 CÀNH PHẢI VƯƠN VÀO (Tapered organic silhouette) -->
+      <path d="M1465,610 C1375,606 1295,585 1215,545 C1155,515 1085,510 1010,536 C1082,494 1148,494 1212,518 C1175,472 1126,435 1062,418 C1132,424 1186,458 1236,506 C1272,464 1310,425 1356,396 C1326,432 1292,472 1262,518 C1328,554 1395,576 1465,582 Z" fill="url(#trunkGradRight)"/>
+      <!-- Nhánh phụ phải rủ xuống & nhánh góc trên phải -->
+      <path d="M1285,572 C1245,608 1212,648 1185,702 C1218,652 1252,612 1300,578 Z" fill="url(#trunkGradRight)"/>
+      <path d="M1145,518 C1106,554 1078,590 1056,634 C1086,592 1118,556 1162,524 Z" fill="url(#trunkGradRight)"/>
+      <path d="M1465,168 C1390,185 1320,208 1245,244 C1318,218 1388,200 1465,192 Z" fill="url(#trunkGradRight)"/>
+
+      <!-- 🌸 CỤM HOA ANH ĐÀO BÊN TRÁI (5 cánh rõ nét, kích thước đa dạng) -->
+      <use href="#sakuraFlowerDeep" transform="translate(55, 222) scale(1.15) rotate(12)"/>
+      <use href="#sakuraFlowerSoft" transform="translate(96, 250) scale(0.9) rotate(40)"/>
+      <use href="#sakuraFlowerDeep" transform="translate(105, 118) scale(1.05) rotate(-18)"/>
+      <use href="#sakuraFlowerSoft" transform="translate(65, 134) scale(0.8) rotate(25)"/>
+      <use href="#sakuraFlowerDeep" transform="translate(148, 86) scale(0.95) rotate(50)"/>
+      <use href="#sakuraFlowerSoft" transform="translate(198, 130) scale(1.1) rotate(-10)"/>
+      <use href="#sakuraFlowerDeep" transform="translate(178, 178) scale(1.22) rotate(22)"/>
+      <use href="#sakuraFlowerSoft" transform="translate(232, 162) scale(0.95) rotate(55)"/>
+      <use href="#sakuraFlowerDeep" transform="translate(278, 135) scale(1.18) rotate(-25)"/>
+      <use href="#sakuraFlowerSoft" transform="translate(328, 108) scale(1.05) rotate(15)"/>
+      <use href="#sakuraFlowerDeep" transform="translate(378, 96) scale(0.88) rotate(38)"/>
+      <use href="#sakuraFlowerSoft" transform="translate(352, 162) scale(1.0) rotate(-12)"/>
+      <use href="#sakuraFlowerDeep" transform="translate(405, 206) scale(1.12) rotate(28)"/>
+      <use href="#sakuraFlowerSoft" transform="translate(215, 295) scale(0.95) rotate(14)"/>
+      <use href="#sakuraFlowerDeep" transform="translate(244, 338) scale(0.82) rotate(-30)"/>
+      <use href="#sakuraFlowerSoft" transform="translate(345, 268) scale(0.9) rotate(42)"/>
+      <use href="#sakuraFlowerDeep" transform="translate(382, 292) scale(0.76) rotate(8)"/>
+
+      <!-- 🌸 CỤM HOA ANH ĐÀO BÊN PHẢI -->
+      <use href="#sakuraFlowerDeep" transform="translate(1388, 565) scale(1.18) rotate(-15)"/>
+      <use href="#sakuraFlowerSoft" transform="translate(1340, 598) scale(0.95) rotate(24)"/>
+      <use href="#sakuraFlowerDeep" transform="translate(1338, 424) scale(1.12) rotate(10)"/>
+      <use href="#sakuraFlowerSoft" transform="translate(1376, 398) scale(0.85) rotate(-32)"/>
+      <use href="#sakuraFlowerDeep" transform="translate(1268, 490) scale(1.25) rotate(35)"/>
+      <use href="#sakuraFlowerSoft" transform="translate(1216, 466) scale(1.0) rotate(-14)"/>
+      <use href="#sakuraFlowerDeep" transform="translate(1152, 438) scale(1.15) rotate(20)"/>
+      <use href="#sakuraFlowerSoft" transform="translate(1092, 418) scale(0.95) rotate(48)"/>
+      <use href="#sakuraFlowerDeep" transform="translate(1038, 524) scale(1.1) rotate(-22)"/>
+      <use href="#sakuraFlowerSoft" transform="translate(1078, 588) scale(0.9) rotate(16)"/>
+      <use href="#sakuraFlowerDeep" transform="translate(1202, 668) scale(0.98) rotate(-18)"/>
+      <use href="#sakuraFlowerSoft" transform="translate(1254, 622) scale(0.85) rotate(32)"/>
+      <!-- Cụm hoa nhánh góc trên phải -->
+      <use href="#sakuraFlowerSoft" transform="translate(1375, 188) scale(1.08) rotate(18)"/>
+      <use href="#sakuraFlowerDeep" transform="translate(1312, 215) scale(0.95) rotate(-24)"/>
+      <use href="#sakuraFlowerSoft" transform="translate(1255, 240) scale(0.85) rotate(40)"/>
+
+      <!-- 🌸 HOA RƠI BAY NHẸ GIỮA KHÔNG GIAN -->
+      <use href="#sakuraFlowerSoft" transform="translate(475, 165) scale(0.68) rotate(25)"/>
+      <use href="#sakuraFlowerDeep" transform="translate(520, 245) scale(0.58) rotate(-40)"/>
+      <use href="#sakuraFlowerSoft" transform="translate(965, 345) scale(0.66) rotate(15)"/>
+      <use href="#sakuraFlowerDeep" transform="translate(925, 455) scale(0.58) rotate(52)"/>
     </svg>
   </div>
 
@@ -2662,9 +2743,37 @@
       });
     }
 
-    // --- 🌳 10. INTERACTIVE SAKURA TREE & MULTIPLE RANDOM NON-OVERLAPPING HOTSPOTS ---
-    const TREE_HOTSPOT_ICONS = ['🎐', '🌸', '🦋', '🐦', '🎀', '✨'];
+    // --- 🌳 10. INTERACTIVE SAKURA TREE & MULTIPLE RANDOM NON-OVERLAPPING FLOWER HOTSPOTS ---
+    const TREE_HOTSPOT_PALETTES = [
+      { outer: '#f472b6', inner: '#fbcfe8', core: '#be185d', rot: 0 },
+      { outer: '#ec4899', inner: '#f9a8d4', core: '#9d174d', rot: 18 },
+      { outer: '#fb7185', inner: '#fecdd3', core: '#be123c', rot: -15 },
+      { outer: '#f472b6', inner: '#fff1f5', core: '#db2777', rot: 30 }
+    ];
     let activeHotspotCoords = [];
+
+    function renderHotspotFlowerSvg(palette) {
+      return `
+        <svg viewBox="-30 -30 60 60" style="transform:rotate(${palette.rot}deg)" aria-hidden="true">
+          <g fill="${palette.outer}">
+            <path d="M0,-3 C-7,-11 -12,-22 -4,-27 L0,-22 L4,-27 C12,-22 7,-11 0,-3 Z" transform="rotate(0)"/>
+            <path d="M0,-3 C-7,-11 -12,-22 -4,-27 L0,-22 L4,-27 C12,-22 7,-11 0,-3 Z" transform="rotate(72)"/>
+            <path d="M0,-3 C-7,-11 -12,-22 -4,-27 L0,-22 L4,-27 C12,-22 7,-11 0,-3 Z" transform="rotate(144)"/>
+            <path d="M0,-3 C-7,-11 -12,-22 -4,-27 L0,-22 L4,-27 C12,-22 7,-11 0,-3 Z" transform="rotate(216)"/>
+            <path d="M0,-3 C-7,-11 -12,-22 -4,-27 L0,-22 L4,-27 C12,-22 7,-11 0,-3 Z" transform="rotate(288)"/>
+          </g>
+          <g fill="${palette.inner}" opacity="0.72" transform="scale(0.62)">
+            <path d="M0,-3 C-6,-10 -11,-20 -4,-25 L0,-21 L4,-25 C11,-20 6,-10 0,-3 Z" transform="rotate(36)"/>
+            <path d="M0,-3 C-6,-10 -11,-20 -4,-25 L0,-21 L4,-25 C11,-20 6,-10 0,-3 Z" transform="rotate(108)"/>
+            <path d="M0,-3 C-6,-10 -11,-20 -4,-25 L0,-21 L4,-25 C11,-20 6,-10 0,-3 Z" transform="rotate(180)"/>
+            <path d="M0,-3 C-6,-10 -11,-20 -4,-25 L0,-21 L4,-25 C11,-20 6,-10 0,-3 Z" transform="rotate(252)"/>
+            <path d="M0,-3 C-6,-10 -11,-20 -4,-25 L0,-21 L4,-25 C11,-20 6,-10 0,-3 Z" transform="rotate(324)"/>
+          </g>
+          <circle cx="0" cy="0" r="4.2" fill="${palette.core}"/>
+          <circle cx="0" cy="0" r="2.1" fill="#fde047"/>
+        </svg>
+      `;
+    }
 
     function positionTreeHotspotSafely() {
       const container = document.getElementById('treeHotspotsContainer');
@@ -2681,16 +2790,16 @@
       const vh = window.innerHeight;
       // 10 toạ độ tiềm năng dọc theo các cành cây bên trái & phải
       const candidates = [
-        { x: 36, y: Math.round(vh * 0.22) },
-        { x: vw - 78, y: Math.round(vh * 0.20) },
-        { x: 52, y: Math.round(vh * 0.42) },
-        { x: vw - 84, y: Math.round(vh * 0.39) },
-        { x: 28, y: Math.round(vh * 0.60) },
-        { x: vw - 74, y: Math.round(vh * 0.56) },
-        { x: 48, y: Math.round(vh * 0.78) },
-        { x: vw - 90, y: Math.round(vh * 0.74) },
-        { x: 110, y: Math.round(vh * 0.16) },
-        { x: vw - 145, y: Math.round(vh * 0.15) }
+        { x: 34, y: Math.round(vh * 0.22) },
+        { x: vw - 82, y: Math.round(vh * 0.20) },
+        { x: 50, y: Math.round(vh * 0.42) },
+        { x: vw - 88, y: Math.round(vh * 0.39) },
+        { x: 26, y: Math.round(vh * 0.60) },
+        { x: vw - 78, y: Math.round(vh * 0.56) },
+        { x: 46, y: Math.round(vh * 0.78) },
+        { x: vw - 94, y: Math.round(vh * 0.74) },
+        { x: 108, y: Math.round(vh * 0.16) },
+        { x: vw - 148, y: Math.round(vh * 0.15) }
       ];
 
       // Shuffle ngẫu nhiên nhẹ nhưng ổn định theo phiên
@@ -2700,7 +2809,7 @@
 
       const obstacles = Array.from(document.querySelectorAll('header, #heroBanner, section, #productGrid > div, footer, #floatingActions'));
       const pad = 12;
-      const size = 42;
+      const size = 46;
       const placed = [];
 
       for (const idx of window._hotspotSeedOrder) {
@@ -2722,14 +2831,14 @@
           }
         }
         if (!overlaps) {
-          placed.push({ ...pt, icon: TREE_HOTSPOT_ICONS[idx % TREE_HOTSPOT_ICONS.length] });
+          placed.push({ ...pt, palette: TREE_HOTSPOT_PALETTES[idx % TREE_HOTSPOT_PALETTES.length] });
         }
       }
 
       activeHotspotCoords = placed;
       container.innerHTML = placed.map((pt, i) => `
-        <button class="tree-shake-hotspot" style="left:${pt.x}px; top:${pt.y}px; animation-delay:${(i * 0.45).toFixed(2)}s;" onclick="triggerTreeShake(${pt.x + 21}, ${pt.y + 21})" title="Bấm để rung cây hoa anh đào 🌸">
-          <span class="text-lg drop-shadow-sm select-none">${pt.icon}</span>
+        <button class="tree-shake-hotspot" style="left:${pt.x}px; top:${pt.y}px; animation-delay:${(i * 0.45).toFixed(2)}s;" onclick="triggerTreeShake(${pt.x + 23}, ${pt.y + 23})" title="Bấm vào bông hoa để rung cây anh đào 🌸">
+          ${renderHotspotFlowerSvg(pt.palette)}
         </button>
       `).join('');
     }
