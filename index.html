@@ -3076,30 +3076,63 @@
         const isPhone = w < 640;
         const isTablet = w >= 640 && w < 1024;
         const sizeScale = Math.max(0.58, Math.min(1.08, w / 1050));
-        const PAD = Math.round(96 * sizeScale);
+        const PAD = Math.round(150 * sizeScale);
 
         const makeHalfCanopy = (side) => {
-          const innerW = Math.ceil(w * (isPhone ? 0.82 : (isTablet ? 0.76 : 0.72)));
+          const innerW = Math.ceil(w * (isPhone ? 0.68 : (isTablet ? 0.64 : 0.62)));
           const cw = innerW + PAD * 2;
-          const ch = Math.ceil(h * 1.15) + PAD * 2;
+          const ch = Math.ceil(h * 1.18) + PAD * 2;
           const off = document.createElement('canvas');
           off.width = cw;
           off.height = ch;
           const c = off.getContext('2d');
 
-          let seed = side === 'left' ? 241 : 857;
+          let seed = side === 'left' ? 313 : 977;
           const rand = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
           const blossoms = [];
+
+          // Đường viền tự nhiên nhấp nhô (không bao giờ thành đường thẳng đứng)
+          const edgeWave = (yRatio) => {
+            const phase = side === 'left' ? 0.4 : 2.1;
+            return Math.sin(yRatio * Math.PI * 3.2 + phase) * (innerW * 0.16)
+                 + Math.cos(yRatio * Math.PI * 5.7 - phase) * (innerW * 0.09);
+          };
+
+          const addCluster = (cx, cy, spreadX, spreadY, count, minR, maxR, layerWeights) => {
+            for (let i = 0; i < count; i++) {
+              const r = (minR + rand() * (maxR - minR)) * sizeScale;
+              const ang = rand() * Math.PI * 2;
+              const dist = Math.pow(rand(), 0.72);
+              const bx = cx + Math.cos(ang) * spreadX * dist;
+              const by = cy + Math.sin(ang) * spreadY * dist;
+              // Chỉ giữ an toàn tối thiểu cách mép canvas để không bao giờ bị cắt cụt cánh hoa
+              if (bx < r + 4 || bx > cw - r - 4 || by < r + 4 || by > ch - r - 4) continue;
+              const wRand = rand();
+              let layer = 2;
+              if (wRand < layerWeights[0]) layer = 0;
+              else if (wRand < layerWeights[1]) layer = 1;
+              else if (wRand < layerWeights[2]) layer = 2;
+              else if (wRand < layerWeights[3]) layer = 3;
+              else layer = 4;
+
+              blossoms.push({
+                x: bx, y: by, r,
+                rot: rand() * Math.PI * 2,
+                tone: Math.floor(rand() * 3),
+                layer
+              });
+            }
+          };
 
           const drawBranch = (x, y, angle, len, width, depth) => {
             const endX = x + Math.cos(angle) * len;
             const endY = y + Math.sin(angle) * len;
-            const ctrlX = (x + endX) * 0.5 + (rand() - 0.5) * len * 0.2;
+            const ctrlX = (x + endX) * 0.5 + (rand() - 0.5) * len * 0.22;
             const ctrlY = (y + endY) * 0.5 + (rand() - 0.5) * len * 0.16;
 
             if (depth >= 2 && depth <= 3) {
               c.save();
-              c.strokeStyle = depth === 3 ? 'rgba(69, 39, 32, 0.52)' : 'rgba(94, 55, 46, 0.26)';
+              c.strokeStyle = depth === 3 ? 'rgba(69, 39, 32, 0.48)' : 'rgba(94, 55, 46, 0.22)';
               c.lineWidth = width * sizeScale;
               c.lineCap = 'round';
               c.beginPath();
@@ -3109,52 +3142,73 @@
               c.restore();
             }
 
-            const baseCount = isPhone ? (depth === 1 ? 22 : (depth === 2 ? 16 : 8)) : (depth === 1 ? 30 : (depth === 2 ? 22 : 10));
+            const baseCount = isPhone ? (depth === 1 ? 18 : (depth === 2 ? 14 : 7)) : (depth === 1 ? 24 : (depth === 2 ? 18 : 9));
             for (let i = 0; i < baseCount; i++) {
-              const along = 0.18 + rand() * 0.86;
+              const along = 0.15 + rand() * 0.9;
               const px = x + (endX - x) * along;
               const py = y + (endY - y) * along;
-              const r = (20 + rand() * 22) * sizeScale;
-              const bx = Math.max(PAD * 0.45 + r, Math.min(cw - PAD * 0.52 - r, px + (rand() - 0.5) * len * 1.15));
-              const by = Math.max(PAD * 0.45 + r, Math.min(ch - PAD * 0.45 - r, py + (rand() - 0.5) * len * 0.95));
-              blossoms.push({
-                x: bx, y: by, r,
-                rot: rand() * Math.PI * 2,
-                tone: Math.floor(rand() * 3),
-                layer: rand() > 0.42 ? 1 : 0
-              });
+              const yNorm = Math.max(0, Math.min(1, py / ch));
+              const wave = edgeWave(yNorm);
+              const r = (10 + rand() * 30) * sizeScale; // Kích thước hoa đa dạng to nhỏ rõ rệt
+              const bx = px + (rand() - 0.5) * len * 1.1 + (side === 'left' ? wave * 0.35 : -wave * 0.35);
+              const by = py + (rand() - 0.5) * len * 0.95;
+              if (bx < r + 4 || bx > cw - r - 4 || by < r + 4 || by > ch - r - 4) continue;
+              const layer = Math.min(4, Math.floor(rand() * 5));
+              blossoms.push({ x: bx, y: by, r, rot: rand() * Math.PI * 2, tone: Math.floor(rand() * 3), layer });
             }
 
             if (depth > 1) {
               const n = depth === 4 ? 3 : 2;
               for (let i = 0; i < n; i++) {
-                const spread = (i - (n - 1) / 2) * (0.36 + rand() * 0.16);
+                const spread = (i - (n - 1) / 2) * (0.38 + rand() * 0.18);
                 const nextAngle = Math.max(-Math.PI * 0.78, Math.min(-Math.PI * 0.22, angle + spread));
-                drawBranch(endX, endY, nextAngle, len * (0.70 + rand() * 0.12), width * 0.62, depth - 1);
+                drawBranch(endX, endY, nextAngle, len * (0.68 + rand() * 0.14), width * 0.62, depth - 1);
               }
             }
           };
 
-          const baseY = ch - PAD * 0.2;
+          const baseY = ch - PAD * 0.25;
           if (side === 'left') {
-            drawBranch(cw * 0.22, baseY, -Math.PI * 0.45, ch * 0.28, 18, 4);
-            drawBranch(cw * 0.44, baseY, -Math.PI * 0.40, ch * 0.26, 16, 4);
-            drawBranch(cw * 0.64, baseY, -Math.PI * 0.48, ch * 0.24, 15, 4);
+            drawBranch(cw * 0.20, baseY, -Math.PI * 0.46, ch * 0.28, 17, 4);
+            drawBranch(cw * 0.42, baseY, -Math.PI * 0.41, ch * 0.26, 15, 4);
+            drawBranch(cw * 0.58, baseY, -Math.PI * 0.49, ch * 0.23, 14, 4);
           } else {
-            drawBranch(cw * 0.78, baseY, -Math.PI * 0.55, ch * 0.28, 18, 4);
-            drawBranch(cw * 0.56, baseY, -Math.PI * 0.60, ch * 0.26, 16, 4);
-            drawBranch(cw * 0.36, baseY, -Math.PI * 0.52, ch * 0.24, 15, 4);
+            drawBranch(cw * 0.80, baseY, -Math.PI * 0.54, ch * 0.28, 17, 4);
+            drawBranch(cw * 0.58, baseY, -Math.PI * 0.59, ch * 0.26, 15, 4);
+            drawBranch(cw * 0.42, baseY, -Math.PI * 0.51, ch * 0.23, 14, 4);
           }
 
-          blossoms.filter(b => b.layer === 0).forEach(b => {
+          // Thêm các chùm hoa nhô ra / thụt vào bất đối xứng ở rìa trong để phá hoàn toàn đường thẳng
+          const sprigCount = isPhone ? 10 : 14;
+          for (let s = 0; s < sprigCount; s++) {
+            const yNorm = 0.08 + (s / (sprigCount - 1)) * 0.84 + (rand() - 0.5) * 0.06;
+            const cy = yNorm * ch;
+            const wave = edgeWave(yNorm);
+            const poke = (rand() - 0.35) * (innerW * 0.26); // Có cụm nhô hẳn ra, có cụm thụt sâu vào
+            const cx = side === 'left'
+              ? PAD + innerW * 0.76 + wave + poke
+              : PAD + innerW * 0.24 - wave - poke;
+            addCluster(
+              cx, cy,
+              (55 + rand() * 55) * sizeScale,
+              (45 + rand() * 45) * sizeScale,
+              isPhone ? 9 : 13,
+              9, 34,
+              [0.18, 0.38, 0.62, 0.84]
+            );
+          }
+
+          // Vẽ đủ 5 tầng chiều sâu (layer 0 -> 4): nền đậm dịu -> giữa -> nổi khối -> nụ nhỏ rìa ngoài
+          const layerAlphas = [0.68, 0.80, 0.90, 0.97, 0.94];
+          const layerScales = [1.22, 1.12, 1.0, 0.96, 0.72];
+          for (let lyr = 0; lyr < 5; lyr++) {
             c.save();
-            c.globalAlpha = 0.88;
-            drawIntroBlossom(c, b.x, b.y, b.r * 1.15, b.rot, b.tone);
+            c.globalAlpha = layerAlphas[lyr];
+            blossoms.filter(b => b.layer === lyr).forEach(b => {
+              drawIntroBlossom(c, b.x, b.y, b.r * layerScales[lyr], b.rot, b.tone);
+            });
             c.restore();
-          });
-          blossoms.filter(b => b.layer === 1).forEach(b => {
-            drawIntroBlossom(c, b.x, b.y, b.r, b.rot, b.tone);
-          });
+          }
 
           return { canvas: off, pad: PAD };
         };
@@ -3204,7 +3258,7 @@
         ctx.translate(-slideDist, h * 0.52);
         ctx.rotate(-tilt);
         ctx.scale(scale, scale);
-        ctx.drawImage(sprites.left.canvas, -sprites.left.pad, -sprites.left.canvas.height * 0.5);
+        ctx.drawImage(sprites.left.canvas, -sprites.left.pad * 0.85, -sprites.left.canvas.height * 0.5);
         ctx.restore();
 
         ctx.save();
@@ -3212,7 +3266,7 @@
         ctx.translate(w + slideDist, h * 0.52);
         ctx.rotate(tilt);
         ctx.scale(scale, scale);
-        ctx.drawImage(sprites.right.canvas, -sprites.right.canvas.width + sprites.right.pad, -sprites.right.canvas.height * 0.5);
+        ctx.drawImage(sprites.right.canvas, -sprites.right.canvas.width + sprites.right.pad * 0.85, -sprites.right.canvas.height * 0.5);
         ctx.restore();
 
         const petalFade = rawT > 0.75 ? Math.max(0, 1 - (rawT - 0.75) / 0.25) : 1;
