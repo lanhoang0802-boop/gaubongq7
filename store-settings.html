@@ -138,18 +138,54 @@
         </div>
       </div>
 
-      <div class="space-y-2 text-xs">
-        <div>
-          <label class="font-bold text-slate-700 block mb-1">Ảnh Đại Diện (Đường dẫn images/... hoặc link Drive)</label>
-          <input id="edCover" type="text" placeholder="images/IMG_3419.JPG" class="w-full px-3 py-2 rounded-xl border border-slate-200">
+      <!-- Visual Image & Gallery Manager (Giống hệt App) -->
+      <div class="bg-pink-50/50 rounded-2xl p-4 space-y-4 text-xs border border-rose-100">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div class="font-extrabold text-slate-800 flex items-center gap-1.5">
+            <span>🖼️</span> Quản Lý Ảnh Đại Diện & Album Chi Tiết
+          </div>
+          <div id="ghAuthBar" class="flex items-center gap-1.5">
+            <!-- Rendered by renderGhAuthBar() -->
+          </div>
         </div>
-        <div>
-          <label class="font-bold text-slate-700 block mb-1">Album Ảnh Chi Tiết (Cách nhau dấu phẩy)</label>
-          <textarea id="edGallery" rows="2" placeholder="images/IMG_3419.JPG, images/IMG_3420.JPG" class="w-full px-3 py-2 rounded-xl border border-slate-200"></textarea>
+
+        <!-- Ảnh Đại Diện (Thumbnail + Upload) -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3.5 bg-white p-3 rounded-2xl border border-rose-100">
+          <div class="relative w-24 h-24 rounded-2xl overflow-hidden bg-rose-50 border border-rose-200 flex-shrink-0 flex items-center justify-center">
+            <img id="edCoverPreview" src="" alt="Cover" class="w-full h-full object-cover hidden">
+            <span id="edCoverEmpty" class="text-slate-400 text-[11px] text-center px-2">Chưa có ảnh bìa</span>
+            <span class="absolute top-1 left-1 px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-rose-600 text-white shadow-xs">Ảnh bìa</span>
+          </div>
+          <div class="flex-1 min-w-0 space-y-2 w-full">
+            <div class="flex flex-wrap items-center gap-2">
+              <label class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold bg-rose-600 text-white hover:bg-rose-700 cursor-pointer shadow-xs">
+                <span>📤 Tải ảnh bìa từ máy</span>
+                <input type="file" accept="image/*" class="hidden" onchange="handleCoverUpload(this)">
+              </label>
+              <span id="coverUploadStatus" class="text-[11px] font-semibold text-slate-500"></span>
+            </div>
+            <input id="edCover" type="text" oninput="syncCoverPreview()" placeholder="Hoặc dán đường dẫn ảnh (images/... hoặc link Drive)" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 text-[11px] text-slate-600">
+          </div>
         </div>
+
+        <!-- Album Ảnh Chi Tiết (Grid Thumbnails + Upload nhiều ảnh + Xoá + Đặt làm ảnh bìa) -->
+        <div class="space-y-2">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="font-bold text-slate-700">📸 Album Ảnh Chi Tiết (<span id="galleryCount">0</span> ảnh)</span>
+            <label class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 cursor-pointer shadow-xs">
+              <span>➕ Thêm nhiều ảnh từ máy</span>
+              <input type="file" accept="image/*" multiple class="hidden" onchange="handleGalleryUpload(this)">
+            </label>
+          </div>
+          <div id="edGalleryGrid" class="grid grid-cols-3 sm:grid-cols-5 gap-2.5 pt-1">
+            <!-- Thumbnails rendered here -->
+          </div>
+          <input id="edGallery" type="hidden">
+        </div>
+
         <div>
           <label class="font-bold text-slate-700 block mb-1">Mô Tả Sản Phẩm</label>
-          <textarea id="edDesc" rows="2" placeholder="Mô tả chất liệu, độ mềm mịn..." class="w-full px-3 py-2 rounded-xl border border-slate-200"></textarea>
+          <textarea id="edDesc" rows="2" placeholder="Mô tả chất liệu, độ mềm mịn..." class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white"></textarea>
         </div>
       </div>
 
@@ -341,14 +377,212 @@
       init();
     }
 
-    // Product Editor Modal
+    // Product Editor Modal + Visual GitHub Image Manager
     let editingId = null;
+    let currentGalleryList = [];
+
+    function getGhPat() {
+      return (localStorage.getItem('gbq7_gh_pat') || '').trim();
+    }
+
+    function renderGhAuthBar() {
+      const bar = document.getElementById('ghAuthBar');
+      if (!bar) return;
+      const pat = getGhPat();
+      if (pat) {
+        bar.innerHTML = `
+          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">🟢 Đã kết nối Upload GitHub</span>
+          <button type="button" onclick="promptGhPat()" class="text-[10px] font-semibold text-slate-500 underline cursor-pointer">Đổi Token</button>
+        `;
+      } else {
+        bar.innerHTML = `
+          <button type="button" onclick="promptGhPat()" class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 cursor-pointer">
+            🔑 Kết nối GitHub để Upload/Xoá ảnh
+          </button>
+        `;
+      }
+    }
+
+    function promptGhPat() {
+      const pat = prompt('Dán GitHub Token (ghp_...) 1 lần duy nhất để trình duyệt tự upload/xoá ảnh trực tiếp lên GitHub:', getGhPat());
+      if (pat !== null) {
+        localStorage.setItem('gbq7_gh_pat', pat.trim());
+        renderGhAuthBar();
+      }
+    }
+
+    function compressImageToBase64(file, maxDim = 1000) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            let w = img.width, h = img.height;
+            if (w > maxDim || h > maxDim) {
+              if (w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
+              else { w = Math.round(w * maxDim / h); h = maxDim; }
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.86);
+            resolve({ base64: dataUrl.split(',')[1], previewUrl: dataUrl });
+          };
+          img.onerror = reject;
+          img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function uploadImageToGithub(file, suffix) {
+      let pat = getGhPat();
+      if (!pat) {
+        promptGhPat();
+        pat = getGhPat();
+        if (!pat) throw new Error('Chưa nhập GitHub Token');
+      }
+      const { base64 } = await compressImageToBase64(file);
+      const safeId = (document.getElementById('edId').value || 'SP').trim().replace(/[^a-zA-Z0-9_-]/g, '');
+      const relPath = `images/custom/${safeId}_${suffix}_${Date.now()}.jpg`;
+      const apiUrl = `https://api.github.com/repos/lanhoang0802-boop/gaubongq7/contents/${relPath}`;
+      const res = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: { Authorization: `token ${pat}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: `Upload ${relPath} via Web Manager`, content: base64 })
+      });
+      if (!res.ok) throw new Error(`GitHub HTTP ${res.status}`);
+      return relPath;
+    }
+
+    async function deleteImageFromGithub(relPath) {
+      const pat = getGhPat();
+      if (!pat || !relPath || !relPath.startsWith('images/')) return;
+      const apiUrl = `https://api.github.com/repos/lanhoang0802-boop/gaubongq7/contents/${relPath}`;
+      try {
+        const getRes = await fetch(apiUrl, { headers: { Authorization: `token ${pat}` } });
+        if (!getRes.ok) return;
+        const sha = (await getRes.json()).sha;
+        await fetch(apiUrl, {
+          method: 'DELETE',
+          headers: { Authorization: `token ${pat}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: `Delete ${relPath} via Web Manager`, sha })
+        });
+      } catch {}
+    }
+
+    function syncCoverPreview() {
+      const val = (document.getElementById('edCover').value || '').trim();
+      const img = document.getElementById('edCoverPreview');
+      const empty = document.getElementById('edCoverEmpty');
+      if (val) {
+        img.src = formatImageUrl(val);
+        img.classList.remove('hidden');
+        empty.classList.add('hidden');
+      } else {
+        img.classList.add('hidden');
+        empty.classList.remove('hidden');
+      }
+      renderGalleryThumbnails();
+    }
+
+    function renderGalleryThumbnails() {
+      const grid = document.getElementById('edGalleryGrid');
+      const coverVal = (document.getElementById('edCover').value || '').trim();
+      document.getElementById('edGallery').value = currentGalleryList.join(', ');
+      document.getElementById('galleryCount').textContent = currentGalleryList.length;
+
+      if (currentGalleryList.length === 0) {
+        grid.innerHTML = `<div class="col-span-full text-center py-4 text-slate-400 text-[11px] bg-white rounded-xl border border-dashed border-rose-200">Chưa có ảnh nào trong album. Bấm "Thêm nhiều ảnh từ máy" để tải lên!</div>`;
+        return;
+      }
+
+      grid.innerHTML = currentGalleryList.map((rawPath, idx) => {
+        const isCover = rawPath === coverVal;
+        const src = formatImageUrl(rawPath);
+        return `
+          <div class="relative group rounded-xl overflow-hidden bg-white border-2 ${isCover ? 'border-rose-500 ring-2 ring-rose-200' : 'border-rose-100'} aspect-square shadow-xs">
+            <img src="${src}" alt="Ảnh ${idx + 1}" class="w-full h-full object-cover" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Ctext x=%2232%22 y=%2240%22 font-size=%2224%22 text-anchor=%22middle%22%3E🖼️%3C/text%3E%3C/svg%3E'">
+            ${isCover ? `<span class="absolute top-1 left-1 px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-rose-600 text-white">Bìa</span>` : ''}
+            <div class="absolute inset-x-0 bottom-0 p-1 bg-gradient-to-t from-black/75 via-black/40 to-transparent flex items-center justify-between gap-1 opacity-95 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+              <button type="button" onclick="setAsCover(${idx})" title="Đặt làm ảnh đại diện" class="px-1.5 py-0.5 rounded bg-amber-400 text-slate-900 font-bold text-[9px] cursor-pointer">⭐ Bìa</button>
+              <button type="button" onclick="removeGalleryItem(${idx})" title="Xoá ảnh này" class="px-1.5 py-0.5 rounded bg-rose-600 text-white font-bold text-[9px] cursor-pointer">✕</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function setAsCover(idx) {
+      if (!currentGalleryList[idx]) return;
+      document.getElementById('edCover').value = currentGalleryList[idx];
+      syncCoverPreview();
+    }
+
+    async function removeGalleryItem(idx) {
+      const target = currentGalleryList[idx];
+      if (!target) return;
+      currentGalleryList.splice(idx, 1);
+      if (document.getElementById('edCover').value.trim() === target) {
+        document.getElementById('edCover').value = currentGalleryList[0] || '';
+      }
+      syncCoverPreview();
+      if (getGhPat() && target.startsWith('images/custom/')) {
+        deleteImageFromGithub(target);
+      }
+    }
+
+    async function handleCoverUpload(input) {
+      const file = input.files && input.files[0];
+      if (!file) return;
+      const st = document.getElementById('coverUploadStatus');
+      st.textContent = '⏳ Đang nén & tải lên GitHub...';
+      try {
+        const relPath = await uploadImageToGithub(file, 'cover');
+        document.getElementById('edCover').value = relPath;
+        if (!currentGalleryList.includes(relPath)) currentGalleryList.unshift(relPath);
+        syncCoverPreview();
+        st.textContent = '✓ Đã tải xong! (Chờ ~20s để GitHub Pages hiển thị)';
+      } catch (e) {
+        st.textContent = '⚠️ ' + e.message;
+      }
+      input.value = '';
+    }
+
+    async function handleGalleryUpload(input) {
+      const files = Array.from(input.files || []);
+      if (files.length === 0) return;
+      const st = document.getElementById('coverUploadStatus');
+      st.textContent = `⏳ Đang tải ${files.length} ảnh lên GitHub...`;
+      let uploaded = 0;
+      for (let i = 0; i < files.length; i++) {
+        try {
+          const relPath = await uploadImageToGithub(files[i], `gal${i+1}`);
+          currentGalleryList.push(relPath);
+          if (!document.getElementById('edCover').value.trim()) {
+            document.getElementById('edCover').value = relPath;
+          }
+          uploaded++;
+        } catch (e) {
+          st.textContent = '⚠️ Lỗi: ' + e.message;
+          break;
+        }
+      }
+      syncCoverPreview();
+      if (uploaded > 0) st.textContent = `✓ Đã tải ${uploaded}/${files.length} ảnh lên GitHub!`;
+      input.value = '';
+    }
+
     function openProductEditor(id = null) {
       editingId = id;
+      renderGhAuthBar();
       const modal = document.getElementById('editorModal');
       const p = id ? products.find(x => x.id === id) : null;
       document.getElementById('editorTitle').textContent = p ? `✏️ Chỉnh sửa: ${p.name}` : '➕ Thêm mẫu gấu bông mới';
       document.getElementById('edDeleteBtn').style.display = p ? 'inline-flex' : 'none';
+      document.getElementById('coverUploadStatus').textContent = '';
 
       document.getElementById('edId').value = p ? p.id : `THU-MOI-${Math.floor(100 + Math.random()*900)}`;
       document.getElementById('edId').disabled = !!p;
@@ -357,7 +591,7 @@
       document.getElementById('edBadge').value = p ? (config.badges[p.id] || p.sheetBadge) : 'MẪU MỚI';
       document.getElementById('edShowPrice').value = p && p.showPrice.toLowerCase() === 'yes' ? 'Yes' : 'No';
       document.getElementById('edCover').value = p ? p.rawImg : '';
-      document.getElementById('edGallery').value = p ? p.gallery : '';
+      currentGalleryList = p && p.gallery ? p.gallery.split(',').map(s => s.trim()).filter(Boolean) : [];
       document.getElementById('edDesc').value = p ? p.desc : '';
 
       [1, 2, 3].forEach((n, idx) => {
@@ -366,6 +600,7 @@
         document.getElementById(`edS${n}Price`).value = s.price;
         document.getElementById(`edS${n}Ton`).value = s.ton;
       });
+      syncCoverPreview();
       modal.classList.remove('hidden');
     }
 
