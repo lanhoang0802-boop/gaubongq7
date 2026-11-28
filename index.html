@@ -768,6 +768,10 @@
   <canvas id="sakuraFrontCanvas"></canvas>
 
   <body class="min-h-screen flex flex-col w-full overflow-x-hidden selection:bg-m3-primary selection:text-white">
+  <!-- 🌸🌿 Intro Transition: 2 Tán Cây Sakura Từ Từ Tách Ra (3.0s, Nền Trong Suốt, Responsive PC/Tablet/Phone) -->
+  <div id="sakuraPartingIntro" class="fixed inset-0 z-[9998] pointer-events-none overflow-hidden" aria-hidden="true" style="display:none;">
+    <canvas id="sakuraPartingCanvas" class="w-full h-full block"></canvas>
+  </div>
   <!-- Reading Scroll Progress Bar -->
   <div id="scrollProgress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-pink-500 via-rose-400 to-pink-600 z-[100] w-0 transition-all duration-75 pointer-events-none"></div>
 
@@ -3025,6 +3029,218 @@
       requestAnimationFrame(updateWindTilt);
     }
     requestAnimationFrame(updateWindTilt);
+
+    // --- 🌸🌿 12. INTRO TRANSITION: 2 TÁN CÂY SAKURA TỪ TỪ TÁCH RA (3.0s, RESPONSIVE PC/TABLET/PHONE) ---
+    (function initSakuraPartingIntro() {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const overlay = document.getElementById('sakuraPartingIntro');
+      const canvas = document.getElementById('sakuraPartingCanvas');
+      if (!overlay || !canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      function drawIntroBlossom(c, x, y, r, rot, toneIndex) {
+        const palettes = [
+          ['#fff5f8', '#fbcfe8', '#f472b6'],
+          ['#fff1f5', '#f9a8d4', '#ec4899'],
+          ['#ffffff', '#fce7f3', '#f9a8d4']
+        ];
+        const pal = palettes[toneIndex % palettes.length];
+        c.save();
+        c.translate(x, y);
+        c.rotate(rot);
+        for (let i = 0; i < 5; i++) {
+          c.save();
+          c.rotate((i * Math.PI * 2) / 5);
+          const grad = c.createRadialGradient(0, -r * 0.4, r * 0.08, 0, -r * 0.5, r * 0.72);
+          grad.addColorStop(0, pal[0]);
+          grad.addColorStop(0.55, pal[1]);
+          grad.addColorStop(1, pal[2]);
+          c.fillStyle = grad;
+          c.beginPath();
+          c.moveTo(0, -r * 0.08);
+          c.bezierCurveTo(-r * 0.35, -r * 0.32, -r * 0.45, -r * 0.88, -r * 0.1, -r * 0.98);
+          c.lineTo(0, -r * 0.8);
+          c.lineTo(r * 0.1, -r * 0.98);
+          c.bezierCurveTo(r * 0.45, -r * 0.88, r * 0.35, -r * 0.32, 0, -r * 0.08);
+          c.fill();
+          c.restore();
+        }
+        c.fillStyle = '#9d174d';
+        c.beginPath(); c.arc(0, 0, r * 0.13, 0, Math.PI * 2); c.fill();
+        c.fillStyle = '#fef08a';
+        c.beginPath(); c.arc(0, 0, r * 0.06, 0, Math.PI * 2); c.fill();
+        c.restore();
+      }
+
+      function buildCanopySprites(w, h) {
+        const isPhone = w < 640;
+        const isTablet = w >= 640 && w < 1024;
+        const sizeScale = Math.max(0.58, Math.min(1.08, w / 1050));
+        const PAD = Math.round(96 * sizeScale);
+
+        const makeHalfCanopy = (side) => {
+          const innerW = Math.ceil(w * (isPhone ? 0.82 : (isTablet ? 0.76 : 0.72)));
+          const cw = innerW + PAD * 2;
+          const ch = Math.ceil(h * 1.15) + PAD * 2;
+          const off = document.createElement('canvas');
+          off.width = cw;
+          off.height = ch;
+          const c = off.getContext('2d');
+
+          let seed = side === 'left' ? 241 : 857;
+          const rand = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+          const blossoms = [];
+
+          const drawBranch = (x, y, angle, len, width, depth) => {
+            const endX = x + Math.cos(angle) * len;
+            const endY = y + Math.sin(angle) * len;
+            const ctrlX = (x + endX) * 0.5 + (rand() - 0.5) * len * 0.2;
+            const ctrlY = (y + endY) * 0.5 + (rand() - 0.5) * len * 0.16;
+
+            if (depth >= 2 && depth <= 3) {
+              c.save();
+              c.strokeStyle = depth === 3 ? 'rgba(69, 39, 32, 0.52)' : 'rgba(94, 55, 46, 0.26)';
+              c.lineWidth = width * sizeScale;
+              c.lineCap = 'round';
+              c.beginPath();
+              c.moveTo(x, y);
+              c.quadraticCurveTo(ctrlX, ctrlY, endX, endY);
+              c.stroke();
+              c.restore();
+            }
+
+            const baseCount = isPhone ? (depth === 1 ? 22 : (depth === 2 ? 16 : 8)) : (depth === 1 ? 30 : (depth === 2 ? 22 : 10));
+            for (let i = 0; i < baseCount; i++) {
+              const along = 0.18 + rand() * 0.86;
+              const px = x + (endX - x) * along;
+              const py = y + (endY - y) * along;
+              const r = (20 + rand() * 22) * sizeScale;
+              const bx = Math.max(PAD * 0.45 + r, Math.min(cw - PAD * 0.52 - r, px + (rand() - 0.5) * len * 1.15));
+              const by = Math.max(PAD * 0.45 + r, Math.min(ch - PAD * 0.45 - r, py + (rand() - 0.5) * len * 0.95));
+              blossoms.push({
+                x: bx, y: by, r,
+                rot: rand() * Math.PI * 2,
+                tone: Math.floor(rand() * 3),
+                layer: rand() > 0.42 ? 1 : 0
+              });
+            }
+
+            if (depth > 1) {
+              const n = depth === 4 ? 3 : 2;
+              for (let i = 0; i < n; i++) {
+                const spread = (i - (n - 1) / 2) * (0.36 + rand() * 0.16);
+                const nextAngle = Math.max(-Math.PI * 0.78, Math.min(-Math.PI * 0.22, angle + spread));
+                drawBranch(endX, endY, nextAngle, len * (0.70 + rand() * 0.12), width * 0.62, depth - 1);
+              }
+            }
+          };
+
+          const baseY = ch - PAD * 0.2;
+          if (side === 'left') {
+            drawBranch(cw * 0.22, baseY, -Math.PI * 0.45, ch * 0.28, 18, 4);
+            drawBranch(cw * 0.44, baseY, -Math.PI * 0.40, ch * 0.26, 16, 4);
+            drawBranch(cw * 0.64, baseY, -Math.PI * 0.48, ch * 0.24, 15, 4);
+          } else {
+            drawBranch(cw * 0.78, baseY, -Math.PI * 0.55, ch * 0.28, 18, 4);
+            drawBranch(cw * 0.56, baseY, -Math.PI * 0.60, ch * 0.26, 16, 4);
+            drawBranch(cw * 0.36, baseY, -Math.PI * 0.52, ch * 0.24, 15, 4);
+          }
+
+          blossoms.filter(b => b.layer === 0).forEach(b => {
+            c.save();
+            c.globalAlpha = 0.88;
+            drawIntroBlossom(c, b.x, b.y, b.r * 1.15, b.rot, b.tone);
+            c.restore();
+          });
+          blossoms.filter(b => b.layer === 1).forEach(b => {
+            drawIntroBlossom(c, b.x, b.y, b.r, b.rot, b.tone);
+          });
+
+          return { canvas: off, pad: PAD };
+        };
+
+        return { left: makeHalfCanopy('left'), right: makeHalfCanopy('right'), sizeScale };
+      }
+
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      overlay.style.display = 'block';
+
+      const sprites = buildCanopySprites(w, h);
+      const petalCount = w < 640 ? 34 : 50;
+      const petals = Array.from({ length: petalCount }, () => ({
+        x: w * (0.2 + Math.random() * 0.6),
+        y: h * Math.random(),
+        vx: (Math.random() - 0.5) * 1.6,
+        vy: 0.9 + Math.random() * 1.6,
+        size: (5.5 + Math.random() * 7.5) * sprites.sizeScale,
+        rot: Math.random() * Math.PI * 2,
+        vRot: (Math.random() - 0.5) * 0.08,
+        color: Math.random() > 0.4 ? '#f472b6' : '#fbcfe8'
+      }));
+
+      const durationMs = 3000;
+      const startTime = performance.now();
+      const easeInOutCubic = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+      function tick(now) {
+        const elapsed = now - startTime;
+        const rawT = Math.min(1, elapsed / durationMs);
+        const ease = easeInOutCubic(rawT);
+
+        ctx.clearRect(0, 0, w, h);
+
+        const canopyAlpha = rawT > 0.84 ? Math.max(0, 1 - (rawT - 0.84) / 0.16) : 1;
+        const slideDist = ease * (w * (w < 640 ? 0.92 : 0.78));
+        const tilt = ease * 0.075;
+        const scale = 1.18 + ease * 0.16;
+
+        ctx.save();
+        ctx.globalAlpha = canopyAlpha;
+        ctx.translate(-slideDist, h * 0.52);
+        ctx.rotate(-tilt);
+        ctx.scale(scale, scale);
+        ctx.drawImage(sprites.left.canvas, -sprites.left.pad, -sprites.left.canvas.height * 0.5);
+        ctx.restore();
+
+        ctx.save();
+        ctx.globalAlpha = canopyAlpha;
+        ctx.translate(w + slideDist, h * 0.52);
+        ctx.rotate(tilt);
+        ctx.scale(scale, scale);
+        ctx.drawImage(sprites.right.canvas, -sprites.right.canvas.width + sprites.right.pad, -sprites.right.canvas.height * 0.5);
+        ctx.restore();
+
+        const petalFade = rawT > 0.75 ? Math.max(0, 1 - (rawT - 0.75) / 0.25) : 1;
+        petals.forEach(p => {
+          p.x += p.vx + (p.x < w / 2 ? -ease * 1.4 : ease * 1.4);
+          p.y += p.vy;
+          p.rot += p.vRot;
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.globalAlpha = 0.85 * petalFade;
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.ellipse(0, 0, p.size, p.size * 0.55, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        });
+
+        if (elapsed < durationMs) {
+          requestAnimationFrame(tick);
+        } else {
+          overlay.style.display = 'none';
+          ctx.clearRect(0, 0, w, h);
+        }
+      }
+      requestAnimationFrame(tick);
+    })();
 
   </script>
   </body>
