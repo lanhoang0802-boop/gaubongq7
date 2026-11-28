@@ -247,26 +247,73 @@
        Expanded: 5, 13, 14, 20
        ============================================================== */
 
-    /* 🌸 E5: Ambient Sakura Petals Canvas (Expanded 5) */
-    #ambientSakuraCanvas {
+    /* 🌸 E5: Dual-Layer 3D Depth-of-Field Sakura Petals Canvas */
+    #sakuraBackCanvas {
       position: fixed;
       inset: 0;
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 25;
-      opacity: 0.85;
-      transition: opacity 0.3s ease;
+      z-index: 5;
+      opacity: 0.9;
+      transition: opacity 0.35s ease;
+    }
+    #sakuraFrontCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 35;
+      opacity: 0.92;
+      transition: opacity 0.35s ease;
     }
 
-    /* 🌸🧸 2.5D POPOUT PLUSHIE & SAKURA VORTEX (LỐC XOÁY CÁNH HOA ĐÀO XOAY QUANH THẺ) */
+    /* 🌸🧸 2.5D POPOUT PLUSHIE, 3D DEPTH SHADOWS & AMBIENT RIM SHADER */
     .card-popout-sakura {
       position: relative;
+      transform-style: preserve-3d;
+      box-shadow:
+        0 10px 24px -6px rgba(140, 29, 64, 0.08),
+        0 4px 10px -2px rgba(15, 23, 42, 0.05),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
                   box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
                   border-color 0.35s ease;
       will-change: transform, box-shadow;
       overflow: visible !important;
+    }
+    /* Soft Surface Depth Shader (nằm dưới ảnh gấu, tạo độ sâu 3D theo vị trí chuột) */
+    .card-popout-sakura::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.65;
+      background: radial-gradient(300px circle at var(--bx, 50%) var(--by, 35%), rgba(255, 228, 238, 0.55), transparent 65%);
+      transition: opacity 0.35s ease;
+    }
+    /* Delicate 1px Rose-Gold Rim-Light Border Shader */
+    .card-popout-sakura::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1.5px;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0;
+      background: radial-gradient(240px circle at var(--bx, 50%) var(--by, 50%), rgba(244, 63, 94, 0.65), rgba(251, 146, 60, 0.3), transparent 70%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      transition: opacity 0.35s ease;
+    }
+    .card-popout-sakura > * {
+      position: relative;
+      z-index: 3;
     }
     .card-popout-sakura .img-frame {
       overflow: visible !important;
@@ -274,13 +321,23 @@
     @media (hover: hover) {
       .card-popout-sakura:hover {
         transform: translateY(-12px) !important;
-        box-shadow: 0 28px 48px -10px rgba(244, 63, 94, 0.28), 0 12px 22px -6px rgba(15, 23, 42, 0.1) !important;
+        box-shadow:
+          0 32px 54px -12px rgba(244, 63, 94, 0.28),
+          0 16px 28px -8px rgba(15, 23, 42, 0.12),
+          0 2px 6px rgba(244, 63, 94, 0.14),
+          inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
         border-color: #fda4af !important;
         z-index: 30 !important;
       }
+      .card-popout-sakura:hover::before {
+        opacity: 1;
+      }
+      .card-popout-sakura:hover::after {
+        opacity: 1;
+      }
       .card-popout-sakura:hover img.plushie-img {
         transform: scale(1.15) translateY(-8px) !important;
-        filter: drop-shadow(0 16px 22px rgba(244, 63, 94, 0.35)) !important;
+        filter: drop-shadow(0 20px 26px rgba(140, 29, 64, 0.32)) drop-shadow(0 6px 10px rgba(0, 0, 0, 0.12)) !important;
       }
       .card-popout-sakura:hover .sakura-vortex-ring {
         opacity: 1;
@@ -289,7 +346,7 @@
     .plushie-img {
       transform-origin: bottom center;
       transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.4s ease;
-      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.08));
+      filter: drop-shadow(0 8px 12px rgba(140, 29, 64, 0.12)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.06));
     }
 
     /* Vòng lốc xoáy cánh hoa đào xoay quanh thẻ */
@@ -570,8 +627,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
 </head>
-<!-- 🌸 E5: Ambient Sakura Petals Canvas -->
-  <canvas id="ambientSakuraCanvas"></canvas>
+<!-- 🌸 E5: Dual-Layer 3D Depth-of-Field Sakura Petals Canvases (Đằng sau & Đằng trước thẻ SP) -->
+  <canvas id="sakuraBackCanvas"></canvas>
+  <canvas id="sakuraFrontCanvas"></canvas>
 
   <body class="min-h-screen flex flex-col w-full overflow-x-hidden selection:bg-m3-primary selection:text-white">
   <!-- Reading Scroll Progress Bar -->
@@ -689,16 +747,19 @@
 
       <!-- Quick Action Buttons -->
       <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
-        <!-- 📊 Thống Kê Lượt Xem Trang (Bấm để bật/tắt cánh hoa) -->
-        <button id="toggleSakuraBtn" onclick="toggleSakura()" title="Thống kê lượt truy cập trang web (Bấm để bật/tắt cánh hoa)" class="marshmallow-btn inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-m3-full text-xs font-bold bg-pink-100/90 text-rose-700 hover:bg-pink-200 transition-colors shadow-xs">
+        <!-- 📊 Thống Kê Lượt Xem Trang (Bấm để mở trang Analytics chi tiết) -->
+        <a href="analytics.html" id="visitorStatsBtn" title="Xem báo cáo phân tích & thống kê chi tiết" class="marshmallow-btn inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-m3-full text-xs font-bold bg-pink-100/90 text-rose-700 hover:bg-pink-200 transition-colors shadow-xs">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
           <span id="visitorStatsNum">...</span> <span class="hidden sm:inline">lượt xem</span>
+        </a>
+        <button id="toggleSakuraBtn" onclick="toggleSakura()" title="Bật/Tắt hiệu ứng hoa anh đào 3D" class="marshmallow-btn inline-flex items-center justify-center w-8 h-8 rounded-m3-full text-xs bg-pink-50 hover:bg-pink-100 transition-colors shadow-xs cursor-pointer">
+          🌸
         </button>
-        <a href="https://maps.app.goo.gl/eLYNVKUNGd8gYN2K9" target="_blank" class="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-m3-full text-xs font-semibold bg-m3-surface-container text-m3-on-surface hover:bg-m3-surface-container-high transition-colors">
+        <a href="https://maps.app.goo.gl/eLYNVKUNGd8gYN2K9" target="_blank" onclick="trackGaubongEvent('gaubongq7-click-maps', 'click_maps')" class="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-m3-full text-xs font-semibold bg-m3-surface-container text-m3-on-surface hover:bg-m3-surface-container-high transition-colors">
           <span class="material-symbols-outlined text-sm text-m3-primary">location_on</span>
           Chỉ đường
         </a>
-        <a href="https://zalo.me/0333870846" target="_blank" class="btn-tactile inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-m3-full text-xs sm:text-sm font-bold bg-m3-primary text-white hover:bg-m3-primary-hover shadow-xs transition-all">
+        <a href="https://zalo.me/0333870846" target="_blank" onclick="trackGaubongEvent('gaubongq7-click-zalo-quick', 'click_zalo', {location:'header'})" class="btn-tactile inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-m3-full text-xs sm:text-sm font-bold bg-m3-primary text-white hover:bg-m3-primary-hover shadow-xs transition-all">
           <span class="material-symbols-outlined text-base">chat</span>
           <span class="hidden sm:inline">Hỏi Giá Zalo 0333.870.846</span>
           <span class="sm:hidden font-bold">Chat Zalo</span>
@@ -709,7 +770,7 @@
   </header>
 
   <!-- Hero Banner (Material 3 Expressive Card) -->
-  <section class="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-2 min-w-0">
+  <section class="relative z-10 w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-2 min-w-0">
     <div class="relative w-full overflow-hidden rounded-m3-xl bg-gradient-to-br from-m3-primary-container via-m3-surface-container to-amber-50 p-4 sm:p-8 lg:p-10 border border-m3-outline-variant/40 shadow-sm">
       <!-- 🎨 FX 2: Fluid Pastel Mesh Gradient Canvas (Showcase 2) -->
       <canvas id="heroMeshCanvas" class="absolute inset-0 w-full h-full pointer-events-none opacity-60 rounded-m3-xl"></canvas>
@@ -799,7 +860,7 @@
   </section>
 
   <!-- Product Catalog Grid / Full Gallery Grid -->
-  <main class="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 flex-grow min-w-0">
+  <main class="relative z-10 w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 flex-grow min-w-0">
     
     <!-- Models View Grid -->
     <div id="productGrid" class="w-full bento-grid-container grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 min-w-0">
@@ -950,7 +1011,7 @@
     <canvas id="auroraCanvas"></canvas>
   </div>
   <!-- Footer -->
-  <footer class="w-full bg-m3-surface-container-high border-t border-m3-outline-variant/40 py-8 sm:py-10 mt-auto min-w-0">
+  <footer class="relative z-10 w-full bg-m3-surface-container-high border-t border-m3-outline-variant/40 py-8 sm:py-10 mt-auto min-w-0">
     <div class="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 space-y-6 text-center sm:text-left min-w-0">
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
         <div class="space-y-2">
@@ -1728,6 +1789,13 @@
       }
 
       document.getElementById('productModal').classList.remove('hidden');
+
+      // 📊 Track lượt xem chi tiết từng mẫu gấu
+      if (typeof trackGaubongEvent === 'function' && p && p.id) {
+        const safeId = String(p.id).replace(/[^a-zA-Z0-9_-]/g, '');
+        trackGaubongEvent('gaubongq7-click-modal-open', 'view_item', { item_id: p.id, item_name: p.name });
+        trackGaubongEvent(`gaubongq7-prod-${safeId}`);
+      }
     }
 
     function updateZaloLink(p) {
@@ -1969,40 +2037,85 @@
     // 🎨 12 PASTEL LUXURY BOUTIQUE FX ENGINES
     // =========================================================
 
-    // --- 🌸 1. E5: AMBIENT SAKURA PETALS VORTEX (Expanded 5) ---
+    // --- 🌸 1. E5: 3D DEPTH-OF-FIELD DUAL-LAYER SAKURA ENGINE (X2 PETALS) ---
     let sakuraActive = true;
-    let sakuraCanvas, sakuraCtx;
+    let sakuraBackCanvas, sakuraBackCtx, sakuraFrontCanvas, sakuraFrontCtx;
     let sakuraPetals = [];
     let sakuraMouse = { x: -1000, y: -1000, active: false };
+    let sakuraSprites = {};
+
+    function buildSakuraSprites() {
+      const palette = [
+        'rgba(255, 179, 193, 0.85)',
+        'rgba(255, 204, 213, 0.85)',
+        'rgba(255, 228, 235, 0.90)'
+      ];
+      // Pre-render petal sprites at 3 depth blur tiers: 'far' (blur 1.4px), 'mid' (crisp), 'near' (bokeh blur 2.4px)
+      ['far', 'mid', 'near'].forEach(tier => {
+        sakuraSprites[tier] = palette.map(color => {
+          const c = document.createElement('canvas');
+          const base = tier === 'near' ? 44 : tier === 'mid' ? 28 : 22;
+          c.width = base;
+          c.height = base;
+          const ctx = c.getContext('2d');
+          if (tier === 'far') ctx.filter = 'blur(1.4px)';
+          else if (tier === 'near') ctx.filter = 'blur(2.4px)';
+          ctx.translate(base * 0.35, base * 0.25);
+          const s = tier === 'near' ? 16 : tier === 'mid' ? 11 : 7;
+          ctx.fillStyle = color;
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.bezierCurveTo(s / 2, -s / 2, s, 0, s / 2, s);
+          ctx.bezierCurveTo(0, s / 2, -s / 2, 0, 0, 0);
+          ctx.fill();
+          return c;
+        });
+      });
+    }
 
     function initSakuraEngine() {
-      sakuraCanvas = document.getElementById('ambientSakuraCanvas');
-      if (!sakuraCanvas) return;
-      sakuraCtx = sakuraCanvas.getContext('2d');
+      sakuraBackCanvas = document.getElementById('sakuraBackCanvas');
+      sakuraFrontCanvas = document.getElementById('sakuraFrontCanvas');
+      if (!sakuraBackCanvas || !sakuraFrontCanvas) return;
+      sakuraBackCtx = sakuraBackCanvas.getContext('2d');
+      sakuraFrontCtx = sakuraFrontCanvas.getContext('2d');
+
+      buildSakuraSprites();
 
       function resizeSakura() {
-        sakuraCanvas.width = window.innerWidth;
-        sakuraCanvas.height = window.innerHeight;
+        sakuraBackCanvas.width = window.innerWidth;
+        sakuraBackCanvas.height = window.innerHeight;
+        sakuraFrontCanvas.width = window.innerWidth;
+        sakuraFrontCanvas.height = window.innerHeight;
       }
       window.addEventListener('resize', resizeSakura);
       resizeSakura();
 
       sakuraPetals = [];
-      const count = window.innerWidth < 640 ? 18 : 36;
+      // X2 số lượng cánh hoa anh đào để hiệu ứng 3D Depth-of-Field rõ nét
+      const count = window.innerWidth < 640 ? 38 : 76;
       for (let i = 0; i < count; i++) {
-        const baseSpeedY = Math.random() * 0.35 + 0.25;
-        const baseSpeedX = (Math.random() - 0.2) * 0.25;
+        // Phân chia 3 tầng chiều sâu: 55% xa (đằng sau thẻ), 30% giữa (trước thẻ), 15% gần ống kính (bokeh lớn trước thẻ)
+        const r = Math.random();
+        const depthTier = r < 0.55 ? 'far' : (r < 0.85 ? 'mid' : 'near');
+        const depthScale = depthTier === 'far' ? (0.55 + Math.random() * 0.3) : depthTier === 'mid' ? (0.85 + Math.random() * 0.3) : (1.25 + Math.random() * 0.5);
+        const baseSpeedY = (Math.random() * 0.3 + 0.22) * (depthTier === 'far' ? 0.68 : depthTier === 'mid' ? 1.0 : 1.45);
+        const baseSpeedX = (Math.random() - 0.2) * 0.25 * depthScale;
+
         sakuraPetals.push({
-          x: Math.random() * sakuraCanvas.width,
-          y: Math.random() * sakuraCanvas.height,
-          size: Math.random() * 8 + 6,
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * window.innerHeight,
+          depthTier: depthTier,
+          layer: depthTier === 'far' ? 'back' : 'front',
+          scale: depthScale,
+          opacity: depthTier === 'far' ? (0.45 + Math.random() * 0.25) : depthTier === 'mid' ? (0.78 + Math.random() * 0.2) : (0.65 + Math.random() * 0.25),
           baseSpeedY: baseSpeedY,
           baseSpeedX: baseSpeedX,
           speedY: baseSpeedY,
           speedX: baseSpeedX,
           angle: Math.random() * Math.PI * 2,
-          rotSpeed: (Math.random() - 0.5) * 0.012,
-          color: ['rgba(255, 179, 193, 0.75)', 'rgba(255, 204, 213, 0.75)', 'rgba(255, 228, 235, 0.8)'][Math.floor(Math.random() * 3)]
+          rotSpeed: (Math.random() - 0.5) * 0.015 * depthScale,
+          colorIdx: Math.floor(Math.random() * 3)
         });
       }
 
@@ -2036,54 +2149,53 @@
 
       function renderSakura() {
         if (!sakuraActive) {
-          sakuraCtx.clearRect(0, 0, sakuraCanvas.width, sakuraCanvas.height);
+          sakuraBackCtx.clearRect(0, 0, sakuraBackCanvas.width, sakuraBackCanvas.height);
+          sakuraFrontCtx.clearRect(0, 0, sakuraFrontCanvas.width, sakuraFrontCanvas.height);
           return;
         }
-        sakuraCtx.clearRect(0, 0, sakuraCanvas.width, sakuraCanvas.height);
+        sakuraBackCtx.clearRect(0, 0, sakuraBackCanvas.width, sakuraBackCanvas.height);
+        sakuraFrontCtx.clearRect(0, 0, sakuraFrontCanvas.width, sakuraFrontCanvas.height);
 
-        // Giảm dần lực gió của chuột theo thời gian
         mouseVx *= 0.92;
         mouseVy *= 0.92;
 
         sakuraPetals.forEach(p => {
-          // Smoothly relax speed back to gentle baseline
           p.speedY += (p.baseSpeedY - p.speedY) * 0.03;
           p.speedX += (p.baseSpeedX - p.speedX) * 0.03;
 
           p.y += p.speedY;
-          p.x += Math.sin(p.angle) * 0.35 + p.speedX;
+          p.x += Math.sin(p.angle) * 0.35 * p.scale + p.speedX;
           p.angle += p.rotSpeed;
 
-          // Luồng gió nhẹ kéo theo hướng chuột di chuyển
+          // Luồng gió nhẹ theo chuột (cánh gần bị tác động mạnh hơn cánh xa)
           if (sakuraMouse.active) {
             const dx = p.x - sakuraMouse.x;
             const dy = p.y - sakuraMouse.y;
             const dist = Math.hypot(dx, dy);
-            if (dist < 160 && dist > 0) {
-              const breeze = (160 - dist) / 160;
-              // Kéo các cánh hoa bay theo hướng di chuyển của chuột
-              p.x += mouseVx * breeze * 0.55;
-              p.y += mouseVy * breeze * 0.55;
+            if (dist < 170 && dist > 0) {
+              const breeze = (170 - dist) / 170;
+              p.x += mouseVx * breeze * 0.55 * p.scale;
+              p.y += mouseVy * breeze * 0.55 * p.scale;
               p.angle += (mouseVx * 0.003 + mouseVy * 0.002) * breeze;
             }
           }
 
-          if (p.y > sakuraCanvas.height + 20) {
-            p.y = -20;
-            p.x = Math.random() * sakuraCanvas.width;
+          if (p.y > window.innerHeight + 30) {
+            p.y = -30;
+            p.x = Math.random() * window.innerWidth;
           }
-          if (p.x > sakuraCanvas.width + 20) p.x = -20;
+          if (p.x > window.innerWidth + 30) p.x = -30;
+          if (p.x < -30) p.x = window.innerWidth + 30;
 
-          sakuraCtx.save();
-          sakuraCtx.translate(p.x, p.y);
-          sakuraCtx.rotate(p.angle);
-          sakuraCtx.fillStyle = p.color;
-          sakuraCtx.beginPath();
-          sakuraCtx.moveTo(0, 0);
-          sakuraCtx.bezierCurveTo(p.size / 2, -p.size / 2, p.size, 0, p.size / 2, p.size);
-          sakuraCtx.bezierCurveTo(0, p.size / 2, -p.size / 2, 0, 0, 0);
-          sakuraCtx.fill();
-          sakuraCtx.restore();
+          const targetCtx = p.layer === 'back' ? sakuraBackCtx : sakuraFrontCtx;
+          const sprite = sakuraSprites[p.depthTier][p.colorIdx];
+          targetCtx.save();
+          targetCtx.globalAlpha = p.opacity;
+          targetCtx.translate(p.x, p.y);
+          targetCtx.rotate(p.angle);
+          targetCtx.scale(p.scale, p.scale);
+          targetCtx.drawImage(sprite, -sprite.width / 2, -sprite.height / 2);
+          targetCtx.restore();
         });
 
         requestAnimationFrame(renderSakura);
@@ -2095,8 +2207,8 @@
       sakuraActive = !sakuraActive;
       const btn = document.getElementById('toggleSakuraBtn');
       if (btn) {
-        btn.classList.toggle('opacity-50', !sakuraActive);
-        btn.title = sakuraActive ? 'Lượt xem trang web (Bấm để bật/tắt cánh hoa)' : 'Đã tạm tắt cánh hoa rơi (Bấm để bật lại)';
+        btn.classList.toggle('opacity-40', !sakuraActive);
+        btn.title = sakuraActive ? 'Tắt hiệu ứng hoa anh đào 3D' : 'Bật hiệu ứng hoa anh đào 3D';
       }
       if (sakuraActive) {
         initSakuraEngine();
@@ -2235,8 +2347,66 @@
       });
     }
 
-    // --- 📊 9. VISITOR STATS TRACKER ---
+    // --- 📊 9. 3-IN-1 ANALYTICS & VISITOR STATS TRACKER ---
+    // Cấu hình miễn phí GA4 & Microsoft Clarity (Điền ID của bạn để kích hoạt thêm báo cáo chuyên sâu)
+    const GBQ7_ANALYTICS_CONFIG = {
+      ga4Id: '',      // Ví dụ: 'G-XXXXXXXXXX'
+      clarityId: ''   // Ví dụ: 'p123abcxyz'
+    };
+
+    function initExternalAnalytics() {
+      if (GBQ7_ANALYTICS_CONFIG.clarityId) {
+        (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", GBQ7_ANALYTICS_CONFIG.clarityId);
+      }
+      if (GBQ7_ANALYTICS_CONFIG.ga4Id) {
+        const s = document.createElement('script');
+        s.async = true;
+        s.src = `https://www.googletagmanager.com/gtag/js?id=${GBQ7_ANALYTICS_CONFIG.ga4Id}`;
+        document.head.appendChild(s);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function(){ dataLayer.push(arguments); };
+        gtag('js', new Date());
+        gtag('config', GBQ7_ANALYTICS_CONFIG.ga4Id);
+      }
+    }
+
+    function trackGaubongEvent(counterKey, ga4Name, ga4Params) {
+      if (counterKey) {
+        fetch(`https://countapi.mileshilliard.com/api/v1/hit/${counterKey}`).catch(() => {});
+      }
+      if (ga4Name && typeof window.gtag === 'function') {
+        window.gtag('event', ga4Name, ga4Params || {});
+      }
+    }
+
+    function detectTrafficSource() {
+      const params = new URLSearchParams(window.location.search);
+      const utm = (params.get('utm_source') || '').toLowerCase();
+      const ref = (document.referrer || '').toLowerCase();
+      const combined = utm + ' ' + ref;
+      if (combined.includes('facebook') || combined.includes('fb.') || combined.includes('instagram') || combined.includes('messenger')) return 'facebook';
+      if (combined.includes('google')) return 'google';
+      if (combined.includes('tiktok')) return 'tiktok';
+      if (combined.includes('zalo')) return 'zalo';
+      return 'direct';
+    }
+
+    function getHourBucket() {
+      const h = new Date().getHours();
+      if (h < 6) return '00-06';
+      if (h < 11) return '06-11';
+      if (h < 14) return '11-14';
+      if (h < 18) return '14-18';
+      if (h < 22) return '18-22';
+      return '22-24';
+    }
+
     async function initVisitorStats() {
+      initExternalAnalytics();
       const statEl = document.getElementById('visitorStatsNum');
       if (!statEl) return;
 
@@ -2244,6 +2414,15 @@
       const endpoint = hasCounted
         ? 'https://countapi.mileshilliard.com/api/v1/get/gaubongq7-pageviews'
         : 'https://countapi.mileshilliard.com/api/v1/hit/gaubongq7-pageviews';
+
+      if (!hasCounted) {
+        const src = detectTrafficSource();
+        const dev = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+        const hr = getHourBucket();
+        trackGaubongEvent(`gaubongq7-src-${src}`);
+        trackGaubongEvent(`gaubongq7-dev-${dev}`);
+        trackGaubongEvent(`gaubongq7-hr-${hr}`);
+      }
 
       try {
         const res = await fetch(endpoint);
@@ -2257,6 +2436,18 @@
       } catch (err) {
         statEl.innerText = 'Online';
       }
+
+      // Attach click tracking to modal Zalo, floating Zalo & Hotline
+      const modalZalo = document.getElementById('modalZaloBtn');
+      if (modalZalo) modalZalo.addEventListener('click', () => trackGaubongEvent('gaubongq7-click-zalo-modal', 'click_zalo', {location:'modal'}));
+      document.querySelectorAll('a[href^="tel:"]').forEach(el => {
+        el.addEventListener('click', () => trackGaubongEvent('gaubongq7-click-call', 'click_call'));
+      });
+      document.querySelectorAll('a[href*="zalo.me"]').forEach(el => {
+        if (el.id !== 'modalZaloBtn') {
+          el.addEventListener('click', () => trackGaubongEvent('gaubongq7-click-zalo-quick', 'click_zalo', {location:'quick'}));
+        }
+      });
     }
 
     // Master initialization for all FX
