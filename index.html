@@ -690,9 +690,6 @@
         <a href="sakura-settings.html" id="toggleSakuraBtn" title="Cài đặt hiệu ứng Hoa Anh Đào 3D (Số lượng, Kích thước, Tốc độ)" class="marshmallow-btn inline-flex items-center justify-center w-8 h-8 rounded-m3-full text-xs bg-pink-50 hover:bg-pink-100 transition-colors shadow-xs cursor-pointer">
           🌸
         </a>
-        <a href="blog.html" title="Blog Gấu Bông Q7 - Quà tặng tốt nghiệp TDTU, RMIT, Lotte Q7" class="marshmallow-btn hidden sm:inline-flex items-center gap-1 px-3 py-1.5 sm:py-2 rounded-m3-full text-xs font-bold bg-rose-50 text-rose-700 hover:bg-rose-100 transition-colors shadow-xs">
-          <span>📝</span> Blog
-        </a>
         <a href="https://maps.app.goo.gl/eLYNVKUNGd8gYN2K9" target="_blank" onclick="trackGaubongEvent('gaubongq7-click-maps', 'click_maps')" class="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-m3-full text-xs font-semibold bg-m3-surface-container text-m3-on-surface hover:bg-m3-surface-container-high transition-colors">
           <span class="material-symbols-outlined text-sm text-m3-primary">location_on</span>
           Chỉ đường
@@ -718,8 +715,7 @@
           <span class="text-m3-primary"><span class="prox-char text-m3-primary">Q</span><span class="prox-char text-m3-primary">u</span><span class="prox-char text-m3-primary">à</span> <span class="prox-char text-m3-primary">T</span><span class="prox-char text-m3-primary">ặ</span><span class="prox-char text-m3-primary">n</span><span class="prox-char text-m3-primary">g</span> <span class="prox-char text-m3-primary">N</span><span class="prox-char text-m3-primary">g</span><span class="prox-char text-m3-primary">ư</span><span class="prox-char text-m3-primary">ờ</span><span class="prox-char text-m3-primary">i</span> <span class="prox-char text-m3-primary">Y</span><span class="prox-char text-m3-primary">ê</span><span class="prox-char text-m3-primary">u</span> <span class="prox-char text-m3-primary">&amp;</span> <span class="prox-char text-m3-primary">T</span><span class="prox-char text-m3-primary">ố</span><span class="prox-char text-m3-primary">t</span> <span class="prox-char text-m3-primary">N</span><span class="prox-char text-m3-primary">g</span><span class="prox-char text-m3-primary">h</span><span class="prox-char text-m3-primary">i</span><span class="prox-char text-m3-primary">ệ</span><span class="prox-char text-m3-primary">p</span></span>
         </h1>
         <p class="text-sm sm:text-base text-m3-on-surface-variant font-medium leading-relaxed">
-          Chuyên thú bông cao cấp Bobova, Jellycat, Capybara &amp; Bó hoa gấu bông <strong>tặng bạn gái, người yêu</strong> và <strong>mừng tốt nghiệp sinh viên ĐH Tôn Đức Thắng, RMIT</strong>. 
-          <strong>Nhắn Zalo để xem báo giá ưu đãi &amp; ship hỏa tốc 1-2h tại Quận 7!</strong>
+          Gửi gắm yêu thương qua từng bé gấu lông mềm mịn chuẩn xịn — món quà ngọt ngào dành tặng <strong>người yêu, bạn gái</strong> hay <strong>mừng lễ tốt nghiệp ĐH Tôn Đức Thắng, RMIT</strong>. Ghé tiệm hoặc nhắn Zalo để được tư vấn chọn mẫu &amp; <strong>giao hỏa tốc 1–2h tận tay tại Quận 7!</strong>
         </p>
         
         <!-- Value Propositions Chips -->
@@ -746,14 +742,17 @@
     <!-- Top Controls: View Switcher & Search Input (Mobile 50/50 split tabs) -->
     <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 min-w-0">
       
-      <!-- View Switcher Tabs (Responsive full-width 2-column on mobile) -->
-      <div class="w-full md:w-auto grid grid-cols-2 md:inline-flex p-1 rounded-m3-full bg-m3-surface-container border border-m3-outline-variant/40 shadow-xs text-center min-w-0">
-        <button id="tabModels" onclick="switchView('models')" class="tab-active marshmallow-btn px-3.5 sm:px-5 py-2 rounded-m3-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+      <!-- View Switcher Tabs (Responsive 3-column on mobile, inline on desktop) -->
+      <div class="w-full md:w-auto grid grid-cols-3 md:inline-flex p-1 rounded-m3-full bg-m3-surface-container border border-m3-outline-variant/40 shadow-xs text-center min-w-0">
+        <button id="tabModels" onclick="switchView('models')" class="tab-active marshmallow-btn px-2.5 sm:px-5 py-2 rounded-m3-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer">
           <span>🧸</span> <span class="hidden sm:inline">Xem Theo Dòng</span><span class="sm:hidden">Theo Dòng</span> (<span id="modelCount">19</span>)
         </button>
-        <button id="tabAllPhotos" onclick="switchView('photos')" class="tab-inactive marshmallow-btn px-3.5 sm:px-5 py-2 rounded-m3-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+        <button id="tabAllPhotos" onclick="switchView('photos')" class="tab-inactive marshmallow-btn px-2.5 sm:px-5 py-2 rounded-m3-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer">
           <span>📷</span> <span id="allPhotosLabelDesktop" class="hidden sm:inline">Toàn Bộ Ảnh Thật</span><span id="allPhotosLabelMobile" class="sm:hidden">Ảnh Thật</span>
         </button>
+        <a href="blog.html" title="Blog Gấu Bông Q7 - Quà tặng người yêu & tốt nghiệp TDTU, RMIT" class="tab-inactive marshmallow-btn px-2.5 sm:px-5 py-2 rounded-m3-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer hover:text-m3-primary">
+          <span>📝</span> <span class="hidden sm:inline">Blog Quà Tặng</span><span class="sm:hidden">Blog</span>
+        </a>
       </div>
 
       <!-- Search Bar -->
