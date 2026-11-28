@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thống Kê & Phân Tích Chi Tiết - Gấu Bông Q7</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%238c1d40'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle'%3E🧸%3C/text%3E%3C/svg%3E" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: linear-gradient(135deg, #fff5f8 0%, #fffafb 55%, #fdf2f8 100%);
+      color: #1f1a1b;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(251, 113, 133, 0.22);
+      box-shadow: 0 10px 30px -10px rgba(140, 29, 64, 0.08);
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-16">
+  <!-- Header -->
+  <header class="sticky top-0 z-40 bg-white/85 backdrop-blur-md border-b border-rose-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-rose-50 text-rose-700 hover:bg-rose-100 transition-colors">
+          <span class="material-symbols-outlined text-base">arrow_back</span>
+          Quay lại Cửa Hàng
+        </a>
+        <div class="hidden sm:block">
+          <h1 class="text-base sm:text-lg font-extrabold text-slate-900 flex items-center gap-2">
+            📊 Trung Tâm Phân Tích & Thống Kê — Gấu Bông Q7
+          </h1>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span id="liveSyncBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          Đang đồng bộ dữ liệu...
+        </span>
+        <button onclick="loadAllAnalytics()" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold bg-rose-600 text-white hover:bg-rose-700 transition-colors cursor-pointer">
+          <span class="material-symbols-outlined text-sm">refresh</span>
+          Làm mới
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
+
+    <!-- 1. KPI Summary Row -->
+    <section class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="glass-card rounded-3xl p-5">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Tổng Lượt Xem Web</span>
+          <span class="w-9 h-9 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-lg">trending_up</span>
+          </span>
+        </div>
+        <div id="kpiPageviews" class="text-3xl font-extrabold text-slate-900 mt-2">...</div>
+        <p class="text-xs text-emerald-600 font-semibold mt-1">Ghi nhận trực tiếp theo thời gian thực</p>
+      </div>
+
+      <div class="glass-card rounded-3xl p-5">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Tổng Bấm Chốt Đơn (CTA)</span>
+          <span class="w-9 h-9 rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-lg">chat</span>
+          </span>
+        </div>
+        <div id="kpiTotalActions" class="text-3xl font-extrabold text-slate-900 mt-2">...</div>
+        <p id="kpiActionBreakdown" class="text-xs text-slate-500 font-medium mt-1">Zalo + Maps + Gọi Hotline</p>
+      </div>
+
+      <div class="glass-card rounded-3xl p-5">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Tỷ Lệ Chuyển Đổi</span>
+          <span class="w-9 h-9 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-lg">ads_click</span>
+          </span>
+        </div>
+        <div id="kpiConvRate" class="text-3xl font-extrabold text-emerald-600 mt-2">...</div>
+        <p class="text-xs text-slate-500 font-medium mt-1">Khách bấm liên hệ / Tổng lượt xem</p>
+      </div>
+
+      <div class="glass-card rounded-3xl p-5">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Thiết Bị Truy Cập</span>
+          <span class="w-9 h-9 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-lg">smartphone</span>
+          </span>
+        </div>
+        <div id="kpiMobileRatio" class="text-3xl font-extrabold text-slate-900 mt-2">...</div>
+        <p id="kpiDeviceDetail" class="text-xs text-slate-500 font-medium mt-1">Mobile vs Desktop</p>
+      </div>
+    </section>
+
+    <!-- 2. Charts Row: Nguồn khách & Hành động Click -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="glass-card rounded-3xl p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-base font-extrabold text-slate-900">🧭 Khách Hàng Đến Từ Đâu? (Traffic Sources)</h2>
+            <p class="text-xs text-slate-500">Tự động nhận diện qua Referrer & UTM Link (Facebook, Google, TikTok, Zalo, QR...)</p>
+          </div>
+        </div>
+        <div class="h-64 flex items-center justify-center">
+          <canvas id="sourceChart"></canvas>
+        </div>
+      </div>
+
+      <div class="glass-card rounded-3xl p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-base font-extrabold text-slate-900">🎯 Khách Click Vào Gì Nhiều Nhất?</h2>
+            <p class="text-xs text-slate-500">Đo lường chi tiết từng nút tương tác mua hàng & chỉ đường</p>
+          </div>
+        </div>
+        <div class="h-64">
+          <canvas id="actionChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Peak Hours & Top Products -->
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Peak Hours -->
+      <div class="glass-card rounded-3xl p-6 lg:col-span-1">
+        <h2 class="text-base font-extrabold text-slate-900 mb-1">⏰ Khung Giờ Vàng Truy Cập</h2>
+        <p class="text-xs text-slate-500 mb-4">Giờ Việt Nam (UTC+7) — Giúp bố trí nhân sự trực Zalo</p>
+        <div class="h-64">
+          <canvas id="hourChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Top Viewed Products Table -->
+      <div class="glass-card rounded-3xl p-6 lg:col-span-2">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-base font-extrabold text-slate-900">🧸 Top Mẫu Gấu Được Bấm Xem Nhiều Nhất</h2>
+            <p class="text-xs text-slate-500">Xếp hạng dựa trên lượt click mở xem chi tiết từng sản phẩm trên web</p>
+          </div>
+          <span id="productCountBadge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-700">Đang tải...</span>
+        </div>
+
+        <div class="overflow-x-auto max-h-80 overflow-y-auto pr-1">
+          <table class="w-full text-left border-collapse">
+            <thead class="sticky top-0 bg-white/95 text-[11px] uppercase text-slate-500 border-b border-rose-100">
+              <tr>
+                <th class="py-2.5 px-2">Hạng</th>
+                <th class="py-2.5 px-2">Mẫu Gấu Bông</th>
+                <th class="py-2.5 px-2 hidden sm:table-cell">Danh Mục</th>
+                <th class="py-2.5 px-2 text-right">Lượt Xem Chi Tiết</th>
+              </tr>
+            </thead>
+            <tbody id="topProductsBody" class="divide-y divide-rose-50 text-sm">
+              <tr><td colspan="4" class="py-8 text-center text-slate-400">Đang tổng hợp dữ liệu từng mẫu gấu...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Trạng thái 3 Công Cụ Miễn Phí (Built-in + Microsoft Clarity + Google Analytics 4) -->
+    <section class="glass-card rounded-3xl p-6">
+      <h2 class="text-base font-extrabold text-slate-900 mb-1">🔌 Trạng Thái Hệ Thống Đo Lường 3-Trong-1 (100% Miễn Phí)</h2>
+      <p class="text-xs text-slate-500 mb-4">Hệ thống đã được tích hợp sẵn bộ khung của cả 3 nền tảng miễn phí tốt nhất hiện nay.</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Tool 1 -->
+        <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-bold text-sm text-emerald-900">1. Bộ Đếm Nội Bộ (Live)</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-600 text-white">ĐANG CHẠY</span>
+          </div>
+          <p class="text-xs text-emerald-800">Tự động đếm lượt xem, nguồn Facebook/Google/TikTok, click Zalo/Maps/Hotline & từng mẫu gấu theo thời gian thực ngay tại trang này.</p>
+        </div>
+
+        <!-- Tool 2: Clarity -->
+        <div class="p-4 rounded-2xl bg-sky-50/70 border border-sky-200">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-bold text-sm text-sky-900">2. Microsoft Clarity</span>
+            <span id="clarityStatusBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-white">CHỜ DÁN ID</span>
+          </div>
+          <p class="text-xs text-sky-900 mb-2">Quay lại video màn hình khách lướt web & Bản đồ nhiệt Heatmap (100% miễn phí).</p>
+          <a href="https://clarity.microsoft.com/" target="_blank" class="inline-flex items-center gap-1 text-xs font-bold text-sky-700 underline">
+            Mở Microsoft Clarity Portal ↗
+          </a>
+        </div>
+
+        <!-- Tool 3: GA4 -->
+        <div class="p-4 rounded-2xl bg-amber-50/70 border border-amber-200">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-bold text-sm text-amber-900">3. Google Analytics 4</span>
+            <span id="ga4StatusBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500 text-white">CHỜ DÁN ID</span>
+          </div>
+          <p class="text-xs text-amber-900 mb-2">Xem nhân khẩu học (Quận/Huyện TP.HCM), độ tuổi, hành trình khách hàng qua app điện thoại.</p>
+          <a href="https://analytics.google.com/" target="_blank" class="inline-flex items-center gap-1 text-xs font-bold text-amber-700 underline">
+            Mở Google Analytics Portal ↗
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const GOOGLE_SHEET_ID = "10ylwZCFYsBWnx4dp5lZ8s8HWyba2RNnyhicAs-0AjFw";
+    const GOOGLE_SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/export?format=csv`;
+    const COUNT_API_BASE = 'https://countapi.mileshilliard.com/api/v1/get';
+
+    let sourceChartInstance = null;
+    let actionChartInstance = null;
+    let hourChartInstance = null;
+
+    function formatImageUrl(url) {
+      if (!url) return '';
+      url = url.trim();
+      const driveMatch = url.match(/(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)|lh3\.googleusercontent\.com\/d\/)([a-zA-Z0-9_-]{25,})/);
+      if (driveMatch && driveMatch[1]) {
+        return `https://drive.google.com/thumbnail?id=${driveMatch[1]}&sz=w400`;
+      }
+      return url;
+    }
+
+    async function getCounter(key) {
+      try {
+        const res = await fetch(`${COUNT_API_BASE}/${key}`);
+        if (!res.ok) return 0;
+        const data = await res.json();
+        return Number(data.value) || 0;
+      } catch {
+        return 0;
+      }
+    }
+
+    async function loadProductsFromSheet() {
+      try {
+        const res = await fetch(GOOGLE_SHEET_CSV_URL);
+        const csvText = await res.text();
+        const rawLines = csvText.split(/\r?\n/);
+        let headerIdx = rawLines.findIndex(l => l.includes('Mã Sản Phẩm') || l.includes('Tên Sản Phẩm'));
+        const cleanCsv = headerIdx !== -1 ? rawLines.slice(headerIdx).join('\n') : csvText;
+        const parsed = Papa.parse(cleanCsv, { header: true, skipEmptyLines: true });
+        return (parsed.data || []).map((row, idx) => {
+          const id = (row['Mã Sản Phẩm (ID)'] || row['Mã SP'] || row['ID'] || `SP-${idx+1}`).trim();
+          const name = (row['Tên Sản Phẩm'] || row['Tên SP'] || row['Name'] || '').trim();
+          const cat = (row['Tên Danh Mục Hiển Thị'] || row['Tên Danh Mục'] || 'Thú Bông').trim();
+          const rawImg = (row['Ảnh Đại Diện (Đường dẫn hoặc link)'] || row['Ảnh Đại Diện'] || '').trim();
+          return { id, name, category_name: cat, image: formatImageUrl(rawImg) };
+        }).filter(p => p.name);
+      } catch (e) {
+        console.error('Lỗi tải danh sách sản phẩm:', e);
+        return [];
+      }
+    }
+
+    async function loadAllAnalytics() {
+      const badge = document.getElementById('liveSyncBadge');
+      badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span> Đang tải dữ liệu...`;
+
+      // 1. Fetch core counters in parallel
+      const keys = [
+        'gaubongq7-pageviews',
+        'gaubongq7-click-zalo-modal',
+        'gaubongq7-click-zalo-quick',
+        'gaubongq7-click-maps',
+        'gaubongq7-click-call',
+        'gaubongq7-click-modal-open',
+        'gaubongq7-src-facebook',
+        'gaubongq7-src-google',
+        'gaubongq7-src-tiktok',
+        'gaubongq7-src-zalo',
+        'gaubongq7-src-direct',
+        'gaubongq7-dev-mobile',
+        'gaubongq7-dev-desktop',
+        'gaubongq7-hr-00-06',
+        'gaubongq7-hr-06-11',
+        'gaubongq7-hr-11-14',
+        'gaubongq7-hr-14-18',
+        'gaubongq7-hr-18-22',
+        'gaubongq7-hr-22-24'
+      ];
+
+      const values = await Promise.all(keys.map(k => getCounter(k)));
+      const stats = {};
+      keys.forEach((k, i) => stats[k] = values[i]);
+
+      // Update KPIs
+      const pageviews = stats['gaubongq7-pageviews'];
+      const zaloModal = stats['gaubongq7-click-zalo-modal'];
+      const zaloQuick = stats['gaubongq7-click-zalo-quick'];
+      const maps = stats['gaubongq7-click-maps'];
+      const call = stats['gaubongq7-click-call'];
+      const modalOpens = stats['gaubongq7-click-modal-open'];
+      const totalActions = zaloModal + zaloQuick + maps + call;
+
+      document.getElementById('kpiPageviews').innerText = pageviews.toLocaleString('vi-VN');
+      document.getElementById('kpiTotalActions').innerText = totalActions.toLocaleString('vi-VN');
+      document.getElementById('kpiActionBreakdown').innerText = `Zalo: ${zaloModal + zaloQuick} · Maps: ${maps} · Gọi: ${call}`;
+
+      const convRate = pageviews > 0 ? ((totalActions / pageviews) * 100).toFixed(1) : '0.0';
+      document.getElementById('kpiConvRate').innerText = `${convRate}%`;
+
+      const mob = stats['gaubongq7-dev-mobile'];
+      const desk = stats['gaubongq7-dev-desktop'];
+      const totalDev = mob + desk;
+      const mobPct = totalDev > 0 ? Math.round((mob / totalDev) * 100) : 0;
+      document.getElementById('kpiMobileRatio').innerText = totalDev > 0 ? `${mobPct}% Mobile` : 'Chưa có';
+      document.getElementById('kpiDeviceDetail').innerText = `Điện thoại: ${mob} · Máy tính: ${desk}`;
+
+      // 2. Render Charts
+      renderSourceChart([
+        stats['gaubongq7-src-facebook'],
+        stats['gaubongq7-src-google'],
+        stats['gaubongq7-src-tiktok'],
+        stats['gaubongq7-src-zalo'],
+        stats['gaubongq7-src-direct']
+      ]);
+
+      renderActionChart([
+        modalOpens,
+        zaloModal,
+        zaloQuick,
+        maps,
+        call
+      ]);
+
+      renderHourChart([
+        stats['gaubongq7-hr-00-06'],
+        stats['gaubongq7-hr-06-11'],
+        stats['gaubongq7-hr-11-14'],
+        stats['gaubongq7-hr-14-18'],
+        stats['gaubongq7-hr-18-22'],
+        stats['gaubongq7-hr-22-24']
+      ]);
+
+      // 3. Load products & fetch their view counts
+      const products = await loadProductsFromSheet();
+      document.getElementById('productCountBadge').innerText = `${products.length} mẫu gấu`;
+
+      if (products.length > 0) {
+        const prodViews = await Promise.all(
+          products.map(p => {
+            const safeId = p.id.replace(/[^a-zA-Z0-9_-]/g, '');
+            return getCounter(`gaubongq7-prod-${safeId}`);
+          })
+        );
+
+        const ranked = products.map((p, i) => ({ ...p, views: prodViews[i] }))
+          .sort((a, b) => b.views - a.views);
+
+        const tbody = document.getElementById('topProductsBody');
+        tbody.innerHTML = ranked.map((p, idx) => {
+          const rankBadge = idx === 0 ? '🥇 #1' : idx === 1 ? '🥈 #2' : idx === 2 ? '🥉 #3' : `#${idx + 1}`;
+          return `
+            <tr class="hover:bg-rose-50/50 transition-colors">
+              <td class="py-2.5 px-2 font-bold text-xs ${idx < 3 ? 'text-rose-600' : 'text-slate-400'}">${rankBadge}</td>
+              <td class="py-2.5 px-2">
+                <div class="flex items-center gap-2.5">
+                  <img src="${p.image}" alt="${p.name}" class="w-10 h-10 rounded-xl object-cover bg-rose-50 flex-shrink-0 border border-rose-100" onerror="this.style.display='none'">
+                  <span class="font-semibold text-slate-800 text-xs sm:text-sm line-clamp-1">${p.name}</span>
+                </div>
+              </td>
+              <td class="py-2.5 px-2 hidden sm:table-cell text-xs text-slate-500">${p.category_name}</td>
+              <td class="py-2.5 px-2 text-right font-extrabold text-rose-700">${p.views.toLocaleString('vi-VN')}</td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      const now = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+      badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Đã cập nhật lúc ${now}`;
+    }
+
+    function renderSourceChart(data) {
+      const ctx = document.getElementById('sourceChart').getContext('2d');
+      if (sourceChartInstance) sourceChartInstance.destroy();
+      const total = data.reduce((a, b) => a + b, 0);
+      sourceChartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Facebook / IG', 'Google / Maps', 'TikTok', 'Zalo', 'Trực tiếp / QR'],
+          datasets: [{
+            data: total === 0 ? [0, 0, 0, 0, 1] : data,
+            backgroundColor: ['#1877F2', '#EA4335', '#000000', '#0068FF', '#f43f5e'],
+            borderWidth: 2,
+            borderColor: '#ffffff'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'right', labels: { font: { family: 'Plus Jakarta Sans', size: 12 } } }
+          }
+        }
+      });
+    }
+
+    function renderActionChart(data) {
+      const ctx = document.getElementById('actionChart').getContext('2d');
+      if (actionChartInstance) actionChartInstance.destroy();
+      actionChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Xem chi tiết gấu', 'Zalo (Trong SP)', 'Zalo (Nút nhanh)', 'Chỉ đường Maps', 'Gọi Hotline'],
+          datasets: [{
+            label: 'Số lượt bấm',
+            data: data,
+            backgroundColor: ['#fb7185', '#0068FF', '#38bdf8', '#10b981', '#f59e0b'],
+            borderRadius: 10
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+        }
+      });
+    }
+
+    function renderHourChart(data) {
+      const ctx = document.getElementById('hourChart').getContext('2d');
+      if (hourChartInstance) hourChartInstance.destroy();
+      hourChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['0-6h', '6-11h', '11-14h', '14-18h', '18-22h', '22-24h'],
+          datasets: [{
+            label: 'Lượt truy cập',
+            data: data,
+            borderColor: '#e11d48',
+            backgroundColor: 'rgba(244, 63, 94, 0.14)',
+            fill: true,
+            tension: 0.4,
+            pointRadius: 4,
+            pointBackgroundColor: '#e11d48'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', loadAllAnalytics);
+  </script>
+</body>
+</html>
