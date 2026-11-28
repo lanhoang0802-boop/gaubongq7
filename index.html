@@ -351,16 +351,21 @@
       transition: opacity 0.35s ease;
     }
 
-    /* 🌸🧸 LIGHTWEIGHT PRODUCT CARD (Zero hover shader / zero lag) */
+    /* 🌸🧸 LIGHTWEIGHT PRODUCT CARD (Zero hover lag + 4px glowing rose border) */
     .card-popout-sakura {
       position: relative;
       z-index: 20;
       box-shadow: 0 4px 12px -4px rgba(140, 29, 64, 0.07);
-      transition: border-color 0.2s ease;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
     @media (hover: hover) {
       .card-popout-sakura:hover {
-        border-color: #fda4af !important;
+        border-color: #f43f5e !important;
+        box-shadow:
+          0 0 0 4px #fb7185,
+          0 0 24px 4px rgba(244, 63, 94, 0.52),
+          0 0 10px 1px rgba(251, 113, 133, 0.65) !important;
+        z-index: 25 !important;
       }
     }
     .plushie-img {
