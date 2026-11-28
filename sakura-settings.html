@@ -143,6 +143,28 @@
         </div>
         <input type="range" id="optWind" min="0" max="2.5" step="0.1" class="w-full" oninput="onSettingChange()">
       </div>
+
+      <!-- 8. Cây Hoa Anh Đào: Số biểu tượng lắc cây & Độ toả (Spread) -->
+      <div class="pt-3 border-t border-rose-100 space-y-4">
+        <div class="text-xs font-extrabold text-rose-700 uppercase tracking-wider">🌳 Cây Hoa Anh Đào Tương Tác</div>
+        <div class="space-y-1.5">
+          <div class="flex justify-between text-xs font-bold">
+            <span class="text-slate-700">🎐 Số biểu tượng lắc cây (random trên cành)</span>
+            <span id="valHotspots" class="text-rose-600">3 điểm</span>
+          </div>
+          <input type="range" id="optHotspots" min="0" max="6" step="1" class="w-full" oninput="onSettingChange()">
+          <div class="flex justify-between text-[10px] text-slate-400"><span>0 (Ẩn)</span><span>3 (Vừa đẹp)</span><span>6 (Nhiều)</span></div>
+        </div>
+
+        <div class="space-y-1.5">
+          <div class="flex justify-between text-xs font-bold">
+            <span class="text-slate-700">💥 Độ tản / Spread cánh hoa khi lắc cây</span>
+            <span id="valSpread" class="text-rose-600">1.0x</span>
+          </div>
+          <input type="range" id="optSpread" min="0.5" max="2.5" step="0.1" class="w-full" oninput="onSettingChange()">
+          <div class="flex justify-between text-[10px] text-slate-400"><span>0.5x (Gọn)</span><span>1.0x (Chuẩn)</span><span>2.5x (Toả rộng)</span></div>
+        </div>
+      </div>
     </section>
 
     <!-- CỘT PHẢI: KHUNG XEM TRƯỚC TRỰC TIẾP (LIVE 3D PREVIEW) -->
@@ -186,7 +208,9 @@
       maxSize: 22,
       speedMultiplier: 1.0,
       backRatio: 55,
-      windStrength: 1.0
+      windStrength: 1.0,
+      treeHotspotCount: 3,
+      treeBurstSpread: 1.0
     };
 
     let settings = loadSettings();
@@ -210,6 +234,8 @@
       document.getElementById('optSpeed').value = settings.speedMultiplier;
       document.getElementById('optBackRatio').value = settings.backRatio;
       document.getElementById('optWind').value = settings.windStrength;
+      document.getElementById('optHotspots').value = settings.treeHotspotCount ?? 3;
+      document.getElementById('optSpread').value = settings.treeBurstSpread ?? 1.0;
 
       document.getElementById('valCount').innerText = `${settings.count} cánh`;
       document.getElementById('valMinSize').innerText = `${settings.minSize} px`;
@@ -217,6 +243,8 @@
       document.getElementById('valSpeed').innerText = `${Number(settings.speedMultiplier).toFixed(1)}x`;
       document.getElementById('valBackRatio').innerText = `${settings.backRatio}%`;
       document.getElementById('valWind').innerText = `${Number(settings.windStrength).toFixed(1)}x`;
+      document.getElementById('valHotspots').innerText = `${settings.treeHotspotCount ?? 3} điểm`;
+      document.getElementById('valSpread').innerText = `${Number(settings.treeBurstSpread ?? 1.0).toFixed(1)}x`;
     }
 
     function onSettingChange() {
@@ -232,7 +260,9 @@
         maxSize: maxS,
         speedMultiplier: parseFloat(document.getElementById('optSpeed').value),
         backRatio: parseInt(document.getElementById('optBackRatio').value, 10),
-        windStrength: parseFloat(document.getElementById('optWind').value)
+        windStrength: parseFloat(document.getElementById('optWind').value),
+        treeHotspotCount: parseInt(document.getElementById('optHotspots').value, 10),
+        treeBurstSpread: parseFloat(document.getElementById('optSpread').value)
       };
 
       localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
