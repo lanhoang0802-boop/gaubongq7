@@ -672,8 +672,9 @@
       <!-- Quick Action Buttons -->
       <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
         <!-- 🐧/🦆 Đổi Linh Vật 3D (Bên trái nút Lượt xem) -->
-        <button id="mascotToggleBtn" onclick="toggleMascotModel()" title="Đổi linh vật 3D theo chuột (Cánh cụt / Vịt ngỗng)" class="hidden md:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-m3-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200/80 hover:bg-amber-100 transition-colors shadow-xs cursor-pointer">
+        <button id="mascotToggleBtn" onclick="toggleMascotModel()" title="Đổi linh vật 3D theo chuột (Cánh cụt / Vịt ngỗng)" class="marshmallow-btn inline-flex items-center gap-1 px-2.5 py-1.5 sm:py-2 rounded-m3-full text-xs font-bold bg-amber-100/90 text-amber-900 border border-amber-300/70 hover:bg-amber-200 transition-colors shadow-xs cursor-pointer">
           <span id="mascotToggleIcon">🐧</span>
+          <span class="hidden lg:inline">Đổi thú</span>
         </button>
         <!-- 📊 Thống Kê Lượt Xem Trang (Bấm để mở trang Analytics chi tiết) -->
         <a href="analytics.html" id="visitorStatsBtn" title="Xem báo cáo phân tích & thống kê chi tiết" class="marshmallow-btn inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-m3-full text-xs font-bold bg-pink-100/90 text-rose-700 hover:bg-pink-200 transition-colors shadow-xs">
@@ -2089,22 +2090,26 @@
 
       sakuraPetals = [];
       // X2 số lượng cánh hoa anh đào để hiệu ứng 3D Depth-of-Field rõ nét
-      const count = window.innerWidth < 640 ? 38 : 76;
+      const count = window.innerWidth < 640 ? 40 : 80;
       for (let i = 0; i < count; i++) {
-        // Phân chia 3 tầng chiều sâu: 55% xa (đằng sau thẻ), 30% giữa (trước thẻ), 15% gần ống kính (bokeh lớn trước thẻ)
+        // Phân chia 3 tầng chiều sâu:
+        // - 35% far (nhỏ, mờ nhẹ, rơi đằng sau thẻ & chữ)
+        // - 45% mid (rõ nét, chia đôi 50% rơi ĐẰNG SAU thẻ SP/chữ và 50% rơi ĐẰNG TRƯỚC thẻ SP/chữ để thấy rõ lớp 3D)
+        // - 20% near (lớn, bokeh mờ cận cảnh, bay ĐẰNG TRƯỚC khung hình)
         const r = Math.random();
-        const depthTier = r < 0.55 ? 'far' : (r < 0.85 ? 'mid' : 'near');
-        const depthScale = depthTier === 'far' ? (0.55 + Math.random() * 0.3) : depthTier === 'mid' ? (0.85 + Math.random() * 0.3) : (1.25 + Math.random() * 0.5);
-        const baseSpeedY = (Math.random() * 0.3 + 0.22) * (depthTier === 'far' ? 0.68 : depthTier === 'mid' ? 1.0 : 1.45);
+        const depthTier = r < 0.35 ? 'far' : (r < 0.80 ? 'mid' : 'near');
+        const layer = depthTier === 'far' ? 'back' : (depthTier === 'near' ? 'front' : (Math.random() < 0.55 ? 'back' : 'front'));
+        const depthScale = depthTier === 'far' ? (0.65 + Math.random() * 0.3) : depthTier === 'mid' ? (0.9 + Math.random() * 0.32) : (1.3 + Math.random() * 0.55);
+        const baseSpeedY = (Math.random() * 0.3 + 0.22) * (depthTier === 'far' ? 0.72 : depthTier === 'mid' ? 1.0 : 1.45);
         const baseSpeedX = (Math.random() - 0.2) * 0.25 * depthScale;
 
         sakuraPetals.push({
           x: Math.random() * window.innerWidth,
           y: Math.random() * window.innerHeight,
           depthTier: depthTier,
-          layer: depthTier === 'far' ? 'back' : 'front',
+          layer: layer,
           scale: depthScale,
-          opacity: depthTier === 'far' ? (0.45 + Math.random() * 0.25) : depthTier === 'mid' ? (0.78 + Math.random() * 0.2) : (0.65 + Math.random() * 0.25),
+          opacity: depthTier === 'far' ? (0.55 + Math.random() * 0.25) : depthTier === 'mid' ? (0.82 + Math.random() * 0.18) : (0.7 + Math.random() * 0.25),
           baseSpeedY: baseSpeedY,
           baseSpeedX: baseSpeedX,
           speedY: baseSpeedY,
