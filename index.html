@@ -689,9 +689,11 @@
 
       <!-- Quick Action Buttons -->
       <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
-        <!-- 🌸 Sakura Toggle Button (E5) -->
-        <button id="toggleSakuraBtn" onclick="toggleSakura()" title="Bật/Tắt Cánh Hoa Anh Đào Rơi" class="marshmallow-btn inline-flex items-center gap-1 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-m3-full text-xs font-bold bg-pink-100/90 text-rose-700 hover:bg-pink-200 transition-colors">
-          <span>🌸</span> <span class="hidden md:inline">Hoa Đào</span>
+        <!-- 👁️ Thống Kê Lượt Xem Trang (Bấm để bật/tắt cánh hoa) -->
+        <button id="toggleSakuraBtn" onclick="toggleSakura()" title="Thống kê lượt truy cập trang web (Bấm để bật/tắt cánh hoa)" class="marshmallow-btn inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-m3-full text-xs font-bold bg-pink-100/90 text-rose-700 hover:bg-pink-200 transition-colors shadow-xs">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>👁️</span>
+          <span id="visitorStatsNum">...</span> <span class="hidden sm:inline">lượt xem</span>
         </button>
         <a href="https://maps.app.goo.gl/eLYNVKUNGd8gYN2K9" target="_blank" class="hidden md:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-m3-full text-xs font-semibold bg-m3-surface-container text-m3-on-surface hover:bg-m3-surface-container-high transition-colors">
           <span class="material-symbols-outlined text-sm text-m3-primary">location_on</span>
@@ -1093,10 +1095,6 @@
     const GOOGLE_SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/export?format=csv`;
 
     // Chuyển đổi link ảnh Google Drive sang ảnh hiển thị được trên web
-    
-    // Ảnh đại diện mặc định cho các mẫu mới chưa kịp chụp/tải ảnh
-    const DEFAULT_PLACEHOLDER_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23FDF1F3'/%3E%3Ctext x='50%25' y='45%25' dominant-baseline='middle' text-anchor='middle' font-size='64'%3E%F0%9F%A7%B8%3C/text%3E%3Ctext x='50%25' y='65%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='16' font-weight='bold' fill='%23B91D57'%3E%C4%90ang c%E1%BA%ADp nh%E1%BA%ADt %E1%BA%A3nh th%E1%BA%ADt%3C/text%3E%3C/svg%3E";
-
     function formatImageUrl(url) {
       if (!url) return '';
       url = url.trim();
@@ -1201,7 +1199,7 @@
 
                 const badge = row['Nhãn / Badge (HOT, NEW, SALE...)'] || row['Nhãn / Badge'] || row['Badge'] || (isOutOfStock ? 'TẠM HẾT HÀNG' : 'MẪU MỚI');
                 const rawImage = (row['Ảnh Đại Diện (Đường dẫn hoặc link)'] || row['Ảnh Đại Diện'] || '').trim();
-                const image = rawImage ? formatImageUrl(rawImage) : DEFAULT_PLACEHOLDER_IMAGE;
+                const image = formatImageUrl(rawImage);
                 
                 const galleryRaw = row['Album Ảnh Chi Tiết'] || row['Album Ảnh Chi Tiết (Cách nhau dấu phẩy)'] || row['Album Ảnh'] || rawImage;
                 const gallery = galleryRaw ? galleryRaw.split(',').map(img => formatImageUrl(img.trim())).filter(Boolean) : [image];
@@ -1226,7 +1224,7 @@
                   gallery: gallery.length > 0 ? gallery : [image],
                   description
                 };
-              }).filter(p => p.name && p.name.trim() !== '');
+              }).filter(p => p.name && p.image);
 
               if (allProducts.length > 0) {
                 loadedFromGoogleSheet = true;
@@ -1243,13 +1241,7 @@
       if (!loadedFromGoogleSheet) {
         try {
           const res = await fetch('products.json?v=' + Date.now());
-          const rawProds = await res.json();
-          allProducts = rawProds.map(p => {
-            if (!p.image || p.image.trim() === '') {
-              p.image = DEFAULT_PLACEHOLDER_IMAGE;
-            }
-            return p;
-          });
+          allProducts = await res.json();
           console.log(`[Local JSON] Đã tải ${allProducts.length} sản phẩm từ products.json`);
         } catch (err) {
           console.error('Error loading products.json:', err);
@@ -1263,7 +1255,7 @@
       allPhotosList = [];
       const photoSet = new Set();
       allProducts.forEach(p => {
-        if (p.image && !p.image.startsWith('data:image') && !photoSet.has(p.image)) {
+        if (p.image && !photoSet.has(p.image)) {
           photoSet.add(p.image);
           allPhotosList.push({ file: p.image, name: p.name, category: p.category_name });
         }
@@ -2105,7 +2097,7 @@
       const btn = document.getElementById('toggleSakuraBtn');
       if (btn) {
         btn.classList.toggle('opacity-50', !sakuraActive);
-        btn.title = sakuraActive ? 'Đang bật cánh hoa đào rơi' : 'Đã tạm tắt cánh hoa';
+        btn.title = sakuraActive ? 'Lượt xem trang web (Bấm để bật/tắt cánh hoa)' : 'Đã tạm tắt cánh hoa rơi (Bấm để bật lại)';
       }
       if (sakuraActive) {
         initSakuraEngine();
@@ -2244,6 +2236,30 @@
       });
     }
 
+    // --- 📊 9. VISITOR STATS TRACKER ---
+    async function initVisitorStats() {
+      const statEl = document.getElementById('visitorStatsNum');
+      if (!statEl) return;
+
+      const hasCounted = sessionStorage.getItem('gbq7_pageview_counted');
+      const endpoint = hasCounted
+        ? 'https://countapi.mileshilliard.com/api/v1/get/gaubongq7-pageviews'
+        : 'https://countapi.mileshilliard.com/api/v1/hit/gaubongq7-pageviews';
+
+      try {
+        const res = await fetch(endpoint);
+        const data = await res.json();
+        if (data && typeof data.value !== 'undefined') {
+          sessionStorage.setItem('gbq7_pageview_counted', '1');
+          statEl.innerText = Number(data.value).toLocaleString('vi-VN');
+        } else {
+          statEl.innerText = '1';
+        }
+      } catch (err) {
+        statEl.innerText = 'Online';
+      }
+    }
+
     // Master initialization for all FX
     function initAllPastelEffects() {
       initSakuraEngine();
@@ -2251,6 +2267,7 @@
       initProximityHeadline();
       initAuroraWaves();
       initHoloAndBentoListeners();
+      initVisitorStats();
     }
 
   
