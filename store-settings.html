@@ -267,13 +267,24 @@
     let config = { order: [], badges: {}, stockOverrides: {} };
     let sortableInstance = null;
     let syncTimer = null;
+    const localPreviewCache = {}; // Cache Data URL ngay lập tức khi vừa upload
 
     function formatImageUrl(url) {
       if (!url) return '';
       url = url.trim();
+      if (localPreviewCache[url]) return localPreviewCache[url];
       const driveMatch = url.match(/(?:drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?id=)|lh3\.googleusercontent\.com\/d\/)([a-zA-Z0-9_-]{25,})/);
       if (driveMatch && driveMatch[1]) return `https://drive.google.com/thumbnail?id=${driveMatch[1]}&sz=w400`;
       return url;
+    }
+
+    function imgFallbackHandler(imgEl, rawPath) {
+      if (!imgEl.dataset.triedRaw && rawPath && rawPath.startsWith('images/')) {
+        imgEl.dataset.triedRaw = '1';
+        imgEl.src = `https://raw.githubusercontent.com/lanhoang0802-boop/gaubongq7/main/${rawPath}`;
+      } else {
+        imgEl.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Ctext x=%2232%22 y=%2240%22 font-size=%2224%22 text-anchor=%22middle%22%3E🖼️%3C/text%3E%3C/svg%3E';
+      }
     }
 
     function setSyncBadge(text, type = 'ok') {
@@ -522,9 +533,10 @@
         pat = getGhPat();
         if (!pat) throw new Error('Chưa nhập GitHub Token');
       }
-      const { base64 } = await compressImageToBase64(file);
+      const { base64, previewUrl } = await compressImageToBase64(file);
       const safeId = (document.getElementById('edId').value || 'SP').trim().replace(/[^a-zA-Z0-9_-]/g, '');
       const relPath = `images/custom/${safeId}_${suffix}_${Date.now()}.jpg`;
+      localPreviewCache[relPath] = previewUrl; // Hiển thị tức thì không cần chờ GitHub Pages build!
       const apiUrl = `https://api.github.com/repos/lanhoang0802-boop/gaubongq7/contents/${relPath}`;
       const res = await fetch(apiUrl, {
         method: 'PUT',
@@ -556,6 +568,8 @@
       const img = document.getElementById('edCoverPreview');
       const empty = document.getElementById('edCoverEmpty');
       if (val) {
+        img.dataset.triedRaw = '';
+        img.onerror = () => imgFallbackHandler(img, val);
         img.src = formatImageUrl(val);
         img.classList.remove('hidden');
         empty.classList.add('hidden');
@@ -582,7 +596,7 @@
         const src = formatImageUrl(rawPath);
         return `
           <div class="relative group rounded-xl overflow-hidden bg-white border-2 ${isCover ? 'border-rose-500 ring-2 ring-rose-200' : 'border-rose-100'} aspect-square shadow-xs">
-            <img src="${src}" alt="Ảnh ${idx + 1}" class="w-full h-full object-cover" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Ctext x=%2232%22 y=%2240%22 font-size=%2224%22 text-anchor=%22middle%22%3E🖼️%3C/text%3E%3C/svg%3E'">
+            <img src="${src}" alt="Ảnh ${idx + 1}" class="w-full h-full object-cover" onerror="imgFallbackHandler(this, '${rawPath}')">
             ${isCover ? `<span class="absolute top-1 left-1 px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-rose-600 text-white">Bìa</span>` : ''}
             <div class="absolute inset-x-0 bottom-0 p-1 bg-gradient-to-t from-black/75 via-black/40 to-transparent flex items-center justify-between gap-1 opacity-95 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
               <button type="button" onclick="setAsCover(${idx})" title="Đặt làm ảnh đại diện" class="px-1.5 py-0.5 rounded bg-amber-400 text-slate-900 font-bold text-[9px] cursor-pointer">⭐ Bìa</button>
