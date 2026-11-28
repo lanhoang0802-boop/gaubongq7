@@ -275,24 +275,24 @@
       60% { transform: rotate(0.7deg) translateX(3px); }
       75% { transform: rotate(-0.4deg) translateX(-1px); }
     }
-    #treeShakeHotspot {
+    .tree-shake-hotspot {
       position: fixed;
       z-index: 38;
       pointer-events: auto;
       cursor: pointer;
-      display: none;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 44px;
-      height: 44px;
+      width: 42px;
+      height: 42px;
       border-radius: 9999px;
       background: radial-gradient(circle, rgba(255, 241, 245, 0.95) 0%, rgba(251, 113, 133, 0.35) 70%, transparent 100%);
       box-shadow: 0 0 18px rgba(244, 63, 94, 0.45), 0 0 6px rgba(251, 191, 36, 0.55);
       animation: hotspotPulse 2.4s ease-in-out infinite;
       transition: transform 0.25s ease, opacity 0.3s ease;
     }
-    #treeShakeHotspot:hover {
-      transform: scale(1.18);
+    .tree-shake-hotspot:hover {
+      transform: scale(1.2);
     }
     @keyframes hotspotPulse {
       0%, 100% { box-shadow: 0 0 14px rgba(244, 63, 94, 0.4), 0 0 0 0 rgba(251, 113, 133, 0.45); }
@@ -765,10 +765,8 @@
     </svg>
   </div>
 
-  <!-- 🎐 Chi tiết nổi bật trên cây hoa anh đào (Luôn đặt ở vùng trống không đè element chính) -->
-  <button id="treeShakeHotspot" onclick="triggerTreeShake()" title="Bấm để rung cây hoa anh đào 🌸" aria-label="Rung cây hoa anh đào">
-    <span class="text-xl drop-shadow-sm select-none">🎐</span>
-  </button>
+  <!-- 🎐 Các chi tiết nổi bật random trên cây hoa anh đào (Luôn đặt ở vùng trống không đè element chính) -->
+  <div id="treeHotspotsContainer" aria-label="Điểm lắc cây hoa anh đào"></div>
 
 <!-- 🌸 E5: 3-Plane 3D Depth-of-Field Sakura Canvases (Far: z=5 | Mid: z=15 | Near/Front: z=35) -->
   <canvas id="sakuraBackCanvas"></canvas>
@@ -2066,16 +2064,43 @@
         box.getCenter(center);
 
         const maxDim = Math.max(size.x, size.y, size.z) || 1;
-        // Scale nhỏ gọn tương đương kích thước icon chim cánh cụt cũ (~46px)
         const targetSize = type === 'duck' ? 1.25 : 1.32;
         const s = targetSize / maxDim;
         model.scale.setScalar(s);
 
-        // Căn tâm X/Z về 0 và đặt chân đứng tại y = -0.52 để bật nhảy tự nhiên
+        // Căn tâm X/Z về 0 và đặt chân đứng tại y = -0.52
         model.position.x = -center.x * s;
         model.position.z = -center.z * s;
         model.position.y = -box.min.y * s - 0.52;
 
+        // Chuẩn bị dữ liệu xương chân giả lập (Vertex-level Leg Stride) để 2 chân bước luân phiên thật sự!
+        const modelHeight = size.y || 1;
+        const legRatio = type === 'duck' ? 0.27 : 0.18;
+        const legCutoffY = box.min.y + modelHeight * legRatio;
+        const legBlendHeight = modelHeight * (type === 'duck' ? 0.16 : 0.11);
+        const legMeshes = [];
+
+        model.traverse((obj) => {
+          if (obj.isMesh && obj.geometry && obj.geometry.attributes && obj.geometry.attributes.position) {
+            const posAttr = obj.geometry.attributes.position;
+            const origPos = Float32Array.from(posAttr.array);
+            const legVerts = [];
+            for (let i = 0; i < posAttr.count; i++) {
+              const vx = origPos[i * 3];
+              const vy = origPos[i * 3 + 1];
+              if (vy < legCutoffY) {
+                const w = Math.min(1, (legCutoffY - vy) / legBlendHeight);
+                const side = vx < center.x ? -1 : 1; // -1 = chân trái, +1 = chân phải
+                legVerts.push({ i, side, w });
+              }
+            }
+            if (legVerts.length > 0) {
+              legMeshes.push({ posAttr, origPos, legVerts, maxDim });
+            }
+          }
+        });
+
+        wrapper.userData.legMeshes = legMeshes;
         wrapper.add(model);
         loadedModels[type] = wrapper;
         return wrapper;
@@ -2231,6 +2256,33 @@
         mascotRoot.position.y = currentHopY;
         mascotRoot.scale.set(squashXZ, squashY, squashXZ);
 
+        // Animate alternating left/right leg stride on active 3D mesh
+        const activeModel = mascotRoot.children[0];
+        if (activeModel && activeModel.userData && activeModel.userData.legMeshes) {
+          const isMoving = dist > 7;
+          const strideAmp = isMoving ? (dist > 65 ? 0.16 : 0.11) : 0;
+          const liftAmp = isMoving ? (dist > 65 ? 0.12 : 0.08) : 0;
+          activeModel.userData.legMeshes.forEach(({ posAttr, origPos, legVerts, maxDim }) => {
+            const ampZ = strideAmp * maxDim;
+            const ampY = liftAmp * maxDim;
+            for (let k = 0; k < legVerts.length; k++) {
+              const { i, side, w } = legVerts[k];
+              const ox = origPos[i * 3];
+              const oy = origPos[i * 3 + 1];
+              const oz = origPos[i * 3 + 2];
+              if (strideAmp === 0) {
+                posAttr.setXYZ(i, ox, oy, oz);
+              } else {
+                const phase = stepPhase + (side < 0 ? 0 : Math.PI);
+                const dz = Math.sin(phase) * ampZ * w;
+                const dy = Math.max(0, Math.cos(phase)) * ampY * w;
+                posAttr.setXYZ(i, ox, oy + dy, oz + dz);
+              }
+            }
+            posAttr.needsUpdate = true;
+          });
+        }
+
         renderer.render(scene, camera);
         requestAnimationFrame(animate);
       }
@@ -2270,7 +2322,9 @@
       maxSize: 24,
       speedMultiplier: 1.0,
       backRatio: 55,
-      windStrength: 1.0
+      windStrength: 1.0,
+      treeHotspotCount: 3,
+      treeBurstSpread: 1.0
     };
     try {
       const savedSakura = localStorage.getItem('gbq7_sakura_settings');
@@ -2738,28 +2792,55 @@
       });
     }
 
-    // --- 🌳 10. INTERACTIVE SAKURA TREE & NON-OVERLAPPING HOTSPOT ---
+    // --- 🌳 10. INTERACTIVE SAKURA TREE & MULTIPLE RANDOM NON-OVERLAPPING HOTSPOTS ---
+    const TREE_HOTSPOT_ICONS = ['🎐', '🌸', '🦋', '🐦', '🎀', '✨'];
+    let activeHotspotCoords = [];
+
     function positionTreeHotspotSafely() {
-      const spot = document.getElementById('treeShakeHotspot');
-      if (!spot) return;
+      const container = document.getElementById('treeHotspotsContainer');
+      if (!container) return;
+
+      const targetCount = Number(sakuraSettings.treeHotspotCount ?? 3);
+      if (targetCount <= 0) {
+        container.innerHTML = '';
+        activeHotspotCoords = [];
+        return;
+      }
 
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      // 4 toạ độ trên cành cây ở lề trái/phải
+      // 10 toạ độ tiềm năng dọc theo các cành cây bên trái & phải
       const candidates = [
-        { x: 48, y: Math.round(vh * 0.34) },
-        { x: vw - 86, y: Math.round(vh * 0.28) },
-        { x: 42, y: Math.round(vh * 0.68) },
-        { x: vw - 86, y: Math.round(vh * 0.62) }
+        { x: 36, y: Math.round(vh * 0.22) },
+        { x: vw - 78, y: Math.round(vh * 0.20) },
+        { x: 52, y: Math.round(vh * 0.42) },
+        { x: vw - 84, y: Math.round(vh * 0.39) },
+        { x: 28, y: Math.round(vh * 0.60) },
+        { x: vw - 74, y: Math.round(vh * 0.56) },
+        { x: 48, y: Math.round(vh * 0.78) },
+        { x: vw - 90, y: Math.round(vh * 0.74) },
+        { x: 110, y: Math.round(vh * 0.16) },
+        { x: vw - 145, y: Math.round(vh * 0.15) }
       ];
+
+      // Shuffle ngẫu nhiên nhẹ nhưng ổn định theo phiên
+      if (!window._hotspotSeedOrder) {
+        window._hotspotSeedOrder = candidates.map((_, idx) => idx).sort(() => Math.random() - 0.5);
+      }
 
       const obstacles = Array.from(document.querySelectorAll('header, #heroBanner, section, #productGrid > div, footer, #floatingActions'));
       const pad = 12;
-      const size = 44;
+      const size = 42;
+      const placed = [];
 
-      let chosen = null;
-      for (const pt of candidates) {
-        if (pt.x < 10 || pt.x + size > vw - 10 || pt.y < 74 || pt.y + size > vh - 16) continue;
+      for (const idx of window._hotspotSeedOrder) {
+        if (placed.length >= targetCount) break;
+        const pt = candidates[idx];
+        if (pt.x < 8 || pt.x + size > vw - 8 || pt.y < 72 || pt.y + size > vh - 16) continue;
+
+        // Không chồng lên điểm khác
+        if (placed.some(p => Math.hypot(p.x - pt.x, p.y - pt.y) < 95)) continue;
+
         const r = { left: pt.x - pad, right: pt.x + size + pad, top: pt.y - pad, bottom: pt.y + size + pad };
         let overlaps = false;
         for (const el of obstacles) {
@@ -2771,21 +2852,19 @@
           }
         }
         if (!overlaps) {
-          chosen = pt;
-          break;
+          placed.push({ ...pt, icon: TREE_HOTSPOT_ICONS[idx % TREE_HOTSPOT_ICONS.length] });
         }
       }
 
-      if (chosen) {
-        spot.style.left = chosen.x + 'px';
-        spot.style.top = chosen.y + 'px';
-        spot.style.display = 'inline-flex';
-      } else {
-        spot.style.display = 'none';
-      }
+      activeHotspotCoords = placed;
+      container.innerHTML = placed.map((pt, i) => `
+        <button class="tree-shake-hotspot" style="left:${pt.x}px; top:${pt.y}px; animation-delay:${(i * 0.45).toFixed(2)}s;" onclick="triggerTreeShake(${pt.x + 21}, ${pt.y + 21})" title="Bấm để rung cây hoa anh đào 🌸">
+          <span class="text-lg drop-shadow-sm select-none">${pt.icon}</span>
+        </button>
+      `).join('');
     }
 
-    function triggerTreeShake() {
+    function triggerTreeShake(originX, originY) {
       const svg = document.getElementById('sakuraTreeSvg');
       if (svg) {
         svg.classList.remove('tree-shaking');
@@ -2794,24 +2873,25 @@
         setTimeout(() => svg.classList.remove('tree-shaking'), 1100);
       }
 
-      // Thả thêm 38 cánh hoa anh đào từ các cành cây!
+      // Thả thêm cánh hoa anh đào từ vị trí vừa bấm theo độ spread tuỳ chỉnh!
       if (typeof sakuraPetals !== 'undefined' && sakuraActive) {
-        const spot = document.getElementById('treeShakeHotspot');
-        const originX = spot && spot.style.display !== 'none' ? parseFloat(spot.style.left) + 22 : window.innerWidth * 0.12;
-        const originY = spot && spot.style.display !== 'none' ? parseFloat(spot.style.top) + 22 : window.innerHeight * 0.25;
+        const ox = typeof originX === 'number' ? originX : window.innerWidth * 0.12;
+        const oy = typeof originY === 'number' ? originY : window.innerHeight * 0.25;
         const speedMult = (typeof sakuraSettings !== 'undefined' ? Number(sakuraSettings.speedMultiplier) : 1.0) || 1.0;
+        const spreadMult = (typeof sakuraSettings !== 'undefined' ? Number(sakuraSettings.treeBurstSpread) : 1.0) || 1.0;
+        const burstCount = Math.round(36 * Math.max(0.6, Math.min(2.0, spreadMult)));
 
-        for (let i = 0; i < 38; i++) {
+        for (let i = 0; i < burstCount; i++) {
           const z = 200 + Math.random() * 750;
           const parallax = 450 / z;
           const layer = sakuraSettings.dofEnabled ? (z > 660 ? 'back' : (z > 460 ? 'mid' : 'front')) : 'front';
           const cocBucket = typeof computeCoCBucket === 'function' ? computeCoCBucket(z, 450) : 0;
-          const burstVx = (Math.random() - 0.35) * 4.5 * parallax;
-          const burstVy = (Math.random() * 1.6 + 0.5) * parallax * speedMult;
+          const burstVx = (Math.random() - 0.5) * 6.5 * spreadMult * parallax;
+          const burstVy = (Math.random() * 1.8 + 0.4) * Math.max(0.8, spreadMult * 0.85) * parallax * speedMult;
 
           sakuraPetals.push({
-            x: originX + (Math.random() - 0.5) * 140,
-            y: originY + (Math.random() - 0.5) * 90,
+            x: ox + (Math.random() - 0.5) * 150 * spreadMult,
+            y: oy + (Math.random() - 0.5) * 100 * spreadMult,
             z: z,
             parallax: parallax,
             layer: layer,
@@ -2827,9 +2907,8 @@
             colorIdx: Math.floor(Math.random() * 3)
           });
         }
-        // Giữ tổng số cánh không vượt quá giới hạn mượt
         setTimeout(() => {
-          const maxKeep = (Number(sakuraSettings.count) || 80) + 10;
+          const maxKeep = (Number(sakuraSettings.count) || 80) + 12;
           if (sakuraPetals.length > maxKeep) sakuraPetals.splice(maxKeep);
         }, 7500);
       }
