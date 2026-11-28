@@ -1344,6 +1344,12 @@
 
       renderProducts();
       renderPhotosGrid();
+
+      // Tự động mở đúng chi tiết sản phẩm nếu truy cập từ Blog (?id=...)
+      const urlProdId = new URLSearchParams(window.location.search).get('id');
+      if (urlProdId && allProducts.some(p => p.id === urlProdId)) {
+        openModal(urlProdId);
+      }
     }
 
     // Khởi chạy
