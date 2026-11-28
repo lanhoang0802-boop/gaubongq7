@@ -639,13 +639,13 @@
 
   <!-- 🐧🦆 3D GLB RUNNING & WALKING MASCOT MOUSE COMPANION -->
   <div id="cursorPenguin" class="pointer-events-none fixed z-[99999] transition-opacity duration-200 select-none" style="top: 0; left: 0; will-change: transform;">
-    <div id="penguinInner" style="position: relative; width: 60px; height: 60px; transform-origin: bottom center;">
+    <div id="penguinInner" style="position: relative; width: 90px; height: 90px; transform-origin: bottom center;">
       <!-- Sweat Droplets Container -->
-      <div id="penguinSweat" style="position: absolute; top: -4px; left: 0; width: 100%; pointer-events: none;"></div>
+      <div id="penguinSweat" style="position: absolute; top: 4px; left: 0; width: 100%; pointer-events: none;"></div>
       <!-- Breath Puff Container -->
-      <div id="penguinBreath" style="position: absolute; top: 18px; left: 0; width: 100%; pointer-events: none;"></div>
-      <!-- 3D Three.js Transparent Canvas -->
-      <canvas id="mascot3dCanvas" width="128" height="128" style="width: 60px; height: 60px; display: block; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.2));"></canvas>
+      <div id="penguinBreath" style="position: absolute; top: 30px; left: 0; width: 100%; pointer-events: none;"></div>
+      <!-- 3D Three.js Transparent Canvas (1.5x scale) -->
+      <canvas id="mascot3dCanvas" width="180" height="180" style="width: 90px; height: 90px; display: block; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.22));"></canvas>
     </div>
   </div>
 
@@ -1813,7 +1813,7 @@
 
       const renderer = new THREE.WebGLRenderer({ canvas: canvasEl, alpha: true, antialias: true });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-      renderer.setSize(60, 60, false);
+      renderer.setSize(90, 90, false);
       renderer.outputEncoding = THREE.sRGBEncoding;
 
       const scene = new THREE.Scene();
@@ -1915,11 +1915,11 @@
         if (!sweatContainer) return;
         const drop = document.createElement('span');
         drop.textContent = '💦';
-        drop.style.cssText = `position:absolute;font-size:12px;top:-4px;left:${facingRight ? '-6px' : '48px'};pointer-events:none;transition:all 0.5s ease-out;opacity:1;transform:scale(0.8);`;
+        drop.style.cssText = `position:absolute;font-size:14px;top:0px;left:${facingRight ? '4px' : '74px'};pointer-events:none;transition:all 0.5s ease-out;opacity:1;transform:scale(0.8);`;
         sweatContainer.appendChild(drop);
         requestAnimationFrame(() => {
           drop.style.opacity = '0';
-          drop.style.transform = `scale(1.2) translate(${facingRight ? '-16px' : '16px'}, -14px)`;
+          drop.style.transform = `scale(1.2) translate(${facingRight ? '-18px' : '18px'}, -16px)`;
         });
         setTimeout(() => drop.remove(), 520);
       }
@@ -1928,18 +1928,18 @@
         if (!breathContainer) return;
         const puff = document.createElement('span');
         puff.textContent = '💨';
-        puff.style.cssText = `position:absolute;font-size:12px;top:16px;left:${facingRight ? '46px' : '-10px'};pointer-events:none;transition:all 0.6s cubic-bezier(0.16,1,0.3,1);opacity:0.9;transform:scale(0.6);`;
+        puff.style.cssText = `position:absolute;font-size:14px;top:24px;left:${facingRight ? '72px' : '-6px'};pointer-events:none;transition:all 0.6s cubic-bezier(0.16,1,0.3,1);opacity:0.9;transform:scale(0.6);`;
         breathContainer.appendChild(puff);
         requestAnimationFrame(() => {
           puff.style.opacity = '0';
-          puff.style.transform = `scale(1.25) translate(${facingRight ? '20px' : '-20px'}, -8px)`;
+          puff.style.transform = `scale(1.25) translate(${facingRight ? '22px' : '-22px'}, -8px)`;
         });
         setTimeout(() => puff.remove(), 620);
       }
 
       function animate() {
-        const targetX = mouseX + (facingRight ? -52 : 14);
-        const targetY = mouseY + 8;
+        const targetX = mouseX + (facingRight ? -76 : 16);
+        const targetY = mouseY - 4;
 
         const dx = targetX - posX;
         const dy = targetY - posY;
@@ -1949,7 +1949,7 @@
         posX += dx * followSpeed;
         posY += dy * followSpeed;
 
-        if (mouseX > posX + 26) facingRight = true;
+        if (mouseX > posX + 42) facingRight = true;
         else if (mouseX < posX - 18) facingRight = false;
 
         penguinEl.style.transform = `translate3d(${posX}px, ${posY}px, 0)`;
