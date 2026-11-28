@@ -382,6 +382,14 @@
     let currentGalleryList = [];
 
     function getGhPat() {
+      const params = new URLSearchParams(window.location.search);
+      const urlPat = params.get('pat');
+      if (urlPat && urlPat.trim()) {
+        localStorage.setItem('gbq7_gh_pat', urlPat.trim());
+        params.delete('pat');
+        const cleanUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+        window.history.replaceState({}, '', cleanUrl);
+      }
       return (localStorage.getItem('gbq7_gh_pat') || '').trim();
     }
 
